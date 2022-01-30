@@ -1,0 +1,70 @@
+{
+  "name": "wikihooku",
+  "version": "0.1.0",
+  "description": "Frontend of wikihooku project",
+  "private": true,
+  "author": "WikiHooku Team",
+  "contributors": [
+    "xcarolr@gmail.com"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
+    "lint:fix": "vue-cli-service lint --fix"
+  },
+  "dependencies": {
+    "axios": "^0.25.0",
+    "core-js": "^3.20.3",
+    "express": "^4.17.2",
+    "infobox-parser": "^3.6.2",
+    "register-service-worker": "^1.7.2",
+    "vee-validate": "^3.4.14",
+    "vue": "^2.6.14",
+    "vue-i18n": "^8.27.0",
+    "vue-recaptcha": "1.3.0",
+    "vue-router": "^3.5.3",
+    "vuedraggable": "^2.24.3",
+    "vuetify": "^2.6.2",
+    "vuex": "^3.6.2",
+    "vuex-persist": "^3.1.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.1.0",
+    "@commitlint/config-conventional": "^16.0.0",
+    "@vue/cli-plugin-babel": "^4.5.15",
+    "@vue/cli-plugin-eslint": "^4.5.15",
+    "@vue/cli-plugin-pwa": "^4.5.15",
+    "@vue/cli-service": "^4.5.15",
+    "@vue/eslint-config-airbnb": "^5.3.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "6.8.0",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "eslint-plugin-vuejs-accessibility": "^1.1.1",
+    "hard-source-webpack-plugin": "^0.13.1",
+    "husky": "^4.2.1",
+    "sass": "^1.49.0",
+    "sass-loader": "8.0.2",
+    "vue-cli-plugin-axios": "^0.0.4",
+    "vue-cli-plugin-i18n": "^2.3.1",
+    "vue-cli-plugin-vuetify": "^2.4.5",
+    "vue-template-compiler": "^2.6.14",
+    "vuetify-loader": "^1.7.3",
+    "webpack": "4.46.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "vue-cli-service lint",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "engines": {
+    "npm": "^8.3.0",
+    "node": "^14.18",
+    "yarn": "^1.22"
+  }
+}

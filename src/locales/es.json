@@ -1,0 +1,109 @@
+{
+  "User or Password error": "email o contraseña inválidos",
+  "Not Found": "No encontrado",
+  "Internal Server Error": "Ha ocurrido un error. Vuelve a probarlo más tarde...",
+  "An error ocurred. Try it again later...": "Ha ocurrido un error. Vuelve a probarlo más tarde...",
+  "User already exists": "Ya existe un usuario con este email.",
+  "Token invalid": "Este enlace no es válido, por favor pide una nueva recuperación.",
+  "Token expired": "Este enlace ha expirado, por favor pide una nueva recuperación.",
+  "Field email is required": "El campo email es necessario",
+  "Unauthorized": "No tienes suficientes permisos",
+  "Current password don't match": "La contraseña actual no coincide",
+  "en": "Inglés",
+  "en-US": "fallback:en",
+  "ca": "Catalán",
+  "ca-ES": "fallback:ca",
+  "es": "Español",
+  "searchHint": "Busca un personaje en la Wikipedia",
+  "global": {
+    "feedback": "feedback",
+    "edit": "editar",
+    "save": "guardar",
+    "close": "cerrar",
+    "ok": "ok",
+    "day": "dia",
+    "month": "mes",
+    "year": "año"
+  },
+  "login": {
+    "title": "Inicio",
+    "button": "Entrar",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "recoverPassword": "recuperar contraseña",
+    "recovered": "Se ha enviado un email de recuperación a tu buzón"
+  },
+  "register": {
+    "title": "Registro",
+    "button": "Registro",
+    "fullname": "Nombre",
+    "username": "Email",
+    "password": "Contraseña",
+    "passwordRepeat": "Repite la contraseña",
+    "passwordsMatch": "Las contraseñas deben coincidir"
+  },
+  "registerConfirmation": {
+    "successTitle": "Felicidades!",
+    "successBody": "Tu cuenta ha sido verificada!",
+    "errorTitle": "Ups!",
+    "errorBody": "Parece que tenemos algún problema con tu registro."
+  },
+  "resetPassword": {
+    "title": "Reset de contraseña",
+    "button": "Reset de contraseña",
+    "password": "Contraseña",
+    "passwordRepeat": "Repite la contraseña",
+    "passwordsMatch": "Las contraseñas deben coincidir"
+  },
+  "menu": {
+    "account": "Cuenta",
+    "logout": "Salir"
+  },
+  "messages": {
+    "oldPassword": "La nueva contraseña no puede coincidir con la antigua."
+  },
+  "character": {
+    "noBirthDateFound": "No se ha encontrado la fecha de nacimiento!"
+  },
+  "fields": {
+    "fullname": "Nombre completo",
+    "email": "Email",
+    "password": "Contraseña",
+    "passwordRepeat": "Repite la contraseña",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "newPasswordRepeat": "Repite la contraseña",
+    "birthdate": "Fecha del nacimiento",
+    "deathdate": "Fecha de la defunción",
+    "birthday": "dia del nacimiento",
+    "birthmonth": "mes del nacimiento",
+    "birthyear": "any del nacimiento"
+  },
+  "persona": {
+    "title": "Persona",
+    "fullname": "Nombre",
+    "birthdate": "Fecha del nacimiento",
+    "deathdate": "Fecha de la defunción"
+  },
+  "account": {
+    "title": "Configuración de la cuenta",
+    "name": "Nombre",
+    "nameHint": "Tu nombre público",
+    "currentPassword": "Contraseña",
+    "currentPasswordHint": "Introduce la contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "newPasswordHint": "Introduce tu nueva contraseña",
+    "newPasswordRepeat": "Repite la contraseña",
+    "newPasswordRepeatHint": "Repite tu nueva contraseña",
+    "samePasswords": "La nueva contraseña y la antigua no pueden ser iguales",
+    "locale": "Idioma",
+    "notVerified": "Por favor confirma primero tu cuenta a través del enlace del email de registro"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "button": "Enviar feedback",
+    "email": "Email",
+    "feedback": "Tu feedback",
+    "sendsuccesfully": "Tu feedback se ha registrado con éxito. Gracias por contribuir!"
+  }
+}

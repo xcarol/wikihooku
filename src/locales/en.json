@@ -1,0 +1,109 @@
+{
+  "User or Password error": "Invalid email or password",
+  "Not Found": "Not Found",
+  "Internal Server Error": "An error ocurred. Try it again later...",
+  "An error ocurred. Try it again later...": "An error ocurred. Try it again later...",
+  "User already exists": "A user with this email already exists.",
+  "Token invalid": "This link is invalid, please request for a new recover.",
+  "Token expired": "This link has expired, please request for a new recover.",
+  "Field email is required": "Field email is required",
+  "Unauthorized": "You don't have enough rights",
+  "Current password don't match": "Current password don't match",
+  "ca": "Catalan",
+  "ca-ES": "fallback:ca",
+  "es": "Spanish",
+  "en": "English",
+  "en-US": "fallback:en",
+  "searchHint": "Search a character at Wikipedia",
+  "global": {
+    "feedback": "feedback",
+    "edit": "edit",
+    "save": "save",
+    "close": "close",
+    "ok": "ok",
+    "day": "day",
+    "month": "month",
+    "year": "year"
+  },
+  "login": {
+    "title": "Login",
+    "button": "Login",
+    "username": "Login",
+    "password": "Password",
+    "recoverPassword": "recover password",
+    "recovered": "A recovery email has been sent to your mailbox"
+  },
+  "register": {
+    "title": "Register",
+    "button": "Register",
+    "fullname": "Name",
+    "username": "Email",
+    "password": "Password",
+    "passwordRepeat": "Repeat your password",
+    "passwordsMatch": "Passwords must match"
+  },
+  "registerConfirmation": {
+    "successTitle": "Congratulations!",
+    "successBody": "You're account has been verified!",
+    "errorTitle": "Ups!",
+    "errorBody": "Its seems we're in trouble with your registrartion."
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "button": "Reset password",
+    "password": "Password",
+    "passwordRepeat": "Repeat your password",
+    "passwordsMatch": "Passwords must match"
+  },
+  "menu": {
+    "account": "Account",
+    "logout": "Logout"
+  },
+  "messages": {
+    "oldPassword": "New password and old password cannot be the same"
+  },
+  "character": {
+    "noBirthDateFound": "No birth date found!"
+  },
+  "fields": {
+    "fullname": "Full name",
+    "email": "Email",
+    "password": "Password",
+    "passwordRepeat": "Repeat your password",
+    "currentPassword": "Password",
+    "newPassword": "New password",
+    "newPasswordRepeat": "Repeat your password",
+    "birthdate": "Birth date",
+    "deathdate": "Decease date",
+    "birthday": "day of birth",
+    "birthmonth": "month of birth",
+    "birthyear": "year of birth"
+  },
+  "persona": {
+    "title": "Person",
+    "fullname": "Name",
+    "birthdate": "Birth date",
+    "deathdate": "Decease date"
+  },
+  "account": {
+    "title": "Account settings",
+    "name": "Name",
+    "nameHint": "Your public name",
+    "currentPassword": "Password",
+    "currentPasswordHint": "Type your current password",
+    "newPassword": "New Password",
+    "newPasswordHint": "Type your new password",
+    "newPasswordRepeat": "Repeat Password",
+    "newPasswordRepeatHint": "Repeat your new password",
+    "samePasswords": "New password and old password cannot be the same",
+    "locale": "Language",
+    "notVerified": "Please confirm first your account through the link in the registration email"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "button": "Send feedback",
+    "email": "Email",
+    "feedback": "Your feedback",
+    "sendsuccesfully": "Your feedback has been registered succesfully. Thanks for contributing!"
+  }
+}

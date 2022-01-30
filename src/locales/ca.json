@@ -1,0 +1,109 @@
+{
+  "User or Password error": "email o contrasenya incorrectes",
+  "Not Found": "No s'ha trobat",
+  "Internal Server Error": "S'ha produit un error. Torna-ho a provar més tard...",
+  "An error ocurred. Try it again later...": "S'ha produit un error. Torna-ho a provar més tard...",
+  "User already exists": "Ja existeix un usuari amb aquest email.",
+  "Token invalid": "Aquest enllaç no és vàlid, si us plau demana una nova recuperació.",
+  "Token expired": "Aquest enllaç ha expirat, si us plau demana una nova recuperació.",
+  "Field email is required": "El camp email es necessari",
+  "Unauthorized": "No tens prou permisos",
+  "Current password don't match": "La contrasenya actual no coincideix",
+  "ca": "Català",
+  "ca-ES": "fallback:ca",
+  "en": "Anglès",
+  "en-US": "fallback:en",
+  "es": "Castellà",
+  "searchHint": "Cerca un personatge a la Vikipedia",
+  "global": {
+    "feedback": "feedback",
+    "edit": "edita",
+    "save": "guarda",
+    "close": "tanca",
+    "ok": "ok",
+    "day": "dia",
+    "month": "mes",
+    "year": "any"
+  },
+  "login": {
+    "title": "Inici",
+    "button": "Inicia",
+    "username": "Email",
+    "password": "contrasenya",
+    "recoverPassword": "recuperar contrasenya",
+    "recovered": "S'ha enviat un email de recuperació a la teva bústia"
+  },
+  "register": {
+    "title": "Registre",
+    "button": "Registra't",
+    "fullname": "Nom",
+    "username": "Email",
+    "password": "Contrasenya",
+    "passwordRepeat": "Repeteix la contrasenya",
+    "passwordsMatch": "Les contrasenyes han de coincidir"
+  },
+  "registerConfirmation": {
+    "successTitle": "Felicitats!",
+    "successBody": "El teu compte ha estat verificat!",
+    "errorTitle": "Ups!",
+    "errorBody": "Sembla que tenim algun problema amb el teu registre."
+  },
+  "resetPassword": {
+    "title": "Reset de contrasenya",
+    "button": "Reset de contrasenya",
+    "password": "Contrasenya",
+    "passwordRepeat": "Repeteix la contrasenya",
+    "passwordsMatch": "Les contrasenyes han de coincidir"
+  },
+  "menu": {
+    "account": "Compte",
+    "logout": "Sortir"
+  },
+  "messages": {
+    "oldPassword": "La nova contrasenya no pot coincidir amb l'antiga."
+  },
+  "character": {
+    "noBirthDateFound": "No s'ha trobat la data de naixement!"
+  },
+  "fields": {
+    "fullname": "Nom",
+    "email": "Email",
+    "password": "Contrasenya",
+    "passwordRepeat": "Repeteix la contrasenya",
+    "currentPassword": "Contrasenya actual",
+    "newPassword": "Nova contrasenya",
+    "newPasswordRepeat": "Repeteix la contrasenya",
+    "birthdate": "Data de naxiement",
+    "deathdate": "Data de defunció",
+    "birthday": "dia del naixement",
+    "birthmonth": "mes del naixement",
+    "birthyear": "any del naixement"
+  },
+  "persona": {
+    "title": "Persona",
+    "fullname": "Nom",
+    "birthdate": "Data de naxiement",
+    "deathdate": "Data de defunció"
+  },
+  "account": {
+    "title": "Configuració del compte",
+    "name": "Nom",
+    "nameHint": "El teu nom públic",
+    "currentPassword": "Contrasenya actual",
+    "currentPasswordHint": "Introdueix la contrasenya actual",
+    "newPassword": "Nova contrasenya",
+    "newPasswordHint": "Introdueix la teva nova contrasenya",
+    "newPasswordRepeat": "Repeteix la contrasenya",
+    "newPasswordRepeatHint": "Repeteix la teva nova contrasenya",
+    "samePasswords": "La nova contrasenya i l'antiga no poden ser iguals",
+    "locale": "Idioma",
+    "notVerified": "Si us plau confirma primer el teu compte a través de l'enllaç al email de registre"
+  },
+  "feedback": {
+    "title": "Feedback",
+    "button": "Enviar feedback",
+    "email": "Email",
+    "feedback": "El teu feedback",
+    "sendsuccesfully": "El teu feedback s'ha registrat amb èxit. Gràcies per contribuir!"
+  }
+}

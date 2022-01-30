@@ -1,0 +1,199 @@
+<template>
+  <v-container
+    fluid
+    fill-height
+  >
+    <drawer />
+    <toolbar
+      :view="viewToggle"
+      @selected="selected"
+      @switchView="switchView"
+      @register="register"
+      @login="showLogin = true"
+      @feedback="showFeedback = true"
+    />
+    <v-overlay
+      :absolute="true"
+      :value="loading"
+    >
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="primary"
+        indeterminate
+      />
+    </v-overlay>
+    <feedback
+      v-if="showFeedback"
+      @close="closeFeedback"
+    />
+    <login
+      v-if="showLogin"
+      @close="closeLogin"
+    />
+    <register
+      v-if="showRegister"
+      @close="closeRegister"
+    />
+    <v-snackbar
+      :value="errorMessage"
+      top
+    >
+      {{ $t(errorMessage) }}
+      <v-btn
+        color="error"
+        text
+        @click.stop="clearErrorMessage"
+      >
+        {{ $t('global.close') }}
+      </v-btn>
+    </v-snackbar>
+    <person-form
+      v-if="showNewPersonForm"
+      @add="addNewPerson"
+      @close="closeNewPersonForm"
+    />
+    <v-layout
+      justify-start
+      align-start
+      fill-height
+    >
+      <router-view :view="viewToggle" />
+      <v-btn
+        fixed
+        dark
+        fab
+        bottom
+        right
+        small
+        color="primary"
+        @click.stop="newPerson"
+      >
+        <v-icon>{{ $vuetify.icons.values.add }}</v-icon>
+      </v-btn>
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+
+import { wikiEntity } from '../store/modules/wiki';
+import { TIMELINE } from '../global/const';
+import PersonForm from '../components/PersonForm';
+
+import Drawer from '../components/Drawer';
+import Toolbar from '../components/Toolbar';
+import Feedback from '../components/Feedback';
+import Register from '../components/auth/Register';
+import Login from '../components/auth/Login';
+
+export default {
+  name: 'Layout',
+  components: {
+    Drawer,
+    Toolbar,
+    Register,
+    Login,
+    Feedback,
+    PersonForm,
+  },
+  data: () => ({
+    showRegister: false,
+    showLogin: false,
+    showFeedback: false,
+    snackTimeout: 6000,
+    now: 0,
+    view: TIMELINE,
+    loading: false,
+    showNewPersonForm: false,
+  }),
+  computed: {
+    ...mapGetters({
+      snackMessage: 'snackMessage',
+      loggedUser: 'session/isLoggedIn',
+    }),
+    errorMessage() {
+      if (this.snackMessage.length) {
+        this.resetSnackMessage(this.snackTimeout);
+      }
+      return this.snackMessage;
+    },
+    viewToggle() {
+      return this.view;
+    },
+  },
+  methods: {
+    ...mapActions({
+      resetSnackMessage: 'resetSnackMessage',
+    }),
+    ...mapMutations({
+      setSnackMessage: 'snackMessage',
+      addEntity: 'wiki/addEntity',
+    }),
+    clearErrorMessage() {
+      this.resetSnackMessage(this.now);
+    },
+    closeRegister() {
+      this.showRegister = false;
+    },
+    closeLogin() {
+      this.showLogin = false;
+      if (this.loggedUser) {
+        this.$router.go();
+      }
+    },
+    closeFeedback() {
+      this.showFeedback = false;
+    },
+    register() {
+      this.showRegister = true;
+    },
+    async selected(name) {
+      this.loading = true;
+      let startDate;
+      let endDate = new Date();
+
+      try {
+        const infoBox = await this.api.getWikiInfoBox(name);
+
+        if (infoBox.general.birthDate) {
+          startDate = new Date(infoBox.general.birthDate.date);
+        } else {
+          throw new Error(this.$t('character.noBirthDateFound'));
+        }
+
+        if (infoBox.general.deathDate) {
+          endDate = new Date(infoBox.general.deathDate.date);
+        }
+
+        this.addEntity(wikiEntity(
+          name,
+          startDate.getFullYear(),
+          endDate.getFullYear(),
+        ));
+      } catch (error) {
+        this.setSnackMessage(error);
+      }
+      this.loading = false;
+    },
+    newPerson() {
+      this.showNewPersonForm = true;
+    },
+    addNewPerson(person) {
+      this.addEntity(wikiEntity(
+        person.fullname,
+        person.start.getFullYear(),
+        person.end.getFullYear(),
+      ));
+      this.closeNewPersonForm();
+    },
+    closeNewPersonForm() {
+      this.showNewPersonForm = false;
+    },
+    switchView(view) {
+      this.view = view;
+    },
+  },
+};
+</script>

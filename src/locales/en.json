@@ -40,7 +40,9 @@
     "username": "Email",
     "password": "Password",
     "passwordRepeat": "Repeat your password",
-    "passwordsMatch": "Passwords must match"
+    "passwordsMatch": "Passwords must match",
+    "successTitle": "Register successful!",
+    "successBody": "Confirm your registration with the email we sent to you"
   },
   "registerConfirmation": {
     "successTitle": "Congratulations!",

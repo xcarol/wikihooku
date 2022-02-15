@@ -40,7 +40,9 @@
     "username": "Email",
     "password": "Contraseña",
     "passwordRepeat": "Repite la contraseña",
-    "passwordsMatch": "Las contraseñas deben coincidir"
+    "passwordsMatch": "Las contraseñas deben coincidir",
+    "successTitle": "Registro finalizado!",
+    "successBody": "Confirma tu registro con el email que te hemos enviado"
   },
   "registerConfirmation": {
     "successTitle": "Felicidades!",

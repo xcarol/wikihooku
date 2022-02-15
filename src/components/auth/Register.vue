@@ -142,6 +142,39 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="registerSuccess"
+      width="500"
+      :fullscreen="$vuetify.breakpoint.xsOnly"
+      scrollable
+      persistent
+    >
+      <v-card>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          {{ $t('register.successTitle') }}
+        </v-card-title>
+
+        <v-card-text>
+          {{ $t('register.successBody') }}
+        </v-card-text>
+
+        <v-divider />
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="primary"
+            text
+            @click.stop="close"
+          >
+            {{ $t('global.ok') }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
@@ -164,6 +197,7 @@ export default {
     showDialog: true,
     recaptchaKey: process.env.VUE_APP_RECAPTCHA_KEY,
     recaptchaResponse: null,
+    registerSuccess: false,
   }),
   computed: {
     canRegister() {
@@ -192,7 +226,7 @@ export default {
   },
   watch: {
     showDialog(newValue) {
-      if (newValue === false) {
+      if (newValue === false && this.registerSuccess === false) {
         this.close();
       }
     },
@@ -211,7 +245,8 @@ export default {
         password: this.password,
       })
         .then(() => {
-          this.close();
+          this.registerSuccess = true;
+          this.showDialog = false;
         })
         .catch((error) => {
           this.loading = false;

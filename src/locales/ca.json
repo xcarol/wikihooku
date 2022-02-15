@@ -40,7 +40,9 @@
     "username": "Email",
     "password": "Contrasenya",
     "passwordRepeat": "Repeteix la contrasenya",
-    "passwordsMatch": "Les contrasenyes han de coincidir"
+    "passwordsMatch": "Les contrasenyes han de coincidir",
+    "successTitle": "Registre finalitzat!",
+    "successBody": "Confirma el teu registre amb l'email que t'hem enviat"
   },
   "registerConfirmation": {
     "successTitle": "Felicitats!",

@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 import { wikiEntity } from '../store/modules/wiki';
@@ -157,13 +158,17 @@ export default {
       try {
         const infoBox = await this.api.getWikiInfoBox(name);
 
-        if (infoBox.general.birthDate) {
+        if (infoBox.general.birthDate
+            && infoBox.general.birthDate.date
+            && dayjs(infoBox.general.birthDate.date).isValid()) {
           startDate = new Date(infoBox.general.birthDate.date);
         } else {
           throw new Error(this.$t('character.noBirthDateFound'));
         }
 
-        if (infoBox.general.deathDate) {
+        if (infoBox.general.deathDate
+            && infoBox.general.birthDate.date
+            && dayjs(infoBox.general.birthDate.date).isValid()) {
           endDate = new Date(infoBox.general.deathDate.date);
         }
 

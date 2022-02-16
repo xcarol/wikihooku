@@ -19,6 +19,7 @@
   "dependencies": {
     "axios": "^0.25.0",
     "core-js": "^3.20.3",
+    "dayjs": "^1.10.7",
     "express": "^4.17.2",
     "infobox-parser": "^3.6.2",
     "register-service-worker": "^1.7.2",

@@ -27,7 +27,7 @@ Stored in `.env` or `.env.test.local` file for development and test respectively
 - development: *<http://localhost:3000/api/>*
 - production: *<https://wikihooku-api.herokuapp.com/api/>*  
 
-**VUE_APP_RECAPTCHA_KEY** - Recaptcha key create at *<https://www.google.com/recaptcha/admin/site/349368012>*  
+**VUE_APP_RECAPTCHA_KEY** - Recaptcha key create at *<https://www.google.com/recaptcha/admin/site/349368012>* use the *WEB SITE* key  
 
 ### Compiles and hot-reloads for development
 

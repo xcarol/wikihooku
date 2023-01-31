@@ -80,7 +80,7 @@ import dayjs from 'dayjs';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 import { wikiEntity } from '../store/modules/wiki';
-import { TIMELINE } from '../global/const';
+import { TIMELINE, NO_PAGE_ID } from '../global/const';
 import PersonForm from '../components/PersonForm';
 
 import Drawer from '../components/Drawer';
@@ -150,13 +150,13 @@ export default {
     register() {
       this.showRegister = true;
     },
-    async selected(name) {
+    async selected(item) {
       this.loading = true;
       let startDate;
       let endDate = new Date();
 
       try {
-        const infoBox = await this.api.getWikiInfoBox(name);
+        const infoBox = await this.api.getWikiInfoBox(item.value);
 
         if (infoBox.general.birthDate
             && infoBox.general.birthDate.date
@@ -173,7 +173,8 @@ export default {
         }
 
         this.addEntity(wikiEntity(
-          name,
+          item.value,
+          item.text,
           startDate.getFullYear(),
           endDate.getFullYear(),
         ));
@@ -187,6 +188,7 @@ export default {
     },
     addNewPerson(person) {
       this.addEntity(wikiEntity(
+        NO_PAGE_ID,
         person.fullname,
         person.start.getFullYear(),
         person.end.getFullYear(),

@@ -3,7 +3,8 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-const wikiEntity = (name, start, end) => ({
+const wikiEntity = (pageid, name, start, end) => ({
+  pageid,
   name,
   start,
   end,

@@ -110,8 +110,8 @@ class Api {
     return this.axios.get(url);
   }
 
-  async getWikiInfoBox(pageName) {
-    const url = Api.endpoint(this.endpoints.page, pageName);
+  async getWikiInfoBox(pageId) {
+    const url = Api.endpoint(this.endpoints.page, pageId);
     const { data: { parse: { wikitext: { '*': content } } } } = await this.axios.get(url);
     return parseInfo(content);
   }

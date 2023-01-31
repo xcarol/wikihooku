@@ -228,12 +228,10 @@ export default {
           throw new Error(result.statusText);
         }
 
-        const [, items] = result.data;
-
-        items.forEach((item) => {
+        result.data.query.search.forEach((message) => {
           this.items.push({
-            text: item,
-            value: item,
+            text: message.title,
+            value: message.pageid,
           });
         });
       } catch (error) {
@@ -277,7 +275,7 @@ export default {
     },
     input(item) {
       if (item) {
-        this.$emit('selected', item.value);
+        this.$emit('selected', item);
       }
     },
     setAge() {

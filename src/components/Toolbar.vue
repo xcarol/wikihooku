@@ -222,18 +222,23 @@ export default {
       this.isLoading = true;
 
       try {
-        const result = await this.api.search(val, 0, 50);
+        const result = await this.api.searchPerson(val, 0, 50);
 
         if (result.status !== 200) {
           throw new Error(result.statusText);
         }
 
-        result.data.query.search.forEach((message) => {
-          this.items.push({
-            text: message.title,
-            value: message.pageid,
+        if (result.data.query) {
+          result.data.query.pages.forEach((message) => {
+            if (message.revisions[0].content.includes('birth_date')) {
+              this.items.push({
+                text: message.title,
+                value: message.pageid,
+                content: message.revisions[0].content,
+              });
+            }
           });
-        });
+        }
       } catch (error) {
         this.errorMessage = error.message;
       }

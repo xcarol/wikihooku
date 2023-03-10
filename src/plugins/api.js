@@ -14,7 +14,7 @@ class Api {
     userGet: 'user/{1}',
     collectionSelection: 'collection/{1}',
     sendFeedback: 'feedback',
-    search: 'mediawiki/search/{1}/{2}/{3}',
+    searchPerson: 'mediawiki/search-person/{1}/{2}/{3}',
     page: 'mediawiki/page/{1}',
   };
 
@@ -105,8 +105,8 @@ class Api {
     return this.axios.post(url, { email, feedback });
   }
 
-  async search(text, offset, limit) {
-    const url = Api.endpoint(this.endpoints.search, offset, limit, text);
+  async searchPerson(text, offset, limit) {
+    const url = Api.endpoint(this.endpoints.searchPerson, offset, limit, text);
     return this.axios.get(url);
   }
 

@@ -77,6 +77,7 @@
 
 <script>
 import dayjs from 'dayjs';
+import parseInfo from 'infobox-parser';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 import { wikiEntity } from '../store/modules/wiki';
@@ -156,7 +157,7 @@ export default {
       let endDate = new Date();
 
       try {
-        const infoBox = await this.api.getWikiInfoBox(item.value);
+        const infoBox = parseInfo(item.content);
 
         if (infoBox.general.birthDate
             && infoBox.general.birthDate.date

@@ -11,7 +11,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build && yarn add-commit",
     "lint": "vue-cli-service lint",
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
     "lint:fix": "vue-cli-service lint --fix",
@@ -60,7 +60,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "vue-cli-service lint && yarn add-commit",
+      "pre-commit": "vue-cli-service lint",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }

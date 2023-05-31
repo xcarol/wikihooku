@@ -9,12 +9,10 @@
   ],
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "dev": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build && yarn add-commit",
-    "lint": "vue-cli-service lint",
-    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
-    "lint:fix": "vue-cli-service lint --fix",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "add-commit": "git log | head -n 1 | sed 's/commit //' > dist/commit.html"
   },
   "dependencies": {
@@ -57,7 +55,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "vue-cli-service lint",
+      "pre-commit": "npm run lint",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   }

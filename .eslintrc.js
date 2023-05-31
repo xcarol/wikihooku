@@ -8,14 +8,14 @@ module.exports = {
 
   extends: [
     'plugin:vue/vue3-essential',
-    'eslint',
+    'eslint:recommended',
     '@vue/airbnb',
-    'plugin:security/recommended'
+    'plugin:security/recommended',
   ],
 
   plugins: [
     'vue',
-    'security'
+    'security',
   ],
 
   rules: {
@@ -28,11 +28,10 @@ module.exports = {
       vue: 'never',
     }],
     'arrow-parens': ['error', 'always'],
-    'vue/component-name-in-template-casing': ['error', 'kebab-case']
+    'vue/component-name-in-template-casing': ['error', 'kebab-case'],
   },
 
   parserOptions: {
-    parser: 'babel-eslint',
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
@@ -40,11 +39,11 @@ module.exports = {
   overrides: [
     {
       files: [
-        '**/__tests__/*.{j,t}s?(x)'
+        '**/__tests__/*.{j,t}s?(x)',
       ],
       env: {
-        mocha: true
-      }
-    }
-  ]
+        mocha: true,
+      },
+    },
+  ],
 };

@@ -7,7 +7,7 @@ module.exports = {
   },
 
   extends: [
-    'plugin:vue/recommended',
+    'plugin:vue/vue3-essential',
     '@vue/airbnb',
     'plugin:security/recommended'
   ],
@@ -32,7 +32,7 @@ module.exports = {
 
   parserOptions: {
     parser: 'babel-eslint',
-    ecmaVersion: 2018,
+    ecmaVersion: 'latest',
     sourceType: 'module',
   },
 

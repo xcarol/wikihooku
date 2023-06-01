@@ -1,10 +1,7 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import store from './store/config';
+import { createRouter, createWebHistory } from 'vue-router';
+// import store from './store/config';
 import Layout from './views/Layout.vue';
 import ResetPassword from './views/ResetPassword.vue';
-
-Vue.use(VueRouter);
 
 const routes = [
   {
@@ -35,28 +32,28 @@ const routes = [
     component: ResetPassword,
   },
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     redirect: '/',
   },
 ];
 
-const Router = new VueRouter({
-  base: import.meta.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 
-Router.beforeEach((to, from, next) => {
-  const isLoggedIn = store.getters['session/isLoggedIn'];
+// router.beforeEach((to, from, next) => {
+//   const isLoggedIn = store.getters['session/isLoggedIn'];
 
-  if (
-    (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn)
-    || (to.path === '/' && isLoggedIn && to.name !== 'Home')
-  ) {
-    next({ name: 'Home' });
-    return;
-  }
+//   if (
+//     (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn)
+//     || (to.path === '/' && isLoggedIn && to.name !== 'Home')
+//   ) {
+//     next({ name: 'Home' });
+//     return;
+//   }
 
-  next();
-});
+//   next();
+// });
 
-export default Router;
+export default router;

@@ -41,7 +41,7 @@ const routes = [
 ];
 
 const Router = new VueRouter({
-  base: process.env.BASE_URL,
+  base: import.meta.env.BASE_URL,
   routes,
 });
 

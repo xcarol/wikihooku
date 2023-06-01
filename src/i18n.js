@@ -1,12 +1,8 @@
-// import Vue from 'vue';
-// import VueI18n from 'vue-i18n';
-// import { localize, ValidationProvider } from 'vee-validate';
-// import localeCa from 'vee-validate/dist/locale/ca.json';
-// import localeEn from 'vee-validate/dist/locale/en.json';
-// import localeEs from 'vee-validate/dist/locale/es.json';
+import { createI18n } from 'vue-i18n';
 // import store from './store/config';
-
-// Vue.use(VueI18n);
+import ca from './locales/ca.json';
+import en from './locales/en.json';
+import es from './locales/es.json';
 
 // function loadLocaleMessages() {
 //   const localeFiles = require.context('./locales', false, /[A-Za-z0-9-_,\s]+\.json$/i);
@@ -20,47 +16,39 @@
 //   return messages;
 // }
 
-// const messages = loadLocaleMessages();
+const messages = { ca, en, es };
 // const messagesKeys = Object.keys(messages);
 
-// function getUserLanguage() {
-//   return store.getters['session/user'].locale;
-// }
+function getUserLanguage() {
+  return 'es';
+  // return store.getters['session/user'].locale;
+}
 
-// export function localeFallback(locale) {
-//   let fallbackLocale = messagesKeys.find((key) => key === locale);
-//   if (!fallbackLocale) {
-//     const [messagesLocaleKey] = messagesKeys;
-//     // eslint-disable-next-line security/detect-object-injection
-//     const messagesLocale = messages[messagesLocaleKey][locale];
-//     if (messagesLocale) {
-//       const fallback = messagesLocale.split(':');
-//       if (fallback.shift() === 'fallback') {
-//         fallbackLocale = fallback.pop();
-//       }
-//     }
-//   }
+export function getBrowserLang() {
+  let browserLocale = navigator.language;
 
-//   return fallbackLocale;
-// }
+  if (navigator.languages !== undefined) {
+    [browserLocale] = navigator.languages;
+  }
 
-// export function getBrowserLang() {
-//   let browserLocale = navigator.language;
+  return browserLocale;
+}
 
-//   if (navigator.languages !== undefined) {
-//     [browserLocale] = navigator.languages;
-//   }
+const locale = getUserLanguage() || getBrowserLang() || import.meta.env.VITE_I18N_LOCALE || 'en';
 
-//   return localeFallback(browserLocale);
-// }
+const i18n = createI18n({
+  locale,
+  fallbackLocale: import.meta.env.VITE_I18N_FALLBACK_LOCALE || 'en',
+  messages,
+  silentFallbackWarn: true,
+});
 
-// const locale = getUserLanguage() || getBrowserLang() || process.env.VUE_APP_I18N_LOCALE || 'en';
-// const i18n = new VueI18n({
-//   locale,
-//   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
-//   messages,
-//   silentFallbackWarn: true,
-// });
+export default i18n;
+
+// import { localize, ValidationProvider } from 'vee-validate';
+// import localeCa from 'vee-validate/dist/locale/ca.json';
+// import localeEn from 'vee-validate/dist/locale/en.json';
+// import localeEs from 'vee-validate/dist/locale/es.json';
 
 // localize({
 //   ca: { code: localeCa.code, messages: { ...messages.ca.messages, ...localeCa.messages }, names: { ...messages.ca.fields } },
@@ -71,5 +59,3 @@
 // localize(locale);
 
 // Vue.component('ValidationProvider', ValidationProvider);
-
-// export default i18n;

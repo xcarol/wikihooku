@@ -1,19 +1,16 @@
-import Vue from 'vue';
-import './plugins/axios';
-import './vee-validate';
-import './plugins/api';
+import { createApp } from 'vue';
+// import './plugins/axios';
+// import './vee-validate';
+// import './plugins/api';
 import App from './App.vue';
 import router from './router';
-import store from './store/config';
-import vuetify from './plugins/vuetify';
+// import store from './store/config';
+// import vuetify from './plugins/vuetify';
 import i18n from './i18n';
 
-Vue.config.productionTip = false;
+const app = createApp(App);
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  i18n,
-  render: (h) => h(App),
-}).$mount('#app');
+app.use(router);
+app.use(i18n);
+
+app.mount('#app');

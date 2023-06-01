@@ -14,20 +14,20 @@ First one is Lifetime & Age of Characters
 
 Stored in `.env` or `.env.test.local` file for development and test respectively  
 
-**VUE_APP_I18N_LOCALE** - Default application's locale  
+**VITE_I18N_LOCALE** - Default application's locale  
 
 - en  
 
-**VUE_APP_I18N_FALLBACK_LOCALE** - Default application's locale fallback  
+**VITE_I18N_FALLBACK_LOCALE** - Default application's locale fallback  
 
 - en  
 
-**VUE_APP_API_URL** - Wikihooku API url  
+**VITE_API_URL** - Wikihooku API url  
 
 - development: *<http://localhost:3000/api/>*
 - production: *<https://wikihooku-api.herokuapp.com/api/>*  
 
-**VUE_APP_RECAPTCHA_KEY** - Recaptcha key create at *<https://www.google.com/recaptcha/admin/site/349368012>* use the *WEB SITE* key  
+**VITE_RECAPTCHA_KEY** - Recaptcha key create at *<https://www.google.com/recaptcha/admin/site/349368012>* use the *WEB SITE* key  
 
 ### Compiles and hot-reloads for development
 

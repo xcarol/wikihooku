@@ -1,30 +1,34 @@
-// import Vue from 'vue';
-// import Vuetify from 'vuetify/lib';
-// import ca from 'vuetify/es5/locale/ca';
-// import en from 'vuetify/es5/locale/en';
-// import es from 'vuetify/es5/locale/es';
-// import colors from 'vuetify/es5/util/colors';
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
+import ca from 'vuetify/lib/locale/ca.mjs';
+import en from 'vuetify/lib/locale/en.mjs';
+import es from 'vuetify/lib/locale/es.mjs';
+import colors from 'vuetify/lib/util/colors.mjs';
 
-// Vue.use(Vuetify);
+const vuetify = createVuetify({
+  components,
+  directives,
+  icons: {
+    iconfont: 'mdi',
+    values: {
+      add: 'mdi-plus',
+      del: 'mdi-close-circle-outline',
+    },
+  },
+  theme: {
+    themes: {
+      light: {
+        primary: '#424242',
+        secondary: colors.grey.base,
+      },
+    },
+  },
+  lang: {
+    locales: { ca, en, es },
+    current: 'ca',
+  },
+});
 
-// export default new Vuetify({
-//   icons: {
-//     iconfont: 'mdi',
-//     values: {
-//       add: 'mdi-plus',
-//       del: 'mdi-close-circle-outline',
-//     },
-//   },
-//   theme: {
-//     themes: {
-//       light: {
-//         primary: '#424242',
-//         secondary: colors.grey.base,
-//       },
-//     },
-//   },
-//   lang: {
-//     locales: { ca, en, es },
-//     current: 'ca',
-//   },
-// });
+export default vuetify;

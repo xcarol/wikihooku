@@ -1,6 +1,6 @@
 <template>
   <v-flex>
-    <v-dialog
+    <!-- <v-dialog
       v-model="success"
       width="500"
       :fullscreen="$vuetify.breakpoint.xsOnly"
@@ -66,7 +66,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </v-flex>
 </template>
 
@@ -75,6 +75,7 @@ import { mapActions } from 'vuex';
 import { localeFallback, getBrowserLang } from '../i18n';
 
 export default {
+  name: 'ConfirmView',
   data() {
     return {
       success: false,

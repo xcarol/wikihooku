@@ -3,7 +3,7 @@
     fluid
     fill-height
   >
-    <v-dialog
+    <!-- <v-dialog
       v-model="showDialog"
       max-width="600px"
       :fullscreen="$vuetify.breakpoint.xsOnly"
@@ -170,7 +170,7 @@
           </v-container>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </v-container>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <v-flex>
-    <v-dialog
+    <!-- <v-dialog
       v-model="show"
       width="500"
       :fullscreen="$vuetify.breakpoint.xsOnly"
@@ -96,17 +96,17 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </v-flex>
 </template>
 
 <script>
-import VueRecaptcha from 'vue-recaptcha';
+// import VueRecaptcha from 'vue-recaptcha';
 import { mapActions } from 'vuex';
 
 export default {
   components: {
-    VueRecaptcha,
+    // VueRecaptcha,
   },
   data() {
     return {

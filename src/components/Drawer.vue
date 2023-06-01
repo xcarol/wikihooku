@@ -5,7 +5,7 @@
     :bottom="$vuetify.breakpoint.xsOnly"
     @input="updateDrawer"
   >
-    <v-list dense>
+  <!-- <v-list dense>
       <template v-for="item in items">
         <v-layout
           v-if="item.heading"
@@ -72,7 +72,7 @@
           </v-list-item-content>
         </v-list-item>
       </template>
-    </v-list>
+    </v-list> -->
   </v-navigation-drawer>
 </template>
 
@@ -80,6 +80,7 @@
 import { mapMutations, mapGetters } from 'vuex';
 
 export default {
+  name: 'DrawerComponent',
   data: () => ({
     items: [
       {

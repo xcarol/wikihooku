@@ -3,7 +3,7 @@
     row
     justify-center
   >
-    <v-dialog
+    <!-- <v-dialog
       v-model="showDialog"
       max-width="600px"
       :fullscreen="$vuetify.breakpoint.xsOnly"
@@ -103,18 +103,18 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </v-layout>
 </template>
 
 <script>
-import VueRecaptcha from 'vue-recaptcha';
+// import VueRecaptcha from 'vue-recaptcha';
 import { mapGetters, mapMutations } from 'vuex';
 
 export default {
-  name: 'Feedback',
+  name: 'FeedbackComponent',
   components: {
-    VueRecaptcha,
+    // VueRecaptcha,
   },
   data: () => ({
     email: '',

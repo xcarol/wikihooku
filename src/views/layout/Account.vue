@@ -3,7 +3,7 @@
     row
     justify-center
   >
-    <v-flex
+    <!-- <v-flex
       xs12
     >
       <v-alert
@@ -153,7 +153,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-flex>
+    </v-flex> -->
   </v-layout>
 </template>
 
@@ -161,7 +161,7 @@
 import { mapGetters, mapMutations } from 'vuex';
 
 export default {
-  name: 'Account',
+  name: 'AccountView',
   data() {
     return {
       locale: '',

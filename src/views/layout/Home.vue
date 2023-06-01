@@ -4,7 +4,7 @@
     fill-height
     class="padded-container"
   >
-    <v-layout
+    <!-- <v-layout
       justify-start
       align-start
       fill-height
@@ -39,21 +39,21 @@
           </v-list-item>
         </draggable>
       </v-list>
-    </v-layout>
+    </v-layout> -->
   </v-container>
 </template>
 
 <script>
-import draggable from 'vuedraggable';
+// import draggable from 'vuedraggable';
 import { mapGetters, mapMutations } from 'vuex';
 import { TIMELINE, AGE } from '../../global/const';
-import Timeline from '../../components/Timeline';
+// import Timeline from '../../components/Timeline.vue';
 
 export default {
-  name: 'Home',
+  name: 'HomeView',
   components: {
-    draggable,
-    Timeline,
+    // draggable,
+    // Timeline,
   },
   props: {
     view: {

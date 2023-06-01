@@ -4,7 +4,7 @@
     dark
     app
   >
-    <v-toolbar-title
+    <!-- <v-toolbar-title
       style="width: 300px"
     >
       <v-app-bar-nav-icon
@@ -133,7 +133,7 @@
           </v-list-item-title>
         </v-list-item>
       </v-list>
-    </v-menu>
+    </v-menu> -->
   </v-app-bar>
 </template>
 
@@ -142,7 +142,7 @@ import { mapMutations, mapGetters } from 'vuex';
 import { TIMELINE, AGE } from '../global/const';
 
 export default {
-  name: 'Toolbar',
+  name: 'ToolbarComponent',
   props: {
     view: {
       type: String,

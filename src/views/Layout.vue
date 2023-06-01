@@ -3,7 +3,7 @@
     fluid
     fill-height
   >
-    <drawer />
+    <!-- <drawer />
     <toolbar
       :view="viewToggle"
       @selected="selected"
@@ -71,7 +71,7 @@
       >
         <v-icon>{{ $vuetify.icons.values.add }}</v-icon>
       </v-btn>
-    </v-layout>
+    </v-layout> -->
   </v-container>
 </template>
 
@@ -82,23 +82,23 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 import { wikiEntity } from '../store/modules/wiki';
 import { TIMELINE, NO_PAGE_ID } from '../global/const';
-import PersonForm from '../components/PersonForm';
+// import PersonForm from '../components/PersonForm.vue';
 
-import Drawer from '../components/Drawer';
-import Toolbar from '../components/Toolbar';
-import Feedback from '../components/Feedback';
-import Register from '../components/auth/Register';
-import Login from '../components/auth/Login';
+// import Drawer from '../components/Drawer.vue';
+// import Toolbar from '../components/Toolbar.vue';
+// import Feedback from '../components/Feedback.vue';
+// import Register from '../components/auth/Register.vue';
+// import Login from '../components/auth/Login.vue';
 
 export default {
-  name: 'Layout',
+  name: 'LayoutView',
   components: {
-    Drawer,
-    Toolbar,
-    Register,
-    Login,
-    Feedback,
-    PersonForm,
+    // Drawer,
+    // Toolbar,
+    // Register,
+    // Login,
+    // Feedback,
+    // PersonForm,
   },
   data: () => ({
     showRegister: false,

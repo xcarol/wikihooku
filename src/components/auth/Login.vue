@@ -3,7 +3,7 @@
     row
     justify-center
   >
-    <v-dialog
+    <!-- <v-dialog
       v-model="showDialog"
       max-width="600px"
       :fullscreen="$vuetify.breakpoint.xsOnly"
@@ -107,7 +107,7 @@
           </v-container>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </v-layout>
 </template>
 
@@ -115,7 +115,7 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
-  name: 'Login',
+  name: 'LoginComponent',
   data: () => ({
     username: '',
     password: '',

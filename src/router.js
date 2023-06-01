@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from './store/config';
-import Layout from './views/Layout';
-import ResetPassword from './views/ResetPassword';
+import Layout from './views/Layout.vue';
+import ResetPassword from './views/ResetPassword.vue';
 
 Vue.use(VueRouter);
 
@@ -14,12 +14,12 @@ const routes = [
       {
         path: '/',
         name: 'Home',
-        component: () => import('./views/layout/Home'),
+        component: () => import('./views/layout/Home.vue'),
       },
       {
         path: '/account',
         name: 'Account',
-        component: () => import('./views/layout/Account'),
+        component: () => import('./views/layout/Account.vue'),
         meta: { requiresAuth: true },
       },
     ],
@@ -27,7 +27,7 @@ const routes = [
   {
     path: '/confirm',
     name: 'Confirm',
-    component: () => import('./views/Confirm'),
+    component: () => import('./views/Confirm.vue'),
   },
   {
     path: '/resetpass',

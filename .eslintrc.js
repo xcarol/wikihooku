@@ -19,7 +19,8 @@ module.exports = {
   ],
 
   rules: {
-    'max-len': 'off',
+    'max-len': 0,
+    'vue/max-len': 0,
     'no-underscore-dangle': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',

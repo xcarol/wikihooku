@@ -3,10 +3,10 @@
     fluid
     fill-height
   >
-    <!-- <v-dialog
+    <v-dialog
       v-model="showDialog"
       max-width="600px"
-      :fullscreen="$vuetify.breakpoint.xsOnly"
+      :fullscreen="$vuetify.xs"
       scrollable
       @keydown="closeIfEscape"
     >
@@ -18,121 +18,121 @@
           <v-container>
             <v-row>
               <v-col>
-                <ValidationProvider
+                <!-- <ValidationProvider
                   v-slot="{ errors }"
                   rules="required"
                   name="fullname"
-                >
+                > -->
                   <v-text-field
                     v-model="fullname"
                     data-vv-validate-on="change"
                     name="fullname"
-                    tabindex="1"
+                    tabindex="-1"
                     type="text"
                     :label="fullnameLabel"
                     :data-vv-as="fullnameLabel"
                     @keyup.enter="addPersona"
                   />
-                  <span>{{ errors[0] }}</span>
-                </ValidationProvider>
+                  <!-- <span>{{ errors[0] }}</span> -->
+                <!-- </ValidationProvider> -->
               </v-col>
             </v-row>
             <v-row>
               <v-btn-toggle>
                 <v-col>
-                  <ValidationProvider
+                  <!-- <ValidationProvider
                     v-slot="{ errors }"
                     rules="required"
                     name="birthday"
-                  >
+                  > -->
                     <v-select
                       v-model="birthday"
-                      tabindex="2"
+                      tabindex="-2"
                       :items="days"
                       :label="$t('global.day')"
                       :hint="$t('persona.birthdate')"
                       persistent-hint
                     />
-                    <span>{{ errors[0] }}</span>
-                  </ValidationProvider>
+                    <!-- <span>{{ errors[0] }}</span> -->
+                  <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
-                  <ValidationProvider
+                  <!-- <ValidationProvider
                     v-slot="{ errors }"
                     rules="required"
                     name="birthmonth"
-                  >
+                  > -->
                     <v-select
                       v-model="birthmonth"
-                      tabindex="3"
+                      tabindex="-3"
                       :items="months"
                       :label="$t('global.month')"
                     />
-                    <span>{{ errors[0] }}</span>
-                  </ValidationProvider>
+                    <!-- <span>{{ errors[0] }}</span> -->
+                  <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
-                  <ValidationProvider
+                  <!-- <ValidationProvider
                     v-slot="{ errors }"
                     rules="required"
                     name="birthyear"
-                  >
+                  > -->
                     <v-select
                       v-model="birthyear"
-                      tabindex="4"
+                      tabindex="-4"
                       :items="years"
                       :label="$t('global.year')"
                     />
-                    <span>{{ errors[0] }}</span>
-                  </ValidationProvider>
+                    <!-- <span>{{ errors[0] }}</span> -->
+                  <!-- </ValidationProvider> -->
                 </v-col>
               </v-btn-toggle>
             </v-row>
             <v-row>
               <v-btn-toggle>
                 <v-col>
-                  <ValidationProvider
+                  <!-- <ValidationProvider
                     v-slot="{ errors }"
                     name="deathday"
-                  >
+                  > -->
                     <v-select
                       v-model="deathday"
-                      tabindex="5"
+                      tabindex="-5"
                       :items="days"
                       :label="$t('global.day')"
                       :hint="$t('persona.deathdate')"
                       persistent-hint
                     />
-                    <span>{{ errors[0] }}</span>
-                  </ValidationProvider>
+                    <!-- <span>{{ errors[0] }}</span> -->
+                  <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
-                  <ValidationProvider
+                  <!-- <ValidationProvider
                     v-slot="{ errors }"
                     name="deathmonth"
-                  >
+                  > -->
                     <v-select
                       v-model="deathmonth"
-                      tabindex="6"
+                      tabindex="-6"
                       :items="months"
                       :label="$t('global.month')"
                     />
-                    <span>{{ errors[0] }}</span>
-                  </ValidationProvider>
+                    <!-- <span>{{ errors[0] }}</span> -->
+                  <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
-                  <ValidationProvider
+                  <!-- <ValidationProvider
                     v-slot="{ errors }"
                     name="deathyear"
-                  >
+                  > -->
                     <v-select
                       v-model="deathyear"
-                      tabindex="7"
+                      tabindex="-7"
                       :items="years"
                       :label="$t('global.year')"
                     />
-                    <span>{{ errors[0] }}</span>
-                  </ValidationProvider>
+                    <!-- <span>{{ errors[0] }}</span> -->
+                  <!-- </ValidationProvider> -->
                 </v-col>
               </v-btn-toggle>
             </v-row>
@@ -150,7 +150,7 @@
                   <v-btn
                     color="blue darken-1"
                     text
-                    tabindex="9"
+                    tabindex="-9"
                     @click.stop="close"
                   >
                     {{ $t('global.close') }}
@@ -158,7 +158,7 @@
                   <v-btn
                     color="blue darken-1"
                     text
-                    tabindex="8"
+                    tabindex="-8"
                     :disabled="cannotSave"
                     @click.stop="addPersona"
                   >
@@ -170,7 +170,7 @@
           </v-container>
         </v-card-actions>
       </v-card>
-    </v-dialog> -->
+    </v-dialog>
   </v-container>
 </template>
 

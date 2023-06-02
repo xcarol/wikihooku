@@ -16,6 +16,7 @@
     "add-commit": "git log | head -n 1 | sed 's/commit //' > dist/commit.html"
   },
   "dependencies": {
+    "@mdi/js": "^7.2.96",
     "axios": "^1.4.0",
     "dayjs": "^1.11.8",
     "express": "^4.18.2",

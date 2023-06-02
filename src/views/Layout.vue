@@ -67,10 +67,9 @@
         right
         small
         color="primary"
+        :icon="$vuetify.icons.aliases.add"
         @click.stop="newPerson"
-      >
-        <v-icon>{{ $vuetify.icons.values.add }}</v-icon>
-      </v-btn>
+      />
     </v-layout>
   </v-container>
 </template>

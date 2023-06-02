@@ -6,11 +6,14 @@ import en from './locales/en.json';
 import es from './locales/es.json';
 
 const messages = { ca, en, es };
+const fallbackLocale = import.meta.env.VITE_I18N_FALLBACK_LOCALE || 'en';
 
 function getUserLanguage() {
   return 'es';
   // return store.getters['session/user'].locale;
 }
+
+export function localeFallback() { return localeFallback; }
 
 export function getBrowserLang() {
   let browserLocale = navigator.language;
@@ -26,7 +29,7 @@ const locale = getUserLanguage() || getBrowserLang() || import.meta.env.VITE_I18
 
 const i18n = createI18n({
   locale,
-  fallbackLocale: import.meta.env.VITE_I18N_FALLBACK_LOCALE || 'en',
+  fallbackLocale,
   messages,
   silentFallbackWarn: true,
 });

@@ -67,7 +67,7 @@
         right
         small
         color="primary"
-        :icon="$vuetify.icons.aliases.add"
+        :icon="'$add'"
         @click.stop="newPerson"
       />
     </v-layout>

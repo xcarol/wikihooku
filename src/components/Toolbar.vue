@@ -4,14 +4,14 @@
     dark
     app
   >
-    <!-- <v-toolbar-title
+    <v-toolbar-title
       style="width: 300px"
     >
       <v-app-bar-nav-icon
         @click.stop="toggleDrawer()"
       />
       <v-btn
-        v-if="$vuetify.breakpoint.smAndUp"
+        v-if="$vuetify.smAndUp"
         text
         rounded
         @click.stop="goHome()"
@@ -19,7 +19,7 @@
         Wikihooku
       </v-btn>
       <v-btn
-        v-if="$vuetify.breakpoint.xsOnly"
+        v-if="$vuetify.xsOnly"
         text
         icon
         @click.stop="goHome()"
@@ -27,7 +27,7 @@
         <v-icon>mdi-home</v-icon>
       </v-btn>
       <v-btn
-        v-if="$vuetify.breakpoint.smAndUp"
+        v-if="$vuetify.smAndUp"
         text
         rounded
         @click.stop="feedback()"
@@ -35,7 +35,7 @@
         {{ $t('global.feedback') }}
       </v-btn>
       <v-btn
-        v-if="$vuetify.breakpoint.xsOnly"
+        v-if="$vuetify.xsOnly"
         text
         icon
         @click.stop="feedback()"
@@ -133,7 +133,7 @@
           </v-list-item-title>
         </v-list-item>
       </v-list>
-    </v-menu> -->
+    </v-menu>
   </v-app-bar>
 </template>
 

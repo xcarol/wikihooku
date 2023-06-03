@@ -3,7 +3,7 @@
     fluid
     fill-height
   >
-    <!-- <drawer />
+    <!-- <drawer /> -->
     <toolbar
       :view="viewToggle"
       @selected="selected"
@@ -12,7 +12,7 @@
       @login="showLogin = true"
       @feedback="showFeedback = true"
     />
-    <v-overlay
+    <!-- <v-overlay
       :absolute="true"
       :value="loading"
     >
@@ -84,7 +84,7 @@ import { TIMELINE, NO_PAGE_ID } from '../global/const';
 import PersonForm from '../components/PersonForm.vue';
 
 // import Drawer from '../components/Drawer.vue';
-// import Toolbar from '../components/Toolbar.vue';
+import Toolbar from '../components/Toolbar.vue';
 // import Feedback from '../components/Feedback.vue';
 // import Register from '../components/auth/Register.vue';
 // import Login from '../components/auth/Login.vue';
@@ -93,7 +93,7 @@ export default {
   name: 'LayoutView',
   components: {
     // Drawer,
-    // Toolbar,
+    Toolbar,
     // Register,
     // Login,
     // Feedback,

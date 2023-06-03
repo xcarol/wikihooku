@@ -7,7 +7,14 @@ import en from 'vuetify/lib/locale/en.mjs';
 import es from 'vuetify/lib/locale/es.mjs';
 import colors from 'vuetify/lib/util/colors.mjs';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
-import { mdiPlus, mdiCloseCircleOutline } from '@mdi/js';
+import {
+  mdiHome,
+  mdiPlus,
+  mdiCloseCircleOutline,
+  mdiCloseCircle,
+  mdiAlignHorizontalLeft,
+  mdiDistributeVerticalCenter,
+} from '@mdi/js';
 
 const vuetify = createVuetify({
   components,
@@ -16,8 +23,12 @@ const vuetify = createVuetify({
     defaultSet: 'mdi',
     aliases: {
       ...aliases,
+      home: mdiHome,
       add: mdiPlus,
       del: mdiCloseCircleOutline,
+      close: mdiCloseCircle,
+      alignLeft: mdiAlignHorizontalLeft,
+      alignTop: mdiDistributeVerticalCenter,
     },
     sets: {
       mdi,

@@ -21,11 +21,9 @@
       <v-btn
         v-if="$vuetify.xsOnly"
         text
-        icon
+        :icon="'$home'"
         @click.stop="goHome()"
-      >
-        <v-icon>mdi-home</v-icon>
-      </v-btn>
+      />
       <v-btn
         v-if="$vuetify.smAndUp"
         text
@@ -37,34 +35,24 @@
       <v-btn
         v-if="$vuetify.xsOnly"
         text
-        icon
+        :icon="'mdi-message-alert'"
         @click.stop="feedback()"
-      >
-        <v-icon>mdi-message-alert</v-icon>
-      </v-btn>
+      />
     </v-toolbar-title>
     <v-btn-toggle
       v-model="viewToggle"
       dense
     >
       <v-btn
+        :incon="'$alignTop'"
         :outlined="true"
-      >
-        <v-icon
-          @click-stop="setAge"
-        >
-          mdi-distribute-vertical-center
-        </v-icon>
-      </v-btn>
+        @click-stop="setAge"
+      />
       <v-btn
+        :icon="'$alignLeft'"
         :outlined="true"
-      >
-        <v-icon
-          @click-stop="setTimeline"
-        >
-          mdi-align-horizontal-left
-        </v-icon>
-      </v-btn>
+        @click-stop="setTimeline"
+      />
     </v-btn-toggle>
     <v-spacer />
     <v-autocomplete
@@ -74,7 +62,7 @@
       :loading="isLoading"
       :search-input.sync="searchInput"
       color="secondary"
-      clear-icon="mdi-close-circle"
+      :clear-icon="'$close'"
       clearable
       hide-no-data
       no-filter
@@ -89,11 +77,9 @@
     >
       <template v-slot:activator="{ on }">
         <v-btn
-          icon
+          :icon="'mdi-account-circle-outline'"
           v-on="on"
-        >
-          <v-icon>mdi-account-circle-outline</v-icon>
-        </v-btn>
+        />
       </template>
 
       <v-list

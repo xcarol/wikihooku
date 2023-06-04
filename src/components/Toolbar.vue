@@ -35,21 +35,22 @@
       <v-btn
         v-if="$vuetify.xsOnly"
         text
-        :icon="'mdi-message-alert'"
+        :icon="'$messageAlert'"
         @click.stop="feedback()"
       />
     </v-toolbar-title>
     <v-btn-toggle
-      v-model="viewToggle"
+      v-model="toggle_exclusive"
       dense
+      @update:model-value="viewToggle"
     >
       <v-btn
-        :incon="'$alignTop'"
+        :icon="'$timeline'"
         :outlined="true"
         @click-stop="setAge"
       />
       <v-btn
-        :icon="'$alignLeft'"
+        :icon="'$age'"
         :outlined="true"
         @click-stop="setTimeline"
       />
@@ -75,10 +76,10 @@
       v-model="showMenu"
       offset-y
     >
-      <template v-slot:activator="{ on }">
+      <template v-slot:activator="{ props }">
         <v-btn
-          :icon="'mdi-account-circle-outline'"
-          v-on="on"
+          :icon="'$account'"
+          v-bind="props"
         />
       </template>
 
@@ -142,6 +143,7 @@ export default {
     select: null,
     search: null,
     errorMessage: '',
+    toggle_exclusive: 0,
   }),
   computed: {
     ...mapGetters({
@@ -152,14 +154,14 @@ export default {
       const toolbar = this;
       return [
         {
-          icon: 'mdi-account-circle',
+          icon: '$settings',
           title: this.$t('menu.account'),
           action() {
             toolbar.account();
           },
         },
         {
-          icon: 'mdi-logout-variant',
+          icon: '$logout',
           title: this.$t('menu.logout'),
           action() {
             toolbar.logout();
@@ -171,28 +173,20 @@ export default {
       const toolbar = this;
       return [
         {
-          icon: 'mdi-account-plus-outline',
+          icon: '$register',
           title: this.$t('register.title'),
           action() {
             toolbar.register();
           },
         },
         {
-          icon: 'mdi-login-variant',
+          icon: '$login',
           title: this.$t('login.title'),
           action() {
             toolbar.login();
           },
         },
       ];
-    },
-    viewToggle: {
-      get() {
-        return 0;
-      },
-      set(newValue) {
-        this.$emit('switchView', newValue === 0 ? TIMELINE : AGE);
-      },
     },
   },
   watch: {
@@ -237,6 +231,9 @@ export default {
       toggleDrawer: 'toggleDrawer',
       resetSession: 'session/reset',
     }),
+    viewToggle(value) {
+      this.$emit('switchView', value === 0 ? TIMELINE : AGE);
+    },
     menuAction(action) {
       this.showMenu = false;
       action();

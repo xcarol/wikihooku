@@ -14,6 +14,12 @@ import {
   mdiCloseCircle,
   mdiAlignHorizontalLeft,
   mdiDistributeVerticalCenter,
+  mdiMessageAlert,
+  mdiAccountCircleOutline,
+  mdiAccountCircle,
+  mdiAccountPlusOutline,
+  mdiLoginVariant,
+  mdiLogoutVariant,
 } from '@mdi/js';
 
 const vuetify = createVuetify({
@@ -27,8 +33,14 @@ const vuetify = createVuetify({
       add: mdiPlus,
       del: mdiCloseCircleOutline,
       close: mdiCloseCircle,
-      alignLeft: mdiAlignHorizontalLeft,
-      alignTop: mdiDistributeVerticalCenter,
+      age: mdiAlignHorizontalLeft,
+      timeline: mdiDistributeVerticalCenter,
+      messageAlert: mdiMessageAlert,
+      settings: mdiAccountCircle,
+      account: mdiAccountCircleOutline,
+      register: mdiAccountPlusOutline,
+      login: mdiLoginVariant,
+      logout: mdiLogoutVariant,
     },
     sets: {
       mdi,

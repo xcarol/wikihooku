@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-// import './plugins/axios';
+import axios from './plugins/axios';
 // import './vee-validate';
 import App from './App.vue';
 import router from './router';
@@ -14,6 +14,7 @@ app.use(router);
 app.use(vuetify);
 app.use(i18n);
 app.use(store);
-app.use(api);
+app.use(axios);
+app.use(api, { axios: app.config.globalProperties.axios });
 
 app.mount('#app');

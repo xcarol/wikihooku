@@ -56,19 +56,19 @@
     </v-btn-toggle>
     <v-spacer />
     <v-autocomplete
-      v-model="model"
-      return-object
+      v-model="select"
+      v-model:search="search"
+      :clear-icon="'$close'"
+      :error-messages="errorMessage"
       :items="items"
       :loading="isLoading"
-      :search-input.sync="searchInput"
       color="secondary"
-      :clear-icon="'$close'"
       clearable
       hide-no-data
       no-filter
-      :error-messages="errorMessage"
       :placeholder="$t('searchHint')"
-      @input="input"
+      return-object
+      @update:modelValue="input"
     />
     <v-spacer />
     <v-menu
@@ -139,8 +139,8 @@ export default {
     showMenu: false,
     items: [],
     isLoading: false,
-    model: null,
-    searchInput: null,
+    select: null,
+    search: null,
     errorMessage: '',
   }),
   computed: {
@@ -196,7 +196,7 @@ export default {
     },
   },
   watch: {
-    async searchInput(val) {
+    async search(val) {
       this.items = [];
 
       if (!val || val.length < 5) {
@@ -216,11 +216,11 @@ export default {
 
         if (result.data.query) {
           result.data.query.pages.forEach((message) => {
-            if (message.revisions[0].content.includes('birth_date')) {
+            if (message.revisions[0].slots.main.content.includes('birth_date')) {
               this.items.push({
-                text: message.title,
+                title: message.title,
                 value: message.pageid,
-                content: message.revisions[0].content,
+                content: message.revisions[0].slots.main.content,
               });
             }
           });

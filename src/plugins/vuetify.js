@@ -53,7 +53,13 @@ const vuetify = createVuetify({
     themes: {
       light: {
         colors: {
-          primary: '#424242',
+          primary: colors.grey.darken3,
+          secondary: colors.grey.base,
+        },
+      },
+      dark: {
+        colors: {
+          primary: colors.grey.darken3,
           secondary: colors.grey.base,
         },
       },

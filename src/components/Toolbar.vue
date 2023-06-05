@@ -1,44 +1,40 @@
 <template>
   <v-app-bar
     clipped-left
-    dark
+    theme="dark"
     app
   >
-    <v-toolbar-title
-      style="width: 300px"
+    <v-app-bar-nav-icon
+      @click.stop="toggleDrawer()"
+    />
+    <v-btn
+      v-if="mdAndUp"
+      text
+      rounded
+      @click.stop="goHome()"
     >
-      <v-app-bar-nav-icon
-        @click.stop="toggleDrawer()"
-      />
-      <v-btn
-        v-if="$vuetify.smAndUp"
-        text
-        rounded
-        @click.stop="goHome()"
-      >
-        Wikihooku
-      </v-btn>
-      <v-btn
-        v-if="$vuetify.xsOnly"
-        text
-        :icon="'$home'"
-        @click.stop="goHome()"
-      />
-      <v-btn
-        v-if="$vuetify.smAndUp"
-        text
-        rounded
-        @click.stop="feedback()"
-      >
-        {{ $t('global.feedback') }}
-      </v-btn>
-      <v-btn
-        v-if="$vuetify.xsOnly"
-        text
-        :icon="'$messageAlert'"
-        @click.stop="feedback()"
-      />
-    </v-toolbar-title>
+      Wikihooku
+    </v-btn>
+    <v-btn
+      v-else
+      text
+      :icon="'$home'"
+      @click.stop="goHome()"
+    />
+    <v-btn
+      v-if="mdAndUp"
+      text
+      rounded
+      @click.stop="feedback()"
+    >
+      {{ $t('global.feedback') }}
+    </v-btn>
+    <v-btn
+      v-else
+      text
+      :icon="'$messageAlert'"
+      @click.stop="feedback()"
+    />
     <v-btn-toggle
       v-model="toggle_exclusive"
       dense
@@ -126,6 +122,7 @@
 
 <script>
 import { mapMutations, mapGetters } from 'vuex';
+import { useDisplay } from 'vuetify';
 import { TIMELINE, AGE } from '../global/const';
 
 export default {
@@ -135,6 +132,10 @@ export default {
       type: String,
       default: TIMELINE,
     },
+  },
+  setup() {
+    const { xs, mdAndUp } = useDisplay();
+    return { xs, mdAndUp };
   },
   data: () => ({
     showMenu: false,

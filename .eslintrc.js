@@ -7,15 +7,16 @@ module.exports = {
   },
 
   extends: [
-    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-recommended',
     'eslint:recommended',
-    '@vue/airbnb',
     'plugin:security/recommended',
+    'plugin:vuejs-accessibility/recommended',
   ],
 
   plugins: [
     'vue',
     'security',
+    'vuejs-accessibility',
   ],
 
   rules: {

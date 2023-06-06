@@ -1,5 +1,4 @@
-// /* eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
-import { api } from '../../plugins/api';
+import api from '../../plugins/api';
 
 const mutations = {
   user(state, user) {

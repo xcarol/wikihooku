@@ -1,12 +1,16 @@
+// eslint-disable-next-line import/extensions, import/no-unresolved
 import 'vuetify/styles';
-import { createVuetify } from 'vuetify';
+// eslint-disable-next-line import/extensions, import/no-unresolved
 import * as components from 'vuetify/components';
+// eslint-disable-next-line import/extensions, import/no-unresolved
 import * as directives from 'vuetify/directives';
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
+import { createVuetify } from 'vuetify';
 import ca from 'vuetify/lib/locale/ca.mjs';
 import en from 'vuetify/lib/locale/en.mjs';
 import es from 'vuetify/lib/locale/es.mjs';
 import colors from 'vuetify/lib/util/colors.mjs';
-import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import {
   mdiHome,
   mdiPlus,

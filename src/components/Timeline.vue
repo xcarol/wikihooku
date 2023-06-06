@@ -1,6 +1,6 @@
 <template>
   <v-hover>
-  <!-- <v-hover v-slot:default="{ hover }"> -->
+    <!-- <v-hover v-slot:default="{ hover }"> -->
     <!-- <v-range-slider
       v-model="range"
       :height="10"
@@ -47,6 +47,7 @@ export default {
       required: true,
     },
   },
+  emits: { remove: null },
   computed: {
     range() {
       switch (this.view) {

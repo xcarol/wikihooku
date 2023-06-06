@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
 import parseInfo from 'infobox-parser';
 
 class Api {
@@ -124,4 +123,5 @@ const ApiPlugin = {
     api.axios = options.axios;
   },
 };
+
 export default ApiPlugin;

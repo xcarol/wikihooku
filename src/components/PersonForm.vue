@@ -23,17 +23,17 @@
                   rules="required"
                   name="fullname"
                 > -->
-                  <v-text-field
-                    v-model="fullname"
-                    data-vv-validate-on="change"
-                    name="fullname"
-                    tabindex="-1"
-                    type="text"
-                    :label="fullnameLabel"
-                    :data-vv-as="fullnameLabel"
-                    @keyup.enter="addPersona"
-                  />
-                  <!-- <span>{{ errors[0] }}</span> -->
+                <v-text-field
+                  v-model="fullname"
+                  data-vv-validate-on="change"
+                  name="fullname"
+                  tabindex="-1"
+                  type="text"
+                  :label="fullnameLabel"
+                  :data-vv-as="fullnameLabel"
+                  @keyup.enter="addPersona"
+                />
+                <!-- <span>{{ errors[0] }}</span> -->
                 <!-- </ValidationProvider> -->
               </v-col>
             </v-row>
@@ -45,15 +45,15 @@
                     rules="required"
                     name="birthday"
                   > -->
-                    <v-select
-                      v-model="birthday"
-                      tabindex="-2"
-                      :items="days"
-                      :label="$t('global.day')"
-                      :hint="$t('persona.birthdate')"
-                      persistent-hint
-                    />
-                    <!-- <span>{{ errors[0] }}</span> -->
+                  <v-select
+                    v-model="birthday"
+                    tabindex="-2"
+                    :items="days"
+                    :label="$t('global.day')"
+                    :hint="$t('persona.birthdate')"
+                    persistent-hint
+                  />
+                  <!-- <span>{{ errors[0] }}</span> -->
                   <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
@@ -62,13 +62,13 @@
                     rules="required"
                     name="birthmonth"
                   > -->
-                    <v-select
-                      v-model="birthmonth"
-                      tabindex="-3"
-                      :items="months"
-                      :label="$t('global.month')"
-                    />
-                    <!-- <span>{{ errors[0] }}</span> -->
+                  <v-select
+                    v-model="birthmonth"
+                    tabindex="-3"
+                    :items="months"
+                    :label="$t('global.month')"
+                  />
+                  <!-- <span>{{ errors[0] }}</span> -->
                   <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
@@ -77,13 +77,13 @@
                     rules="required"
                     name="birthyear"
                   > -->
-                    <v-select
-                      v-model="birthyear"
-                      tabindex="-4"
-                      :items="years"
-                      :label="$t('global.year')"
-                    />
-                    <!-- <span>{{ errors[0] }}</span> -->
+                  <v-select
+                    v-model="birthyear"
+                    tabindex="-4"
+                    :items="years"
+                    :label="$t('global.year')"
+                  />
+                  <!-- <span>{{ errors[0] }}</span> -->
                   <!-- </ValidationProvider> -->
                 </v-col>
               </v-btn-toggle>
@@ -95,15 +95,15 @@
                     v-slot="{ errors }"
                     name="deathday"
                   > -->
-                    <v-select
-                      v-model="deathday"
-                      tabindex="-5"
-                      :items="days"
-                      :label="$t('global.day')"
-                      :hint="$t('persona.deathdate')"
-                      persistent-hint
-                    />
-                    <!-- <span>{{ errors[0] }}</span> -->
+                  <v-select
+                    v-model="deathday"
+                    tabindex="-5"
+                    :items="days"
+                    :label="$t('global.day')"
+                    :hint="$t('persona.deathdate')"
+                    persistent-hint
+                  />
+                  <!-- <span>{{ errors[0] }}</span> -->
                   <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
@@ -111,13 +111,13 @@
                     v-slot="{ errors }"
                     name="deathmonth"
                   > -->
-                    <v-select
-                      v-model="deathmonth"
-                      tabindex="-6"
-                      :items="months"
-                      :label="$t('global.month')"
-                    />
-                    <!-- <span>{{ errors[0] }}</span> -->
+                  <v-select
+                    v-model="deathmonth"
+                    tabindex="-6"
+                    :items="months"
+                    :label="$t('global.month')"
+                  />
+                  <!-- <span>{{ errors[0] }}</span> -->
                   <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
@@ -125,13 +125,13 @@
                     v-slot="{ errors }"
                     name="deathyear"
                   > -->
-                    <v-select
-                      v-model="deathyear"
-                      tabindex="-7"
-                      :items="years"
-                      :label="$t('global.year')"
-                    />
-                    <!-- <span>{{ errors[0] }}</span> -->
+                  <v-select
+                    v-model="deathyear"
+                    tabindex="-7"
+                    :items="years"
+                    :label="$t('global.year')"
+                  />
+                  <!-- <span>{{ errors[0] }}</span> -->
                   <!-- </ValidationProvider> -->
                 </v-col>
               </v-btn-toggle>
@@ -144,9 +144,7 @@
             <v-row>
               <v-spacer />
               <v-col>
-                <v-row
-                  justify="end"
-                >
+                <v-row justify="end">
                   <v-btn
                     color="blue darken-1"
                     text
@@ -179,6 +177,10 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'PersonForm',
+  emits: {
+    add: null,
+    close: null,
+  },
   data: () => ({
     fullname: '',
     birthday: null,
@@ -236,9 +238,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations([
-      'snackMessage',
-    ]),
+    ...mapMutations(['snackMessage']),
     ...mapActions({
       login: 'session/login',
     }),

@@ -116,6 +116,7 @@ export default {
   components: {
     // VueRecaptcha,
   },
+  emits: { close: null },
   data: () => ({
     email: '',
     feedback: '',
@@ -135,9 +136,7 @@ export default {
     },
     canSendFeedback() {
       if (this.anonymousUser) {
-        return this.email.length > 0
-          && this.feedback.length > 0
-          && this.recaptchaResponse !== null;
+        return this.email.length > 0 && this.feedback.length > 0 && this.recaptchaResponse !== null;
       }
 
       return this.feedback.length > 0;
@@ -157,14 +156,13 @@ export default {
     },
   },
   methods: {
-    ...mapMutations([
-      'snackMessage',
-    ]),
+    ...mapMutations(['snackMessage']),
     async sendFeedback() {
       this.errorMessage = '';
 
       this.loading = true;
-      this.api.sendFeedback(this.email || this.user.email, this.feedback)
+      this.api
+        .sendFeedback(this.email || this.user.email, this.feedback)
         .then(() => {
           this.snackMessage(this.$t('feedback.sendsuccesfully'));
           this.close();

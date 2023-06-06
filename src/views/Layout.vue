@@ -7,7 +7,7 @@
     <toolbar
       :view="viewToggle"
       @selected="selected"
-      @switchView="switchView"
+      @switch-view="switchView"
       @register="register"
       @login="showLogin = true"
       @feedback="showFeedback = true"

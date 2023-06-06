@@ -4,9 +4,7 @@
     theme="dark"
     app
   >
-    <v-app-bar-nav-icon
-      @click.stop="toggleDrawer()"
-    />
+    <v-app-bar-nav-icon @click.stop="toggleDrawer()" />
     <v-btn
       v-if="mdAndUp"
       text
@@ -65,23 +63,21 @@
       no-filter
       :placeholder="$t('searchHint')"
       return-object
-      @update:modelValue="input"
+      @update:model-value="input"
     />
     <v-spacer />
     <v-menu
       v-model="showMenu"
       offset-y
     >
-      <template v-slot:activator="{ props }">
+      <template #activator="{ props }">
         <v-btn
           :icon="'$account'"
           v-bind="props"
         />
       </template>
 
-      <v-list
-        v-if="loggedUser"
-      >
+      <v-list v-if="loggedUser">
         <v-list-item
           v-for="(option, i) in userMenuOptions"
           :key="i"
@@ -98,9 +94,7 @@
         </v-list-item>
       </v-list>
 
-      <v-list
-        v-else
-      >
+      <v-list v-else>
         <v-list-item
           v-for="(option, i) in anonymousMenuOptions"
           :key="i"
@@ -132,6 +126,13 @@ export default {
       type: String,
       default: TIMELINE,
     },
+  },
+  emits: {
+    login: null,
+    feedback: null,
+    register: null,
+    selected: null,
+    switchView: null,
   },
   setup() {
     const { xs, mdAndUp } = useDisplay();

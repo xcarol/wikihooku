@@ -187,6 +187,7 @@ export default {
   components: {
     // VueRecaptcha,
   },
+  emits: { close: null },
   data: () => ({
     fullname: '',
     username: '',
@@ -201,12 +202,14 @@ export default {
   }),
   computed: {
     canRegister() {
-      return this.fullname.length > 0
+      return (
+        this.fullname.length > 0
         && this.username.length > 0
         && this.password.length > 0
         && this.passwordRepeat.length > 0
         && this.passwordEqual
-        && this.recaptchaResponse !== null;
+        && this.recaptchaResponse !== null
+      );
     },
     fullnameLabel() {
       return this.$t('register.fullname');

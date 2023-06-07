@@ -4,7 +4,7 @@
     fill-height
     class="padded-container"
   >
-    <!-- <v-layout
+    <v-layout
       justify-start
       align-start
       fill-height
@@ -12,19 +12,19 @@
       <v-list
         width="100%"
       >
-        <draggable
+        <vue-draggable-next
           v-model="persons"
           group="persons"
           handle=".draggable-time-line"
           ghost-class="ghost"
-          @start="drag=true"
-          @end="drag=false"
+          @start="drag = true"
+          @end="drag = false"
         >
           <v-list-item
             v-for="(person, index) in persons"
             :key="index"
           >
-            <timeline
+            <!-- <timeline
               :view="view"
               :name="person.name"
               :min="min"
@@ -32,19 +32,19 @@
               :start="person.start"
               :end="person.end"
               @remove="remPerson(person)"
-            />
+            /> -->
             <v-icon class="draggable-time-line">
               mdi-drag-vertical
             </v-icon>
           </v-list-item>
-        </draggable>
+        </vue-draggable-next>
       </v-list>
-    </v-layout> -->
+    </v-layout>
   </v-container>
 </template>
 
 <script>
-// import draggable from 'vuedraggable';
+import { VueDraggableNext } from 'vue-draggable-next';
 import { mapGetters, mapMutations } from 'vuex';
 import { TIMELINE, AGE } from '../../global/const';
 // import Timeline from '../../components/Timeline.vue';
@@ -52,7 +52,7 @@ import { TIMELINE, AGE } from '../../global/const';
 export default {
   name: 'HomeView',
   components: {
-    // draggable,
+    VueDraggableNext,
     // Timeline,
   },
   props: {

@@ -33,8 +33,6 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.6.5",
-    "@commitlint/config-conventional": "^17.6.5",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/eslint-config-airbnb": "^7.0.0",
     "eslint-plugin-security": "^1.7.1",
@@ -44,11 +42,5 @@
     "husky": "^8.0.3",
     "prettier": "^2.8.8",
     "sass": "^1.62.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }

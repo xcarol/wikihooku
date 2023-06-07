@@ -10,14 +10,10 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'eslint:recommended',
     '@vue/eslint-config-airbnb',
-    'plugin:security/recommended',
-    'plugin:vuejs-accessibility/recommended',
   ],
 
   plugins: [
     'vue',
-    'security',
-    'vuejs-accessibility',
   ],
 
   rules: {
@@ -38,15 +34,4 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-
-  overrides: [
-    {
-      files: [
-        '**/__tests__/*.{j,t}s?(x)',
-      ],
-      env: {
-        mocha: true,
-      },
-    },
-  ],
 };

@@ -12,7 +12,7 @@
       @login="showLogin = true"
       @feedback="showFeedback = true"
     />
-    <!-- <v-overlay
+    <v-overlay
       :absolute="true"
       :value="loading"
     >
@@ -23,7 +23,7 @@
         indeterminate
       />
     </v-overlay>
-    <feedback
+    <!-- <feedback
       v-if="showFeedback"
       @close="closeFeedback"
     />

@@ -11,8 +11,9 @@ import { useTheme } from 'vuetify';
 
 const theme = useTheme();
 
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-  theme.global.name.value = event.matches ? 'dark' : 'light';
-});
-
+if (import.meta.env.VITE_THEME !== undefined) {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+    theme.global.name.value = event.matches ? 'dark' : 'light';
+  });
+}
 </script>

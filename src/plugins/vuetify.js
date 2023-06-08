@@ -26,7 +26,7 @@ import {
   mdiLogoutVariant,
 } from '@mdi/js';
 
-const defaultTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+const defaultTheme = import.meta.env.VITE_THEME || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
 const vuetify = createVuetify({
   components,

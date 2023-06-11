@@ -24,7 +24,7 @@
             v-for="(person, index) in persons"
             :key="index"
           >
-            <!-- <timeline
+            <timeline
               :view="view"
               :name="person.name"
               :min="min"
@@ -32,7 +32,7 @@
               :start="person.start"
               :end="person.end"
               @remove="remPerson(person)"
-            /> -->
+            />
             <v-icon class="draggable-time-line">
               mdi-drag-vertical
             </v-icon>
@@ -47,13 +47,13 @@
 import { VueDraggableNext } from 'vue-draggable-next';
 import { mapGetters, mapMutations } from 'vuex';
 import { TIMELINE, AGE } from '../../global/const';
-// import Timeline from '../../components/Timeline.vue';
+import Timeline from '../../components/Timeline.vue';
 
 export default {
   name: 'HomeView',
   components: {
     VueDraggableNext,
-    // Timeline,
+    Timeline,
   },
   props: {
     view: {

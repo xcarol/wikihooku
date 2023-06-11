@@ -1,7 +1,6 @@
 <template>
-  <v-hover>
-    <!-- <v-hover v-slot:default="{ hover }"> -->
-    <!-- <v-range-slider
+  <v-hover v-slot="{ hover }">
+    <v-range-slider
       v-model="range"
       :height="10"
       :hint="name"
@@ -12,7 +11,7 @@
       persistent-hint
       readonly
       @click:prepend="remove"
-    /> -->
+    />
   </v-hover>
 </template>
 

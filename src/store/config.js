@@ -1,8 +1,8 @@
 import { createStore } from 'vuex';
 import VuexPersistence from 'vuex-persist';
-// import session from './modules/session';
+import session from './modules/session';
 // import collections from './modules/collections';
-// import wiki from './modules/wiki';
+import wiki from './modules/wiki';
 
 const store = createStore({
   state: {
@@ -30,9 +30,9 @@ const store = createStore({
     },
   },
   modules: {
-    // session,
+    session,
     // collections,
-    // wiki,
+    wiki,
   },
   plugins: [
     new VuexPersistence({

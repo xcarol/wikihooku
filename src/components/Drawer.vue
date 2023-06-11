@@ -1,8 +1,8 @@
 <template>
   <v-navigation-drawer
     :value="drawerVisible"
-    :fixed="$vuetify.breakpoint.mdAndDown"
-    :bottom="$vuetify.breakpoint.xsOnly"
+    :fixed="$vuetify.display.mdAndDown"
+    :bottom="$vuetify.display.xs"
     @input="updateDrawer"
   >
   <!-- <v-list dense>

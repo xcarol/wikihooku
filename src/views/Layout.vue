@@ -3,7 +3,7 @@
     fluid
     fill-height
   >
-    <!-- <drawer /> -->
+    <drawer />
     <toolbar
       :view="viewToggle"
       @selected="selected"
@@ -23,7 +23,7 @@
         indeterminate
       />
     </v-overlay>
-    <!-- <feedback
+    <feedback
       v-if="showFeedback"
       @close="closeFeedback"
     />
@@ -47,7 +47,7 @@
       >
         {{ $t('global.close') }}
       </v-btn>
-    </v-snackbar> -->
+    </v-snackbar>
     <person-form
       v-if="showNewPersonForm"
       @add="addNewPerson"
@@ -83,20 +83,20 @@ import { wikiEntity } from '../store/modules/wiki';
 import { TIMELINE, NO_PAGE_ID } from '../global/const';
 import PersonForm from '../components/PersonForm.vue';
 
-// import Drawer from '../components/Drawer.vue';
+import Drawer from '../components/Drawer.vue';
 import Toolbar from '../components/Toolbar.vue';
-// import Feedback from '../components/Feedback.vue';
-// import Register from '../components/auth/Register.vue';
-// import Login from '../components/auth/Login.vue';
+import Feedback from '../components/Feedback.vue';
+import Register from '../components/auth/Register.vue';
+import Login from '../components/auth/Login.vue';
 
 export default {
   name: 'LayoutView',
   components: {
-    // Drawer,
+    Drawer,
     Toolbar,
-    // Register,
-    // Login,
-    // Feedback,
+    Register,
+    Login,
+    Feedback,
     PersonForm,
   },
   data: () => ({

@@ -1,13 +1,11 @@
 <template>
   <v-container
     fluid
-    fill-height
     class="padded-container"
   >
     <v-layout
       justify-start
       align-start
-      fill-height
     >
       <v-list
         width="100%"

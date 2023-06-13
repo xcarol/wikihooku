@@ -1,7 +1,6 @@
 <template>
   <v-container
     fluid
-    fill-height
   >
     <v-dialog
       v-model="showDialog"

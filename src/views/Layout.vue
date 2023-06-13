@@ -1,7 +1,6 @@
 <template>
   <v-container
     fluid
-    fill-height
   >
     <drawer />
     <toolbar
@@ -56,7 +55,6 @@
     <v-layout
       justify-start
       align-start
-      fill-height
     >
       <router-view :view="viewToggle" />
       <v-btn

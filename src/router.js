@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-// import store from './store/config';
+import store from './store/config';
 import Layout from './views/Layout.vue';
 import ResetPassword from './views/ResetPassword.vue';
 
@@ -42,18 +42,18 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   const isLoggedIn = store.getters['session/isLoggedIn'];
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = store.getters['session/isLoggedIn'];
 
-//   if (
-//     (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn)
-//     || (to.path === '/' && isLoggedIn && to.name !== 'Home')
-//   ) {
-//     next({ name: 'Home' });
-//     return;
-//   }
+  if (
+    (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn)
+    || (to.path === '/' && isLoggedIn && to.name !== 'Home')
+  ) {
+    next({ name: 'Home' });
+    return;
+  }
 
-//   next();
-// });
+  next();
+});
 
 export default router;

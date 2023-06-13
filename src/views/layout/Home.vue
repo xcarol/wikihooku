@@ -7,9 +7,7 @@
       justify-start
       align-start
     >
-      <v-list
-        width="100%"
-      >
+      <v-list width="100%">
         <vue-draggable-next
           v-model="persons"
           group="persons"
@@ -31,9 +29,10 @@
               :end="person.end"
               @remove="remPerson(person)"
             />
-            <v-icon class="draggable-time-line">
-              mdi-drag-vertical
-            </v-icon>
+            <v-icon
+              class="draggable-time-line"
+              :icon="'$drag'"
+            />
           </v-list-item>
         </vue-draggable-next>
       </v-list>

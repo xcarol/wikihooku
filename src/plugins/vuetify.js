@@ -24,6 +24,7 @@ import {
   mdiAccountPlusOutline,
   mdiLoginVariant,
   mdiLogoutVariant,
+  mdiDragVertical,
 } from '@mdi/js';
 
 const defaultTheme = import.meta.env.VITE_THEME || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -47,6 +48,7 @@ const vuetify = createVuetify({
       register: mdiAccountPlusOutline,
       login: mdiLoginVariant,
       logout: mdiLogoutVariant,
+      drag: mdiDragVertical,
     },
     sets: {
       mdi,

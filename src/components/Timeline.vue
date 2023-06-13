@@ -7,7 +7,7 @@
       :max="max"
       :min="min"
       :thumb-label="hover ? 'always' : ''"
-      :prepend-icon="$vuetify.icons.values.del"
+      :prepend-icon="'$del'"
       persistent-hint
       readonly
       @click:prepend="remove"

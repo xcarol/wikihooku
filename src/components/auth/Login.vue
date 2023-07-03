@@ -1,12 +1,12 @@
 <template>
-  <v-layout
+  <v-row
     row
     justify-center
   >
-    <!-- <v-dialog
+    <v-dialog
       v-model="showDialog"
       max-width="600px"
-      :fullscreen="$vuetify.breakpoint.xsOnly"
+      :fullscreen="$vuetify.display.xs"
       scrollable
       @keydown="closeIfEscape"
     >
@@ -16,54 +16,34 @@
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12>
-                <ValidationProvider
-                  name="email"
-                  rules="email|required"
-                >
-                  <v-text-field
-                    v-model="username"
-                    slot-scope="{
-                      errors,
-                      valid
-                    }"
-                    tabindex="1"
-                    type="email"
-                    :label="usernameLabel"
-                    :error-messages="errors"
-                    :success="valid"
-                    @keyup.enter="loginUser"
-                  />
-                </ValidationProvider>
-              </v-flex>
-              <v-flex xs12>
-                <ValidationProvider
-                  name="password"
-                  rules="min:8|required"
-                >
-                  <v-text-field
-                    v-model="password"
-                    slot-scope="{
-                      errors,
-                      valid
-                    }"
-                    tabindex="2"
-                    type="password"
-                    :label="passwordLabel"
-                    :error-messages="errors"
-                    :success="valid"
-                    @keyup.enter="loginUser"
-                  />
-                </ValidationProvider>
-              </v-flex>
-            </v-layout>
+            <v-row wrap>
+              <v-col xs12>
+                <v-text-field
+                  v-model="username"
+                  tabindex="-1"
+                  type="email"
+                  required
+                  :label="usernameLabel"
+                  @keyup.enter="loginUser"
+                />
+              </v-col>
+              <v-col xs12>
+                <v-text-field
+                  v-model="password"
+                  tabindex="-2"
+                  type="password"
+                  required
+                  :label="passwordLabel"
+                  @keyup.enter="loginUser"
+                />
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-alert
-          :value="errorMessage !== ''"
-          dismissible
-          outlined
+          :model-value="errorMessage !== ''"
+          closable
+          variant="outlined"
           type="error"
         >
           {{ errorMessage }}
@@ -71,8 +51,8 @@
         <v-divider />
         <v-card-actions>
           <v-container>
-            <v-layout wrap>
-              <v-flex xs12>
+            <v-row wrap>
+              <v-col xs12>
                 <v-btn
                   text
                   color="secondary"
@@ -82,12 +62,12 @@
                 >
                   {{ $t('login.recoverPassword') }}
                 </v-btn>
-              </v-flex>
-              <v-flex xs12>
+              </v-col>
+              <v-col xs12>
                 <v-btn
                   color="blue darken-1"
                   text
-                  tabindex="4"
+                  tabindex="-4"
                   @click.stop="close"
                 >
                   {{ $t('global.close') }}
@@ -95,20 +75,20 @@
                 <v-btn
                   color="blue darken-1"
                   text
-                  tabindex="3"
+                  tabindex="-3"
                   :loading="loading"
                   :disabled="!canLogin"
                   @click.stop="loginUser"
                 >
                   {{ $t('login.button') }}
                 </v-btn>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-actions>
       </v-card>
-    </v-dialog> -->
-  </v-layout>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
@@ -133,8 +113,7 @@ export default {
       return this.username.length > 0;
     },
     canLogin() {
-      return this.username.length > 0
-        && this.password.length > 0;
+      return this.username.length > 0 && this.password.length > 0;
     },
     usernameLabel() {
       return this.$t('login.username');
@@ -151,9 +130,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations([
-      'snackMessage',
-    ]),
+    ...mapMutations(['snackMessage']),
     ...mapActions({
       login: 'session/login',
     }),
@@ -188,7 +165,8 @@ export default {
       this.errorMessage = '';
 
       this.recovering = true;
-      this.api.recoverPassword(this.username)
+      this.api
+        .recoverPassword(this.username)
         .then(() => {
           this.snackMessage(this.$t('login.recovered'));
           this.close();

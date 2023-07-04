@@ -1,4 +1,6 @@
 {
+  "this must be a valid email": "Username must be a valid email",
+  "this must be at least 8 characters": "Password must be at least 8 characters",
   "User or Password error": "Invalid email or password",
   "Not Found": "Not Found",
   "Internal Server Error": "An error ocurred. Try it again later...",

@@ -1,4 +1,6 @@
 {
+  "this must be a valid email": "El Usuario debe ser un email válido",
+  "this must be at least 8 characters": "La contraseña debe tener un mínimo de 8 caracteres",
   "User or Password error": "email o contraseña inválidos",
   "Not Found": "No encontrado",
   "Internal Server Error": "Ha ocurrido un error. Vuelve a probarlo más tarde...",

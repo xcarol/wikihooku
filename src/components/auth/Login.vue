@@ -16,24 +16,28 @@
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <v-row wrap>
-              <v-col xs12>
+            <v-row>
+              <v-col cols="12">
                 <v-text-field
                   v-model="username"
                   tabindex="-1"
-                  type="email"
+                  type="username"
                   required
                   :label="usernameLabel"
+                  :error-messages="usernameErrors"
+                  :rules="usernameRules"
                   @keyup.enter="loginUser"
                 />
               </v-col>
-              <v-col xs12>
+              <v-col cols="12">
                 <v-text-field
                   v-model="password"
                   tabindex="-2"
                   type="password"
                   required
                   :label="passwordLabel"
+                  :error-messages="passwordErrors"
+                  :rules="passwordRules"
                   @keyup.enter="loginUser"
                 />
               </v-col>
@@ -52,7 +56,7 @@
         <v-card-actions>
           <v-container>
             <v-row wrap>
-              <v-col xs12>
+              <v-col cols="12">
                 <v-btn
                   text
                   color="secondary"
@@ -63,7 +67,7 @@
                   {{ $t('login.recoverPassword') }}
                 </v-btn>
               </v-col>
-              <v-col xs12>
+              <v-col cols="12">
                 <v-btn
                   color="blue darken-1"
                   text
@@ -93,6 +97,8 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex';
+import { useField } from 'vee-validate';
+import * as yup from 'yup';
 
 export default {
   name: 'LoginComponent',
@@ -104,16 +110,20 @@ export default {
     loading: false,
     recovering: false,
     showDialog: true,
+    usernameErrors: [],
+    usernameRules: [],
+    passwordErrors: [],
+    passwordRules: [],
   }),
   computed: {
     ...mapGetters({
       user: 'session/user',
     }),
     canRecoverPassword() {
-      return this.username.length > 0;
+      return this.username && this.username.length > 0;
     },
     canLogin() {
-      return this.username.length > 0 && this.password.length > 0;
+      return this.username && this.username.length > 0 && this.password && this.password.length > 0;
     },
     usernameLabel() {
       return this.$t('login.username');
@@ -128,6 +138,38 @@ export default {
         this.close();
       }
     },
+  },
+  mounted() {
+    const { value: username, errorMessage: usernameError } = useField('username');
+    const { value: password, errorMessage: passwordError } = useField('password');
+
+    this.username = username;
+    this.usernameErrors = usernameError;
+
+    this.usernameRules = [
+      async (value) => {
+        try {
+          await yup.string().required().email().validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
+
+    this.password = password;
+    this.passwordErrors = passwordError;
+
+    this.passwordRules = [
+      async (value) => {
+        try {
+          await yup.string().required().min(8).validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
   },
   methods: {
     ...mapMutations(['snackMessage']),

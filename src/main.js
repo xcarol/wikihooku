@@ -1,6 +1,5 @@
 import { createApp } from 'vue';
 import axios from './plugins/axios';
-// import './vee-validate';
 import App from './App.vue';
 import router from './router';
 import vuetify from './plugins/vuetify';

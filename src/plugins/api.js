@@ -122,6 +122,7 @@ const ApiPlugin = {
     app.config.globalProperties.api = api;
     api.axios = options.axios;
   },
+  api,
 };
 
 export default ApiPlugin;

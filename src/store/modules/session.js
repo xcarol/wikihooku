@@ -1,4 +1,6 @@
-import api from '../../plugins/api';
+import ApiPlugin from '../../plugins/api';
+
+const { api } = ApiPlugin;
 
 const mutations = {
   user(state, user) {

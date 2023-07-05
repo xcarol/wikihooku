@@ -1,7 +1,5 @@
 <template>
-  <v-container
-    fluid
-  >
+  <v-container fluid>
     <drawer />
     <toolbar
       :view="viewToggle"
@@ -35,17 +33,19 @@
       @close="closeRegister"
     />
     <v-snackbar
-      :value="errorMessage"
-      top
+      color="primary"
+      :model-value="errorMessage !== ''"
     >
       {{ $t(errorMessage) }}
-      <v-btn
-        color="error"
-        text
-        @click.stop="clearErrorMessage"
-      >
-        {{ $t('global.close') }}
-      </v-btn>
+      <template #actions>
+        <v-btn
+          color="secondary"
+          variant="text"
+          @click.stop="clearErrorMessage"
+        >
+          {{ $t('global.close') }}
+        </v-btn>
+      </template>
     </v-snackbar>
     <person-form
       v-if="showNewPersonForm"
@@ -156,26 +156,27 @@ export default {
       try {
         const infoBox = parseInfo(item.content);
 
-        if (infoBox.general.birthDate
-            && infoBox.general.birthDate.date
-            && dayjs(infoBox.general.birthDate.date).isValid()) {
+        if (
+          infoBox.general.birthDate
+          && infoBox.general.birthDate.date
+          && dayjs(infoBox.general.birthDate.date).isValid()
+        ) {
           startDate = new Date(infoBox.general.birthDate.date);
         } else {
           throw new Error(this.$t('character.noBirthDateFound'));
         }
 
-        if (infoBox.general.deathDate
-            && infoBox.general.birthDate.date
-            && dayjs(infoBox.general.birthDate.date).isValid()) {
+        if (
+          infoBox.general.deathDate
+          && infoBox.general.birthDate.date
+          && dayjs(infoBox.general.birthDate.date).isValid()
+        ) {
           endDate = new Date(infoBox.general.deathDate.date);
         }
 
-        this.addEntity(wikiEntity(
-          item.value,
-          item.text,
-          startDate.getFullYear(),
-          endDate.getFullYear(),
-        ));
+        this.addEntity(
+          wikiEntity(item.value, item.text, startDate.getFullYear(), endDate.getFullYear()),
+        );
       } catch (error) {
         this.setSnackMessage(error);
       }
@@ -185,12 +186,14 @@ export default {
       this.showNewPersonForm = true;
     },
     addNewPerson(person) {
-      this.addEntity(wikiEntity(
-        NO_PAGE_ID,
-        person.fullname,
-        person.start.getFullYear(),
-        person.end.getFullYear(),
-      ));
+      this.addEntity(
+        wikiEntity(
+          NO_PAGE_ID,
+          person.fullname,
+          person.start.getFullYear(),
+          person.end.getFullYear(),
+        ),
+      );
       this.closeNewPersonForm();
     },
     closeNewPersonForm() {

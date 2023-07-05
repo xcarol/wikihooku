@@ -83,11 +83,11 @@
           :key="i"
           @click.stop="menuAction(option.action)"
         >
-          <v-list-item-action>
+          <template #prepend>
             <v-icon v-if="option.icon">
               {{ option.icon }}
             </v-icon>
-          </v-list-item-action>
+          </template>
           <v-list-item-title :name="`toolbar.menu.option.${option.title}`">
             {{ option.title }}
           </v-list-item-title>
@@ -100,11 +100,11 @@
           :key="i"
           @click.stop="menuAction(option.action)"
         >
-          <v-list-item-action>
+          <template #prepend>
             <v-icon v-if="option.icon">
               {{ option.icon }}
             </v-icon>
-          </v-list-item-action>
+          </template>
           <v-list-item-title :name="`toolbar.menu.option.${option.title}`">
             {{ option.title }}
           </v-list-item-title>

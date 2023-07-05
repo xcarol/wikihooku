@@ -58,14 +58,12 @@
     >
       <router-view :view="viewToggle" />
       <v-btn
-        fixed
-        dark
-        fab
-        bottom
-        right
-        small
+        position="fixed"
+        location="bottom right"
+        size="small"
         color="primary"
         :icon="'$add'"
+        class="ma-2"
         @click.stop="newPerson"
       />
     </v-layout>

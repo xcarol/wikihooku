@@ -20,7 +20,6 @@
               <v-col cols="12">
                 <v-text-field
                   v-model="username"
-                  tabindex="-1"
                   type="username"
                   required
                   :label="usernameLabel"
@@ -32,7 +31,6 @@
               <v-col cols="12">
                 <v-text-field
                   v-model="password"
-                  tabindex="-2"
                   type="password"
                   required
                   :label="passwordLabel"
@@ -71,7 +69,6 @@
                 <v-btn
                   color="blue darken-1"
                   text
-                  tabindex="-4"
                   @click.stop="close"
                 >
                   {{ $t('global.close') }}
@@ -79,7 +76,6 @@
                 <v-btn
                   color="blue darken-1"
                   text
-                  tabindex="-3"
                   :loading="loading"
                   :disabled="!canLogin"
                   @click.stop="loginUser"

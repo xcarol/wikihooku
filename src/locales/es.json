@@ -1,4 +1,5 @@
 {
+  "this is a required field": "Este campo es obligatorio",
   "this must be a valid email": "El Usuario debe ser un email válido",
   "this must be at least 8 characters": "La contraseña debe tener un mínimo de 8 caracteres",
   "User or Password error": "email o contraseña inválidos",

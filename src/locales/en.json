@@ -1,4 +1,5 @@
 {
+  "this is a required field": "This is a required field",
   "this must be a valid email": "Username must be a valid email",
   "this must be at least 8 characters": "Password must be at least 8 characters",
   "User or Password error": "Invalid email or password",

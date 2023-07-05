@@ -1,4 +1,5 @@
 {
+  "this is a required field": "Aquest camp és obligatori",
   "this must be a valid email": "Cal que l'usuari sigui un email vàlid",
   "this must be at least 8 characters": "La contrasenya ha de tenir un mínim de 8 caracters",
   "User or Password error": "email o contrasenya incorrectes",

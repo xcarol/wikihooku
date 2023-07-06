@@ -1,6 +1,5 @@
 <template>
   <v-container fluid>
-    <drawer />
     <toolbar
       :view="viewToggle"
       @selected="selected"
@@ -56,6 +55,7 @@
       justify-start
       align-start
     >
+      <drawer />
       <router-view :view="viewToggle" />
       <v-btn
         position="fixed"

@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    :value="drawerVisible"
+    v-model="drawerVisible"
     :fixed="$vuetify.display.mdAndDown"
     :bottom="$vuetify.display.xs"
     @input="updateDrawer"

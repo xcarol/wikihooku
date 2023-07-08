@@ -123,7 +123,7 @@ export default {
     errorMessage: '',
     loading: false,
     showDialog: true,
-    recaptchaKey: process.env.VUE_APP_RECAPTCHA_KEY,
+    recaptchaKey: import.meta.env.VITE_RECAPTCHA_KEY,
     recaptchaResponse: null,
   }),
   computed: {

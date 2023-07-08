@@ -112,7 +112,7 @@ export default {
     return {
       password: '',
       passwordRepeat: '',
-      recaptchaKey: process.env.VUE_APP_RECAPTCHA_KEY,
+      recaptchaKey: import.meta.env.VITE_RECAPTCHA_KEY,
       recaptchaResponse: null,
       loading: false,
       show: true,

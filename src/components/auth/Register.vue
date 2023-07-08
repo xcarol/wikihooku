@@ -60,13 +60,11 @@
                 />
               </v-col>
               <v-col cols="12">
-                <!-- <vue-recaptcha
+                <vue-recaptcha
                   :sitekey="recaptchaKey"
-                  :load-recaptcha-script="true"
-                  tabindex="6"
                   @verify="verifyCaptcha"
                   @expired="expireRecaptcha"
-                /> -->
+                />
               </v-col>
             </v-row>
           </v-container>
@@ -138,7 +136,7 @@
 </template>
 
 <script>
-// import VueRecaptcha from 'vue-recaptcha';
+import VueRecaptcha from 'vue3-recaptcha2';
 import { mapActions } from 'vuex';
 import { useField } from 'vee-validate';
 import * as yup from 'yup';
@@ -146,7 +144,7 @@ import * as yup from 'yup';
 export default {
   name: 'RegisterComponent',
   components: {
-    // VueRecaptcha,
+    VueRecaptcha,
   },
   emits: { close: null },
   data: () => ({

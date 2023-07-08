@@ -159,7 +159,7 @@ export default {
     this.passwordRules = [
       async (value) => {
         try {
-          await yup.string().required().min(8).validate(value);
+          await yup.string().required().validate(value);
           return true;
         } catch (error) {
           return this.$t(error.message);

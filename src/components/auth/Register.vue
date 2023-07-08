@@ -1,12 +1,12 @@
 <template>
-  <v-layout
+  <v-row
     row
     justify-center
   >
-    <!-- <v-dialog
+    <v-dialog
       v-model="showDialog"
       max-width="600px"
-      :fullscreen="$vuetify.breakpoint.xsOnly"
+      :fullscreen="$vuetify.display.xs"
       scrollable
       @keydown="closeIfEscape"
     >
@@ -16,102 +16,63 @@
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12>
-                <ValidationProvider
-                  name="fullname"
-                  rules="required|max:100"
-                >
-                  <v-text-field
-                    v-model="fullname"
-                    slot-scope="{
-                      errors,
-                      valid
-                    }"
-                    tabindex="1"
-                    :counter="100"
-                    :label="fullnameLabel"
-                    :error-messages="errors"
-                    :success="valid"
-                    @keyup.enter="registerUser"
-                  />
-                </ValidationProvider>
-              </v-flex>
-              <v-flex xs12>
-                <ValidationProvider
-                  name="email"
-                  rules="required|email"
-                >
-                  <v-text-field
-                    v-model="username"
-                    slot-scope="{
-                      errors,
-                      valid
-                    }"
-                    tabindex="2"
-                    type="email"
-                    :label="usernameLabel"
-                    :error-messages="errors"
-                    :success="valid"
-                    @keyup.enter="registerUser"
-                  />
-                </ValidationProvider>
-              </v-flex>
-              <v-flex xs12>
-                <ValidationProvider
-                  name="password"
-                  rules="min:8|required"
-                >
-                  <v-text-field
-                    ref="password"
-                    v-model="password"
-                    slot-scope="{
-                      errors,
-                      valid
-                    }"
-                    tabindex="3"
-                    type="password"
-                    :label="passwordLabel"
-                    :error-messages="errors"
-                    :success="valid"
-                    @keyup.enter="registerUser"
-                  />
-                </ValidationProvider>
-              </v-flex>
-              <v-flex xs12>
-                <ValidationProvider
-                  name="passwordRepeat"
-                  rules="min:8|required|confirmed:password"
-                >
-                  <v-text-field
-                    v-model="passwordRepeat"
-                    slot-scope="{
-                      errors,
-                      valid
-                    }"
-                    tabindex="4"
-                    type="password"
-                    :label="passwordLabelRepeat"
-                    :error-messages="errors"
-                    :success="valid"
-                    @keyup.enter="registerUser"
-                  />
-                </ValidationProvider>
-              </v-flex>
-              <v-flex xs12>
-                <vue-recaptcha
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="fullname"
+                  type="text"
+                  :counter="100"
+                  :label="fullnameLabel"
+                  :error-messages="fullnameErrors"
+                  :rules="fullnameRules"
+                  @keyup.enter="registerUser"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="username"
+                  type="email"
+                  :label="usernameLabel"
+                  :error-messages="usernameErrors"
+                  :rules="usernameRules"
+                  @keyup.enter="registerUser"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  :ref="password"
+                  v-model="password"
+                  type="password"
+                  :label="passwordLabel"
+                  :error-messages="passwordErrors"
+                  :rules="passwordRules"
+                  @keyup.enter="registerUser"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="passwordRepeat"
+                  type="password"
+                  :label="passwordLabelRepeat"
+                  :error-messages="passwordRepeatErrors"
+                  :rules="passwordRepeatRules"
+                  @keyup.enter="registerUser"
+                />
+              </v-col>
+              <v-col cols="12">
+                <!-- <vue-recaptcha
                   :sitekey="recaptchaKey"
                   :load-recaptcha-script="true"
                   tabindex="6"
                   @verify="verifyCaptcha"
                   @expired="expireRecaptcha"
-                />
-              </v-flex>
-            </v-layout>
+                /> -->
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-alert
-          :value="errorMessage !== ''"
+          :model-value="errorMessage !== ''"
           dismissible
           outlined
           type="error"
@@ -124,7 +85,6 @@
           <v-btn
             color="blue darken-1"
             text
-            tabindex="8"
             @click.stop="close"
           >
             {{ $t('global.close') }}
@@ -132,7 +92,6 @@
           <v-btn
             color="blue darken-1"
             text
-            tabindex="7"
             :loading="loading"
             :disabled="!canRegister"
             @click.stop="registerUser"
@@ -145,7 +104,7 @@
     <v-dialog
       v-model="registerSuccess"
       width="500"
-      :fullscreen="$vuetify.breakpoint.xsOnly"
+      :fullscreen="$vuetify.display.xs"
       scrollable
       persistent
     >
@@ -174,13 +133,15 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog> -->
-  </v-layout>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
 // import VueRecaptcha from 'vue-recaptcha';
 import { mapActions } from 'vuex';
+import { useField } from 'vee-validate';
+import * as yup from 'yup';
 
 export default {
   name: 'RegisterComponent',
@@ -196,17 +157,25 @@ export default {
     errorMessage: '',
     loading: false,
     showDialog: true,
-    recaptchaKey: process.env.VUE_APP_RECAPTCHA_KEY,
+    recaptchaKey: import.meta.env.VITE_RECAPTCHA_KEY,
     recaptchaResponse: null,
     registerSuccess: false,
+    fullnameErrors: [],
+    fullnameRules: [],
+    usernameErrors: [],
+    usernameRules: [],
+    passwordErrors: [],
+    passwordRules: [],
+    passwordRepeatErrors: [],
+    passwordRepeatRules: [],
   }),
   computed: {
     canRegister() {
       return (
-        this.fullname.length > 0
-        && this.username.length > 0
-        && this.password.length > 0
-        && this.passwordRepeat.length > 0
+        this.fullname && this.fullname.length > 0
+        && this.username && this.username.length > 0
+        && this.password && this.password.length > 0
+        && this.passwordRepeat && this.passwordRepeat.length > 0
         && this.passwordEqual
         && this.recaptchaResponse !== null
       );
@@ -226,6 +195,65 @@ export default {
     passwordEqual() {
       return this.password === this.passwordRepeat;
     },
+  },
+  mounted() {
+    const { value: fullname, errorMessage: fullnameError } = useField('fullname');
+    const { value: username, errorMessage: usernameError } = useField('username');
+    const { value: password, errorMessage: passwordError } = useField('password');
+    const { value: passwordRepeat, errorMessage: passwordRepeatError } = useField('passwordRepeat');
+
+    this.fullname = fullname;
+    this.fullnameErrors = fullnameError;
+    this.username = username;
+    this.usernameErrors = usernameError;
+    this.password = password;
+    this.passwordErrors = passwordError;
+    this.passwordRepeat = passwordRepeat;
+    this.passwordRepeatErrors = passwordRepeatError;
+
+    this.fullnameRules = [
+      async (value) => {
+        try {
+          await yup.string().required().max(100, this.$t('register.fullnameMaxLength')).validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
+
+    this.usernameRules = [
+      async (value) => {
+        try {
+          await yup.string().required().email().validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
+
+    this.passwordRules = [
+      async (value) => {
+        try {
+          await yup.string().required().min(8, this.$t('register.passwordMinLenght')).validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
+
+    this.passwordRepeatRules = [
+      async (value) => {
+        try {
+          await yup.string().test('passwords-match', this.$t('register.passwordsMatch'), (value) => this.password === value).required().validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
   },
   watch: {
     showDialog(newValue) {

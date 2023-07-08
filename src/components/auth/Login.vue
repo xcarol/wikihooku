@@ -20,7 +20,7 @@
               <v-col cols="12">
                 <v-text-field
                   v-model="username"
-                  type="username"
+                  type="text"
                   required
                   :label="usernameLabel"
                   :error-messages="usernameErrors"
@@ -31,7 +31,7 @@
               <v-col cols="12">
                 <v-text-field
                   v-model="password"
-                  type="password"
+                  type="text"
                   required
                   :label="passwordLabel"
                   :error-messages="passwordErrors"

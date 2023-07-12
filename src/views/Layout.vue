@@ -173,7 +173,7 @@ export default {
         }
 
         this.addEntity(
-          wikiEntity(item.value, item.text, startDate.getFullYear(), endDate.getFullYear()),
+          wikiEntity(item.value, item.title, startDate.getFullYear(), endDate.getFullYear()),
         );
       } catch (error) {
         this.setSnackMessage(error);

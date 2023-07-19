@@ -1,17 +1,19 @@
 <template>
-  <v-hover v-slot="{ hover }">
-    <v-range-slider
-      v-model="range"
-      :height="10"
-      :hint="name"
-      :max="max"
-      :min="min"
-      :thumb-label="hover ? 'always' : ''"
-      :prepend-icon="'$del'"
-      persistent-hint
-      readonly
-      @click:prepend="remove"
-    />
+  <v-hover>
+    <template v-slot:default="{ isHovering, props }">
+      <v-range-slider
+        v-model="range"
+        v-bind="props"
+        :hint="name"
+        :max="max"
+        :min="min"
+        :thumb-label="isHovering ? 'always' : ''"
+        :prepend-icon="'$del'"
+        persistent-hint
+        readonly
+        @click:prepend="remove"
+      />
+    </template>
   </v-hover>
 </template>
 

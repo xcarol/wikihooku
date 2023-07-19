@@ -1,8 +1,4 @@
 <template>
-  <v-container
-    fluid
-    class="padded-container"
-  >
     <v-layout
       justify-start
       align-start
@@ -20,24 +16,33 @@
             v-for="(person, index) in persons"
             :key="index"
           >
-            <timeline
-              :view="view"
-              :name="person.name"
-              :min="min"
-              :max="max"
-              :start="person.start"
-              :end="person.end"
-              @remove="remPerson(person)"
-            />
-            <v-icon
-              class="draggable-time-line"
-              :icon="'$drag'"
-            />
+            <v-container fluid
+              class="padded-container"
+            >
+              <v-row>
+                <v-col cols="11">
+                  <timeline
+                    :view="view"
+                    :name="person.name"
+                    :min="min"
+                    :max="max"
+                    :start="person.start"
+                    :end="person.end"
+                    @remove="remPerson(person)"
+                  />
+                </v-col>
+                <v-col>
+                  <v-icon
+                    class="draggable-time-line"
+                    :icon="'$drag'"
+                  />
+                </v-col>
+              </v-row>
+            </v-container>
           </v-list-item>
         </vue-draggable-next>
       </v-list>
     </v-layout>
-  </v-container>
 </template>
 
 <script>

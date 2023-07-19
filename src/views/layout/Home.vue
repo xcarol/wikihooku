@@ -16,10 +16,9 @@
             v-for="(person, index) in persons"
             :key="index"
           >
-            <v-container fluid
+              <v-row
               class="padded-container"
-            >
-              <v-row>
+              >
                 <v-col cols="11">
                   <timeline
                     :view="view"
@@ -38,7 +37,6 @@
                   />
                 </v-col>
               </v-row>
-            </v-container>
           </v-list-item>
         </vue-draggable-next>
       </v-list>

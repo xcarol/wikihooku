@@ -4,6 +4,7 @@
       <v-range-slider
         v-model="range"
         v-bind="props"
+        :step="1"
         :hint="name"
         :max="max"
         :min="min"

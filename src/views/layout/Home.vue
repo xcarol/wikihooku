@@ -1,46 +1,38 @@
 <template>
-    <v-layout
-      justify-start
-      align-start
+  <v-list width="100%">
+    <vue-draggable-next
+      v-model="persons"
+      handle=".draggable-time-line"
+      @start="drag = true"
+      @end="drag = false"
     >
-      <v-list width="100%">
-        <vue-draggable-next
-          v-model="persons"
-          group="persons"
-          handle=".draggable-time-line"
-          ghost-class="ghost"
-          @start="drag = true"
-          @end="drag = false"
-        >
-          <v-list-item
-            v-for="(person, index) in persons"
-            :key="index"
-          >
-              <v-row
-              class="padded-container"
-              >
-                <v-col cols="11">
-                  <timeline
-                    :view="view"
-                    :name="person.name"
-                    :min="min"
-                    :max="max"
-                    :start="person.start"
-                    :end="person.end"
-                    @remove="remPerson(person)"
-                  />
-                </v-col>
-                <v-col>
-                  <v-icon
-                    class="draggable-time-line"
-                    :icon="'$drag'"
-                  />
-                </v-col>
-              </v-row>
-          </v-list-item>
-        </vue-draggable-next>
-      </v-list>
-    </v-layout>
+      <v-list-item
+        v-for="(person, index) in persons"
+        :key="index"
+      >
+        <template v-slot:prepend>
+          <v-icon
+            @click="remPerson(person)"
+            :icon="'$del'"
+          ></v-icon>
+        </template>
+        <template v-slot:append>
+          <v-icon
+            class="draggable-time-line"
+            :icon="'$drag'"
+          ></v-icon>
+        </template>
+        <timeline
+          :view="view"
+          :name="person.name"
+          :min="min"
+          :max="max"
+          :start="person.start"
+          :end="person.end"
+        />
+      </v-list-item>
+    </vue-draggable-next>
+  </v-list>
 </template>
 
 <script>
@@ -103,13 +95,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.padded-container {
-  padding-top: 2em;
-}
-
-.ghost {
-  opacity: 0;
-}
-</style>

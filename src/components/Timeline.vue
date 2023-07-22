@@ -9,7 +9,6 @@
         :max="max"
         :min="min"
         :thumb-label="isHovering ? 'always' : ''"
-        :prepend-icon="'$del'"
         persistent-hint
         readonly
         @click:prepend="remove"

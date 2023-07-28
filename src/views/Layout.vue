@@ -51,22 +51,17 @@
       @add="addNewPerson"
       @close="closeNewPersonForm"
     />
-    <v-layout
-      justify-start
-      align-start
-    >
-      <drawer />
-      <router-view :view="viewToggle" />
-      <v-btn
-        position="fixed"
-        location="bottom right"
-        size="small"
-        color="primary"
-        :icon="'$add'"
-        class="ma-2"
-        @click.stop="newPerson"
-      />
-    </v-layout>
+    <drawer />
+    <router-view :view="viewToggle" />
+    <v-btn
+      position="fixed"
+      location="bottom right"
+      size="small"
+      color="primary"
+      :icon="'$add'"
+      class="ma-2"
+      @click.stop="newPerson"
+    />
   </v-container>
 </template>
 
@@ -155,9 +150,9 @@ export default {
         const infoBox = parseInfo(item.content);
 
         if (
-          infoBox.general.birthDate
-          && infoBox.general.birthDate.date
-          && dayjs(infoBox.general.birthDate.date).isValid()
+          infoBox.general.birthDate &&
+          infoBox.general.birthDate.date &&
+          dayjs(infoBox.general.birthDate.date).isValid()
         ) {
           startDate = new Date(infoBox.general.birthDate.date);
         } else {
@@ -165,15 +160,15 @@ export default {
         }
 
         if (
-          infoBox.general.deathDate
-          && infoBox.general.birthDate.date
-          && dayjs(infoBox.general.birthDate.date).isValid()
+          infoBox.general.deathDate &&
+          infoBox.general.birthDate.date &&
+          dayjs(infoBox.general.birthDate.date).isValid()
         ) {
           endDate = new Date(infoBox.general.deathDate.date);
         }
 
         this.addEntity(
-          wikiEntity(item.value, item.title, startDate.getFullYear(), endDate.getFullYear()),
+          wikiEntity(item.value, item.title, startDate.getFullYear(), endDate.getFullYear())
         );
       } catch (error) {
         this.setSnackMessage(error);
@@ -189,8 +184,8 @@ export default {
           NO_PAGE_ID,
           person.fullname,
           person.start.getFullYear(),
-          person.end.getFullYear(),
-        ),
+          person.end.getFullYear()
+        )
       );
       this.closeNewPersonForm();
     },

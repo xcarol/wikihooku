@@ -1,5 +1,5 @@
 <template>
-  <v-list width="100%">
+  <v-list class="timeline-list">
     <vue-draggable-next
       v-model="persons"
       handle=".draggable-time-line"
@@ -95,3 +95,13 @@ export default {
   },
 };
 </script>
+
+<style>
+.timeline-list {
+  width: 100%;
+  padding-top: 2em;
+}
+.v-list-item__content {
+  overflow: visible !important;
+}
+</style>

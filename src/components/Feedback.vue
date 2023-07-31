@@ -1,12 +1,12 @@
 <template>
-  <v-layout
+  <v-row
     row
     justify-center
   >
-    <!-- <v-dialog
+    <v-dialog
       v-model="showDialog"
       max-width="600px"
-      :fullscreen="$vuetify.breakpoint.xsOnly"
+      :fullscreen="$vuetify.display.xs"
       scrollable
       @keydown="closeIfEscape"
     >
@@ -16,66 +16,46 @@
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex
+            <v-row wrap>
+              <v-col
                 v-if="anonymousUser"
-                xs12
+                cols="12"
               >
-                <ValidationProvider
-                  name="email"
-                  rules="required|email"
-                >
-                  <v-text-field
-                    v-model="email"
-                    slot-scope="{
-                      errors,
-                      valid
-                    }"
-                    tabindex="1"
-                    type="email"
-                    :label="emailLabel"
-                    :error-messages="errors"
-                    :success="valid"
-                    @keyup.enter="sendFeedback"
-                  />
-                </ValidationProvider>
-              </v-flex>
-              <v-flex xs12>
-                <ValidationProvider
-                  name="feedback"
-                  rules="min:30|required"
-                >
-                  <v-textarea
-                    v-model="feedback"
-                    slot-scope="{
-                      errors,
-                      valid
-                    }"
-                    tabindex="2"
-                    type="feedback"
-                    :label="feedbackLabel"
-                    :error-messages="errors"
-                    :success="valid"
-                  />
-                </ValidationProvider>
-              </v-flex>
-              <v-flex xs12>
+                <v-text-field
+                  v-model="email"
+                  type="text"
+                  required
+                  :label="emailLabel"
+                  :error-messages="emailErrors"
+                  :rules="emailRules"
+                  @keyup.enter="sendFeedback"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-textarea
+                  v-model="feedback"
+                  type="text"
+                  required
+                  :label="feedbackLabel"
+                  :error-messages="feedbackErrors"
+                  :rules="feedbackRules"
+                />
+              </v-col>
+              <v-col cols="12">
                 <vue-recaptcha
                   v-if="anonymousUser"
                   :sitekey="recaptchaKey"
-                  :load-recaptcha-script="true"
-                  tabindex="3"
                   @verify="verifyCaptcha"
-                  @expired="expireRecaptcha"
+                  @expire="expireRecaptcha"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-alert
-          :value="errorMessage !== ''"
-          dismissible
-          outlined
+          :model-value="errorMessage !== ''"
+          closable
+          variant="outlined"
           type="error"
         >
           {{ errorMessage }}
@@ -103,20 +83,23 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog> -->
-  </v-layout>
+    </v-dialog>
+  </v-row>
 </template>
 
 <script>
-// import VueRecaptcha from 'vue-recaptcha';
+import VueRecaptcha from 'vue3-recaptcha2';
 import { mapGetters, mapMutations } from 'vuex';
+import { useField } from 'vee-validate';
+import * as yup from 'yup';
+import { MIN_FEEDBACK_LEN } from '../global/const';
 
 export default {
   name: 'FeedbackComponent',
   components: {
-    // VueRecaptcha,
+    VueRecaptcha,
   },
-  emits: { close: null },
+  emits: ['close'],
   data: () => ({
     email: '',
     feedback: '',
@@ -125,6 +108,10 @@ export default {
     showDialog: true,
     recaptchaKey: import.meta.env.VITE_RECAPTCHA_KEY,
     recaptchaResponse: null,
+    emailErrors: [],
+    emailRules: [],
+    feedbackErrors: [],
+    feedbackRules: [],
   }),
   computed: {
     ...mapGetters({
@@ -136,10 +123,16 @@ export default {
     },
     canSendFeedback() {
       if (this.anonymousUser) {
-        return this.email.length > 0 && this.feedback.length > 0 && this.recaptchaResponse !== null;
+        return (
+          this.email &&
+          this.email.length > 0 &&
+          this.feedback &&
+          this.feedback.length > 0 &&
+          this.recaptchaResponse !== null
+        );
       }
 
-      return this.feedback.length > 0;
+      return this.feedback ? this.feedback.length > 0 : 0;
     },
     emailLabel() {
       return this.$t('feedback.email');
@@ -154,6 +147,45 @@ export default {
         this.close();
       }
     },
+  },
+  mounted() {
+    const { value: email, errorMessage: emailError } = useField('email');
+    const { value: feedback, errorMessage: feedbackError } = useField('feedback');
+
+    this.email = email;
+    this.emailErrors = emailError;
+
+    this.emailRules = [
+      async (value) => {
+        try {
+          await yup.string().required().email().validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
+
+    this.feedback = feedback;
+    this.feedbackErrors = feedbackError;
+
+    this.feedbackRules = [
+      async (value) => {
+        try {
+          await yup
+            .string()
+            .required()
+            .min(
+              MIN_FEEDBACK_LEN,
+              this.$t('feedback.feedbackLength').replace('%s', MIN_FEEDBACK_LEN)
+            )
+            .validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
   },
   methods: {
     ...mapMutations(['snackMessage']),

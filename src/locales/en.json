@@ -110,6 +110,7 @@
     "button": "Send feedback",
     "email": "Email",
     "feedback": "Your feedback",
+    "feedbackLength": "Type a minimum of %s caracters",
     "sendsuccesfully": "Your feedback has been registered succesfully. Thanks for contributing!"
   }
 }

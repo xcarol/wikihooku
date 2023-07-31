@@ -110,6 +110,7 @@
     "button": "Enviar feedback",
     "email": "Email",
     "feedback": "El teu feedback",
+    "feedbackLength": "Has d'escriure %s caracters com a mínim",
     "sendsuccesfully": "El teu feedback s'ha registrat amb èxit. Gràcies per contribuir!"
   }
 }

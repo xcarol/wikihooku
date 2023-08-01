@@ -17,121 +17,71 @@
           <v-container>
             <v-row>
               <v-col>
-                <!-- <ValidationProvider
-                  v-slot="{ errors }"
-                  rules="required"
-                  name="fullname"
-                > -->
                 <v-text-field
                   v-model="fullname"
-                  data-vv-validate-on="change"
-                  name="fullname"
-                  tabindex="-1"
                   type="text"
+                  required
                   :label="fullnameLabel"
-                  :data-vv-as="fullnameLabel"
+                  :error-messages="fullnameErrors"
+                  :rules="fullnameRules"
                   @keyup.enter="addPersona"
                 />
-                <!-- <span>{{ errors[0] }}</span> -->
-                <!-- </ValidationProvider> -->
               </v-col>
             </v-row>
             <v-row>
               <v-btn-toggle>
                 <v-col>
-                  <!-- <ValidationProvider
-                    v-slot="{ errors }"
-                    rules="required"
-                    name="birthday"
-                  > -->
                   <v-select
                     v-model="birthday"
-                    tabindex="-2"
                     :items="days"
                     :label="$t('global.day')"
                     :hint="$t('persona.birthdate')"
+                    required
                     persistent-hint
                   />
-                  <!-- <span>{{ errors[0] }}</span> -->
-                  <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
-                  <!-- <ValidationProvider
-                    v-slot="{ errors }"
-                    rules="required"
-                    name="birthmonth"
-                  > -->
                   <v-select
                     v-model="birthmonth"
-                    tabindex="-3"
                     :items="months"
                     :label="$t('global.month')"
+                    required
                   />
-                  <!-- <span>{{ errors[0] }}</span> -->
-                  <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
-                  <!-- <ValidationProvider
-                    v-slot="{ errors }"
-                    rules="required"
-                    name="birthyear"
-                  > -->
                   <v-select
                     v-model="birthyear"
-                    tabindex="-4"
                     :items="years"
                     :label="$t('global.year')"
+                    required
                   />
-                  <!-- <span>{{ errors[0] }}</span> -->
-                  <!-- </ValidationProvider> -->
                 </v-col>
               </v-btn-toggle>
             </v-row>
             <v-row>
               <v-btn-toggle>
                 <v-col>
-                  <!-- <ValidationProvider
-                    v-slot="{ errors }"
-                    name="deathday"
-                  > -->
                   <v-select
                     v-model="deathday"
-                    tabindex="-5"
                     :items="days"
                     :label="$t('global.day')"
                     :hint="$t('persona.deathdate')"
                     persistent-hint
                   />
-                  <!-- <span>{{ errors[0] }}</span> -->
-                  <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
-                  <!-- <ValidationProvider
-                    v-slot="{ errors }"
-                    name="deathmonth"
-                  > -->
                   <v-select
                     v-model="deathmonth"
-                    tabindex="-6"
                     :items="months"
                     :label="$t('global.month')"
                   />
-                  <!-- <span>{{ errors[0] }}</span> -->
-                  <!-- </ValidationProvider> -->
                 </v-col>
                 <v-col>
-                  <!-- <ValidationProvider
-                    v-slot="{ errors }"
-                    name="deathyear"
-                  > -->
                   <v-select
                     v-model="deathyear"
-                    tabindex="-7"
                     :items="years"
                     :label="$t('global.year')"
                   />
-                  <!-- <span>{{ errors[0] }}</span> -->
-                  <!-- </ValidationProvider> -->
                 </v-col>
               </v-btn-toggle>
             </v-row>
@@ -147,7 +97,6 @@
                   <v-btn
                     color="blue darken-1"
                     text
-                    tabindex="-9"
                     @click.stop="close"
                   >
                     {{ $t('global.close') }}
@@ -155,7 +104,6 @@
                   <v-btn
                     color="blue darken-1"
                     text
-                    tabindex="-8"
                     :disabled="cannotSave"
                     @click.stop="addPersona"
                   >
@@ -173,6 +121,8 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex';
+import { useField } from 'vee-validate';
+import * as yup from 'yup';
 
 export default {
   name: 'PersonForm',
@@ -190,6 +140,23 @@ export default {
     deathyear: null,
     showDialog: true,
   }),
+  mounted() {
+    const { value: fullname, errorMessage: fullnameError } = useField('fullname');
+
+    this.fullname = fullname;
+    this.fullnameErrors = fullnameError;
+
+    this.fullnameRules = [
+      async (value) => {
+        try {
+          await yup.string().required().validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
+  },
   computed: {
     ...mapGetters({
       user: 'session/user',

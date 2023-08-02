@@ -1,7 +1,6 @@
 <template>
   <v-row
-    row
-    justify-center
+    justify="center"
   >
     <v-dialog
       v-model="showDialog"
@@ -16,7 +15,7 @@
         </v-card-title>
         <v-card-text>
           <v-container grid-list-md>
-            <v-row wrap>
+            <v-row>
               <v-col
                 v-if="anonymousUser"
                 cols="12"

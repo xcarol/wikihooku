@@ -1,7 +1,6 @@
 <template>
   <v-row
-    row
-    justify-center
+    justify="center"
   >
     <v-dialog
       v-model="showDialog"
@@ -53,7 +52,7 @@
         <v-divider />
         <v-card-actions>
           <v-container>
-            <v-row wrap>
+            <v-row>
               <v-col cols="12">
                 <v-btn
                   text

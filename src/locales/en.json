@@ -95,6 +95,7 @@
     "title": "Account settings",
     "name": "Name",
     "nameHint": "Your public name",
+    "usernameLength": "Your name cannot be longer that {%s} characters",
     "currentPassword": "Password",
     "currentPasswordHint": "Type your current password",
     "newPassword": "New Password",

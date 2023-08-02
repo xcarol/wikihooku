@@ -95,6 +95,7 @@
     "title": "Configuració del compte",
     "name": "Nom",
     "nameHint": "El teu nom públic",
+    "usernameLength": "El teu nom no pot ocupar més de {%s} caracters",
     "currentPassword": "Contrasenya actual",
     "currentPasswordHint": "Introdueix la contrasenya actual",
     "newPassword": "Nova contrasenya",

@@ -1,11 +1,6 @@
 <template>
-  <v-layout
-    row
-    justify-center
-  >
-    <!-- <v-flex
-      xs12
-    >
+  <v-row justify="center">
+    <v-col cols="12">
       <v-alert
         v-show="!accountVerified"
         type="error"
@@ -14,119 +9,69 @@
       </v-alert>
       <v-card flat>
         <v-card-title>
-          <v-layout wrap>
-            <v-flex grow>
+          <v-row>
+            <v-col grow>
               <span class="headline">
                 {{ $t('account.title') }}
               </span>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-card-title>
 
         <v-card-text>
-          <v-layout wrap>
-            <v-flex
-              xs12
-            >
+          <v-row>
+            <v-col cols="12">
               <v-select
                 v-model="locale"
                 :items="locales"
                 :label="$t('account.locale')"
               />
-            </v-flex>
-          </v-layout>
-          <v-layout wrap>
-            <v-flex
-              xs12
-            >
-              <ValidationProvider
-                name="fullname"
-                rules="required|max:100"
-              >
-                <v-text-field
-                  v-model="fullname"
-                  slot-scope="{
-                    errors,
-                    valid
-                  }"
-                  tabindex="1"
-                  :counter="100"
-                  :hint="fullnameHint"
-                  :label="fullnameLabel"
-                  :error-messages="errors"
-                  :success="valid"
-                  @keyup.enter="saveUser"
-                />
-              </ValidationProvider>
-            </v-flex>
-            <v-flex
-              xs12
-            >
-              <ValidationProvider
-                name="currentPassword"
-                rules="min:8|required"
-              >
-                <v-text-field
-                  v-model="currentPassword"
-                  slot-scope="{
-                    errors,
-                    valid
-                  }"
-                  tabindex="2"
-                  type="password"
-                  :hint="$t('account.currentPasswordHint')"
-                  :label="currentPasswordLabel"
-                  :error-messages="errors"
-                  :success="valid"
-                />
-              </ValidationProvider>
-            </v-flex>
-            <v-flex
-              xs12
-            >
-              <ValidationProvider
-                name="newPassword"
-                rules="min:8|required|oldPassword:@currentPassword"
-              >
-                <v-text-field
-                  ref="password"
-                  v-model="newPassword"
-                  slot-scope="{
-                    errors,
-                    valid
-                  }"
-                  tabindex="3"
-                  type="password"
-                  :hint="newPasswordHint"
-                  :label="newPasswordLabel"
-                  :error-messages="errors"
-                  :success="valid"
-                />
-              </ValidationProvider>
-            </v-flex>
-            <v-flex
-              xs12
-            >
-              <ValidationProvider
-                name="newPasswordRepeat"
-                rules="min:8|required|confirmed:newPassword"
-              >
-                <v-text-field
-                  v-model="newPasswordRepeat"
-                  slot-scope="{
-                    errors,
-                    valid
-                  }"
-                  tabindex="4"
-                  type="password"
-                  :hint="newPasswordRepeatHint"
-                  :label="newPasswordRepeatLabel"
-                  :error-messages="errors"
-                  :success="valid"
-                />
-              </ValidationProvider>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field
+                v-model="fullname"
+                type="text"
+                :counter="100"
+                :hint="fullnameHint"
+                :label="fullnameLabel"
+                :error-messages="fullnameErrors"
+                :rules="fullnameRules"
+                @keyup.enter="saveUser"
+              />
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="currentPassword"
+                type="password"
+                :hint="$t('account.currentPasswordHint')"
+                :label="currentPasswordLabel"
+                :error-messages="currentPasswordErrors"
+                :rules="currentPasswordRules"
+              />
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="newPassword"
+                type="password"
+                :hint="newPasswordHint"
+                :label="newPasswordLabel"
+                :error-messages="newPasswordErrors"
+                :rules="newPasswordRules"
+              />
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="newPasswordRepeat"
+                type="password"
+                :hint="newPasswordRepeatHint"
+                :label="newPasswordRepeatLabel"
+                :error-messages="newPasswordRepeatErrors"
+                :rules="newPasswordRepeatRules"
+              />
+            </v-col>
+          </v-row>
         </v-card-text>
 
         <v-divider />
@@ -153,12 +98,15 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-flex> -->
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import { useField } from 'vee-validate';
+import * as yup from 'yup';
+import { MAX_USER_NAME_LEN, MIN_PASSWORD_LEN } from '../../global/const';
 
 export default {
   name: 'AccountView',
@@ -172,28 +120,126 @@ export default {
       errorMessage: '',
       account: null,
       fullname: '',
+      fullnameErrors: [],
+      fullnameRules: [],
+      currentPasswordErrors: [],
+      currentPasswordRules: [],
+      newPasswordErrors: [],
+      newPasswordRules: [],
+      newPasswordRepeatErrors: [],
+      newPasswordRepeatRules: [],
     };
+  },
+  mounted() {
+    const { value: fullname, errorMessage: fullnameError } = useField('fullname');
+    const { value: currentPassword, errorMessage: currentPasswordError } =
+      useField('currentPassword');
+    const { value: newPassword, errorMessage: newPasswordError } = useField('newPassword');
+    const { value: newPasswordRepeat, errorMessage: newPasswordRepeatError } =
+      useField('newPassword');
+
+    this.fullname = fullname;
+    this.fullnameErrors = fullnameError;
+
+    this.fullnameRules = [
+      async (value) => {
+        try {
+          await yup
+            .string()
+            .required()
+            .max(
+              MAX_USER_NAME_LEN,
+              this.$t('account.usernameLength').replace('%s', MAX_USER_NAME_LEN)
+            )
+            .validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
+
+    this.currentPassword = currentPassword;
+    this.currentPasswordErrors = currentPasswordError;
+
+    this.currentPasswordRules = [
+      async (value) => {
+        try {
+          await yup
+            .string()
+            .required()
+            .min(
+              MIN_PASSWORD_LEN,
+              this.$t('account.passwordLength').replace('%s', MIN_PASSWORD_LEN)
+            )
+            .validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
+
+    this.newPassword = newPassword;
+    this.newPasswordErrors = newPasswordError;
+
+    this.newPasswordRules = [
+      async (value) => {
+        try {
+          await yup
+            .string()
+            .required()
+            .min(
+              MIN_PASSWORD_LEN,
+              this.$t('account.passwordLength').replace('%s', MIN_PASSWORD_LEN)
+            )
+            .notOneOf([yup.ref('currentPassword')])
+            .validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
+
+    this.newPasswordRepeat = newPasswordRepeat;
+    this.newPasswordRepeatErrors = newPasswordRepeatError;
+
+    this.newPasswordRepeatRules = [
+      async (value) => {
+        try {
+          await yup
+            .string()
+            .required()
+            .min(
+              MIN_PASSWORD_LEN,
+              this.$t('account.passwordLength').replace('%s', MIN_PASSWORD_LEN)
+            )
+            .oneOf([yup.ref('newPassword')])
+            .validate(value);
+          return true;
+        } catch (error) {
+          return this.$t(error.message);
+        }
+      },
+    ];
   },
   computed: {
     ...mapGetters({
       user: 'session/user',
     }),
     isUsingSamePassword() {
-      const same = (this.currentPassword !== '' || this.newPassword !== '')
-        && this.currentPassword === this.newPassword;
-
-      if (same) {
-        // this.errors.add({
-        //   field: 'password',
-        //   msg: this.$t('account.samePasswords'),
-        // });
-      }
+      const same =
+        (this.currentPassword !== '' || this.newPassword !== '') &&
+        this.currentPassword === this.newPassword;
 
       return same;
     },
     newPasswordMatch() {
-      return (this.newPassword !== '' || this.newPasswordRepeat !== '')
-        && this.newPassword === this.newPasswordRepeat;
+      return (
+        (this.newPassword !== '' || this.newPasswordRepeat !== '') &&
+        this.newPassword === this.newPasswordRepeat
+      );
     },
     fullnameLabel() {
       return this.$t('account.name');
@@ -217,10 +263,12 @@ export default {
       return this.$t('account.newPasswordRepeatHint');
     },
     anyFieldChanged() {
-      if (this.fullname === this.account.fullname
-        && this.currentPassword.length === 0
-        && this.newPassword.length === 0
-        && this.newPasswordRepeat.length === 0) {
+      if (
+        this.fullname === this.account.fullname &&
+        this.currentPassword.length === 0 &&
+        this.newPassword.length === 0 &&
+        this.newPasswordRepeat.length === 0
+      ) {
         return false;
       }
 
@@ -230,24 +278,20 @@ export default {
       return (this.currentPassword || this.newPassword || this.newPasswordRepeat) !== '';
     },
     localeChanged() {
-      return (this.locale !== this.account.locale && this.account.locale !== undefined)
-      || (this.locale !== this.$i18n.locale && this.account.locale === undefined);
+      return (
+        (this.locale !== this.account.locale && this.account.locale !== undefined) ||
+        (this.locale !== this.$i18n.locale && this.account.locale === undefined)
+      );
     },
     accountVerified() {
       return this.user.verified;
     },
     canSave() {
       if (
-        !this.accountVerified
-        || (!this.anyFieldChanged && !this.localeChanged)
-        || (
-          this.needToSavePassord
-          && (
-            this.currentPassword === ''
-            || this.isUsingSamePassword
-            || !this.newPasswordMatch
-          )
-        )
+        !this.accountVerified ||
+        (!this.anyFieldChanged && !this.localeChanged) ||
+        (this.needToSavePassord &&
+          (this.currentPassword === '' || this.isUsingSamePassword || !this.newPasswordMatch))
       ) {
         return false;
       }
@@ -256,8 +300,8 @@ export default {
     },
     locales() {
       return this.$i18n.availableLocales
-        .map((locale) => ({ value: locale, text: this.$t(locale) }))
-        .filter((locale) => locale.text !== locale.value);
+        .map((locale) => ({ value: locale, title: this.$t(locale) }))
+        .filter((locale) => locale.title !== locale.value);
     },
   },
   beforeMount() {
@@ -279,7 +323,8 @@ export default {
       this.$root.$i18n.locale = this.locale;
       this.account.locale = this.locale;
       this.account.fullname = this.fullname;
-      this.api.saveUser(this.account, this.currentPassword, this.newPassword)
+      this.api
+        .saveUser(this.account, this.currentPassword, this.newPassword)
         .then(() => {
           this.saving = false;
 

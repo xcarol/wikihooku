@@ -1,73 +1,71 @@
 <template>
-  <v-flex>
-    <!-- <v-dialog
-      v-model="success"
-      width="500"
-      :fullscreen="$vuetify.breakpoint.xsOnly"
-      scrollable
-      persistent
-    >
-      <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
+  <v-dialog
+    v-model="success"
+    width="500"
+    :fullscreen="$vuetify.display.xs"
+    scrollable
+    persistent
+  >
+    <v-card>
+      <v-card-title
+        class="headline grey lighten-2"
+        primary-title
+      >
+        {{ $t('registerConfirmation.successTitle') }}
+      </v-card-title>
+
+      <v-card-text>
+        {{ $t('registerConfirmation.successBody') }}
+      </v-card-text>
+
+      <v-divider />
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          color="primary"
+          text
+          @click.stop="goHome"
         >
-          {{ $t('registerConfirmation.successTitle') }}
-        </v-card-title>
+          {{ $t('global.ok') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 
-        <v-card-text>
-          {{ $t('registerConfirmation.successBody') }}
-        </v-card-text>
+  <v-dialog
+    v-model="error"
+    width="500"
+    :fullscreen="$vuetify.display.xs"
+    scrollable
+    persistent
+  >
+    <v-card>
+      <v-card-title
+        class="headline grey lighten-2"
+        primary-title
+      >
+        {{ $t('registerConfirmation.errorTitle') }}
+      </v-card-title>
 
-        <v-divider />
+      <v-card-text>
+        {{ $t('registerConfirmation.errorBody') }}
+      </v-card-text>
 
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            text
-            @click.stop="goHome"
-          >
-            {{ $t('global.ok') }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      <v-divider />
 
-    <v-dialog
-      v-model="error"
-      width="500"
-      :fullscreen="$vuetify.breakpoint.xsOnly"
-      scrollable
-      persistent
-    >
-      <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          color="primary"
+          text
+          @click.stop="goHome"
         >
-          {{ $t('registerConfirmation.errorTitle') }}
-        </v-card-title>
-
-        <v-card-text>
-          {{ $t('registerConfirmation.errorBody') }}
-        </v-card-text>
-
-        <v-divider />
-
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            text
-            @click.stop="goHome"
-          >
-            {{ $t('global.ok') }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog> -->
-  </v-flex>
+          {{ $t('global.ok') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>

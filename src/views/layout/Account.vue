@@ -33,21 +33,18 @@
               <v-text-field
                 v-model="fullname"
                 type="text"
-                :counter="100"
+                :counter="MAX_USER_NAME_LEN"
                 :hint="fullnameHint"
                 :label="fullnameLabel"
-                :error-messages="fullnameErrors"
                 :rules="fullnameRules"
-                @keyup.enter="saveUser"
               />
             </v-col>
             <v-col cols="12">
               <v-text-field
                 v-model="currentPassword"
                 type="password"
-                :hint="$t('account.currentPasswordHint')"
+                :hint="currentPasswordHint"
                 :label="currentPasswordLabel"
-                :error-messages="currentPasswordErrors"
                 :rules="currentPasswordRules"
               />
             </v-col>
@@ -57,7 +54,6 @@
                 type="password"
                 :hint="newPasswordHint"
                 :label="newPasswordLabel"
-                :error-messages="newPasswordErrors"
                 :rules="newPasswordRules"
               />
             </v-col>
@@ -67,7 +63,6 @@
                 type="password"
                 :hint="newPasswordRepeatHint"
                 :label="newPasswordRepeatLabel"
-                :error-messages="newPasswordRepeatErrors"
                 :rules="newPasswordRepeatRules"
               />
             </v-col>
@@ -83,7 +78,7 @@
             text
             tabindex="5"
             outlined
-            :disabled="!canSave"
+            :disabled="canSave() === false"
             @click.stop="save()"
           >
             {{ $t('global.save') }}
@@ -102,242 +97,176 @@
   </v-row>
 </template>
 
-<script>
-import { mapGetters, mapMutations } from 'vuex';
+<script setup>
+import router from '../../router';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 import { useField } from 'vee-validate';
 import * as yup from 'yup';
 import { MAX_USER_NAME_LEN, MIN_PASSWORD_LEN } from '../../global/const';
 
-export default {
-  name: 'AccountView',
-  data() {
-    return {
-      locale: '',
-      saving: false,
-      currentPassword: '',
-      newPassword: '',
-      newPasswordRepeat: '',
-      errorMessage: '',
-      account: null,
-      fullname: '',
-      fullnameErrors: [],
-      fullnameRules: [],
-      currentPasswordErrors: [],
-      currentPasswordRules: [],
-      newPasswordErrors: [],
-      newPasswordRules: [],
-      newPasswordRepeatErrors: [],
-      newPasswordRepeatRules: [],
-    };
-  },
-  mounted() {
-    const { value: fullname, errorMessage: fullnameError } = useField('fullname');
-    const { value: currentPassword, errorMessage: currentPasswordError } =
-      useField('currentPassword');
-    const { value: newPassword, errorMessage: newPasswordError } = useField('newPassword');
-    const { value: newPasswordRepeat, errorMessage: newPasswordRepeatError } =
-      useField('newPassword');
+const store = useStore();
+const { locale: i18nlocale, availableLocales, t: $t } = useI18n();
 
-    this.fullname = fullname;
-    this.fullnameErrors = fullnameError;
+const fullnameLabel = computed(() => $t('account.name'));
+const fullnameHint = computed(() => $t('account.nameHint'));
+const currentPasswordLabel = computed(() => $t('account.currentPassword'));
+const currentPasswordHint = computed(() => $t('account.currentPasswordHint'));
+const newPasswordLabel = computed(() => $t('account.newPassword'));
+const newPasswordHint = computed(() => $t('account.newPasswordHint'));
+const newPasswordRepeatLabel = computed(() => $t('account.newPasswordRepeat'));
+const newPasswordRepeatHint = computed(() => $t('account.newPasswordRepeatHint'));
 
-    this.fullnameRules = [
-      async (value) => {
-        try {
-          await yup
-            .string()
-            .required()
-            .max(
-              MAX_USER_NAME_LEN,
-              this.$t('account.usernameLength').replace('%s', MAX_USER_NAME_LEN)
-            )
-            .validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
+const user = store.getters['session/user'];
+const accountVerified = user.verified;
 
-    this.currentPassword = currentPassword;
-    this.currentPasswordErrors = currentPasswordError;
+const saving = false;
+const account = { ...user };
 
-    this.currentPasswordRules = [
-      async (value) => {
-        try {
-          await yup
-            .string()
-            .required()
-            .min(
-              MIN_PASSWORD_LEN,
-              this.$t('account.passwordLength').replace('%s', MIN_PASSWORD_LEN)
-            )
-            .validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
-
-    this.newPassword = newPassword;
-    this.newPasswordErrors = newPasswordError;
-
-    this.newPasswordRules = [
-      async (value) => {
-        try {
-          await yup
-            .string()
-            .required()
-            .min(
-              MIN_PASSWORD_LEN,
-              this.$t('account.passwordLength').replace('%s', MIN_PASSWORD_LEN)
-            )
-            .notOneOf([yup.ref('currentPassword')])
-            .validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
-
-    this.newPasswordRepeat = newPasswordRepeat;
-    this.newPasswordRepeatErrors = newPasswordRepeatError;
-
-    this.newPasswordRepeatRules = [
-      async (value) => {
-        try {
-          await yup
-            .string()
-            .required()
-            .min(
-              MIN_PASSWORD_LEN,
-              this.$t('account.passwordLength').replace('%s', MIN_PASSWORD_LEN)
-            )
-            .oneOf([yup.ref('newPassword')])
-            .validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
-  },
-  computed: {
-    ...mapGetters({
-      user: 'session/user',
-    }),
-    isUsingSamePassword() {
-      const same =
-        (this.currentPassword !== '' || this.newPassword !== '') &&
-        this.currentPassword === this.newPassword;
-
-      return same;
-    },
-    newPasswordMatch() {
-      return (
-        (this.newPassword !== '' || this.newPasswordRepeat !== '') &&
-        this.newPassword === this.newPasswordRepeat
-      );
-    },
-    fullnameLabel() {
-      return this.$t('account.name');
-    },
-    fullnameHint() {
-      return this.$t('account.nameHint');
-    },
-    currentPasswordLabel() {
-      return this.$t('account.currentPassword');
-    },
-    newPasswordLabel() {
-      return this.$t('account.newPassword');
-    },
-    newPasswordHint() {
-      return this.$t('account.newPasswordHint');
-    },
-    newPasswordRepeatLabel() {
-      return this.$t('account.newPasswordRepeat');
-    },
-    newPasswordRepeatHint() {
-      return this.$t('account.newPasswordRepeatHint');
-    },
-    anyFieldChanged() {
-      if (
-        this.fullname === this.account.fullname &&
-        this.currentPassword.length === 0 &&
-        this.newPassword.length === 0 &&
-        this.newPasswordRepeat.length === 0
-      ) {
-        return false;
-      }
-
+const fullnameRules = [
+  async (value) => {
+    try {
+      await yup
+        .string()
+        .required()
+        .max(MAX_USER_NAME_LEN, $t('account.usernameLength').replace('%s', MAX_USER_NAME_LEN))
+        .validate(value);
       return true;
-    },
-    needToSavePassord() {
-      return (this.currentPassword || this.newPassword || this.newPasswordRepeat) !== '';
-    },
-    localeChanged() {
-      return (
-        (this.locale !== this.account.locale && this.account.locale !== undefined) ||
-        (this.locale !== this.$i18n.locale && this.account.locale === undefined)
-      );
-    },
-    accountVerified() {
-      return this.user.verified;
-    },
-    canSave() {
-      if (
-        !this.accountVerified ||
-        (!this.anyFieldChanged && !this.localeChanged) ||
-        (this.needToSavePassord &&
-          (this.currentPassword === '' || this.isUsingSamePassword || !this.newPasswordMatch))
-      ) {
-        return false;
-      }
+    } catch (error) {
+      return error.message;
+    }
+  },
+];
 
+const currentPasswordRules = [
+  async (value) => {
+    try {
+      await yup.string().validate(value);
       return true;
-    },
-    locales() {
-      return this.$i18n.availableLocales
-        .map((locale) => ({ value: locale, title: this.$t(locale) }))
-        .filter((locale) => locale.title !== locale.value);
-    },
+    } catch (error) {
+      return error.message;
+    }
   },
-  beforeMount() {
-    this.account = { ...this.user };
-    this.fullname = this.user.fullname;
-    this.locale = this.account.locale || this.$i18n.locale;
-  },
-  methods: {
-    ...mapMutations({
-      snackMessage: 'snackMessage',
-      sessionUser: 'session/user',
-    }),
-    goHome() {
-      this.$router.push({ path: '/' });
-    },
-    save() {
-      this.saving = true;
+];
 
-      this.$root.$i18n.locale = this.locale;
-      this.account.locale = this.locale;
-      this.account.fullname = this.fullname;
-      this.api
-        .saveUser(this.account, this.currentPassword, this.newPassword)
-        .then(() => {
-          this.saving = false;
-
-          this.user.locale = this.account.locale;
-          this.user.fullname = this.account.fullname;
-          this.sessionUser(this.user);
-          this.goHome();
+const newPasswordRules = [
+  async (value) => {
+    try {
+      await yup
+        .string()
+        .test('min', $t('account.newPasswordLength').replace('%s', MIN_PASSWORD_LEN), (value) => {
+          return value === undefined || value.length === 0 || value.length >= MIN_PASSWORD_LEN;
         })
-        .catch((error) => {
-          this.saving = false;
-          this.snackMessage(this.api.getErrorMessage(error));
-        });
-    },
+        .test('notOneOf', $t('account.newPasswordRule'), (value) => {
+          return value === undefined || value.length === 0 || value !== currentPassword.value;
+        })
+        .validate(value);
+      return true;
+    } catch (error) {
+      return error.message;
+    }
   },
+];
+
+const newPasswordRepeatRules = [
+  async (value) => {
+    try {
+      await yup
+        .string()
+        .oneOf([newPassword.value], $t('account.newPasswordRepeatRule'))
+        .validate(value);
+      return true;
+    } catch (error) {
+      return error.message;
+    }
+  },
+];
+
+const {
+  value: fullname,
+  meta: fullnameMeta,
+  resetField: fullnameReset,
+} = useField('fullname', fullnameRules);
+const { value: currentPassword, meta: currentPasswordMeta } = useField(
+  'currentPassword',
+  currentPasswordRules
+);
+const { value: newPassword, meta: newPasswordMeta } = useField('newPassword', newPasswordRules);
+const { value: newPasswordRepeat, meta: newPasswordRepeatMeta } = useField(
+  'newPasswordRepeat',
+  newPasswordRepeatRules
+);
+
+fullnameReset({ value: account.fullname });
+
+const locale = account.locale || i18nlocale;
+const locales = availableLocales
+  .map((locale) => ({ value: locale, title: $t(locale) }))
+  .filter((locale) => locale.title !== locale.value);
+
+const validationInProgress = () =>
+  fullnameMeta.pending ||
+  currentPasswordMeta.pending ||
+  newPasswordMeta.pending ||
+  newPasswordRepeatMeta.pending;
+
+const nothingToSave = () =>
+  !fullnameMeta.dirty &&
+  !currentPasswordMeta.dirty &&
+  !newPasswordMeta.dirty &&
+  !newPasswordRepeatMeta.dirty;
+
+const passwordFieldsEmpty = () =>
+  (!currentPasswordMeta.dirty || !currentPassword.value?.length) &&
+  (!newPasswordMeta.dirty || !newPassword.value?.length) &&
+  (!newPasswordRepeatMeta.dirty || !newPasswordRepeat.value?.length);
+
+const canSaveFullname = () => fullnameMeta.dirty && fullnameMeta.valid;
+
+const canSavePasswords = () =>
+  currentPasswordMeta.valid &&
+  currentPassword.value?.length &&
+  newPasswordMeta.valid &&
+  newPassword.value?.length &&
+  newPasswordRepeatMeta.valid &&
+  newPasswordRepeat.value?.length;
+
+const canSave = () =>
+  !(validationInProgress() || nothingToSave()) &&
+  ((canSaveFullname() && passwordFieldsEmpty()) || canSavePasswords());
+
+const goHome = () => {
+  router.push({ path: '/' });
 };
+
+// const snackMessage = (message) => {
+//   const { snackMessage } = mapMutations(['snackMessage']);
+//   snackMessage(message);
+// };
+
+// const sessionUser = (user) => {
+//   const { sessionUser } = mapMutations(['session/user']);
+//   sessionUser(user);
+// };
+
+// const save = async () => {
+//   saving.value = true;
+
+//   // $root.$i18n.locale = locale;
+//   account.value.locale = locale.value;
+//   account.value.fullname = fullname.value;
+//   try {
+//     await api.saveUser(account.value, currentPassword.value, newPassword.value);
+//     saving.value = false;
+
+//     user.value.locale = account.value.locale;
+//     user.value.fullname = account.value.fullname;
+//     sessionUser(user.value);
+//     goHome();
+//   } catch (error) {
+//     saving.value = false;
+//     snackMessage(api.getErrorMessage(error));
+//   }
+// };
 </script>

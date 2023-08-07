@@ -103,11 +103,14 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useField } from 'vee-validate';
+import { useApi } from '../../plugins/api'
 import * as yup from 'yup';
 import { MAX_USER_NAME_LEN, MIN_PASSWORD_LEN } from '../../global/const';
+import { mdiSourceCommitStartNextLocal } from '@mdi/js';
 
 const store = useStore();
 const { locale: i18nlocale, availableLocales, t: $t } = useI18n();
+const api = useApi();
 
 const fullnameLabel = computed(() => $t('account.name'));
 const fullnameHint = computed(() => $t('account.nameHint'));
@@ -121,7 +124,7 @@ const newPasswordRepeatHint = computed(() => $t('account.newPasswordRepeatHint')
 const user = store.getters['session/user'];
 const accountVerified = user.verified;
 
-const saving = false;
+let saving = false;
 const account = { ...user };
 
 const fullnameRules = [
@@ -240,33 +243,30 @@ const goHome = () => {
   router.push({ path: '/' });
 };
 
-// const snackMessage = (message) => {
-//   const { snackMessage } = mapMutations(['snackMessage']);
-//   snackMessage(message);
-// };
+const snackMessage = (message) => {
+  store.commit('snackMessage', message);
+};
 
-// const sessionUser = (user) => {
-//   const { sessionUser } = mapMutations(['session/user']);
-//   sessionUser(user);
-// };
+const sessionUser = (user) => {
+  store.commit('session/user', user);
+};
 
-// const save = async () => {
-//   saving.value = true;
+const save = async () => {
+  saving = true;
 
-//   // $root.$i18n.locale = locale;
-//   account.value.locale = locale.value;
-//   account.value.fullname = fullname.value;
-//   try {
-//     await api.saveUser(account.value, currentPassword.value, newPassword.value);
-//     saving.value = false;
+  account.locale = locale.value;
+  account.fullname = fullname.value;
+  try {
+    await api.saveUser(account, currentPassword.value, newPassword.value);
+    saving = false;
 
-//     user.value.locale = account.value.locale;
-//     user.value.fullname = account.value.fullname;
-//     sessionUser(user.value);
-//     goHome();
-//   } catch (error) {
-//     saving.value = false;
-//     snackMessage(api.getErrorMessage(error));
-//   }
-// };
+    user.locale = account.locale;
+    user.fullname = account.fullname;
+    sessionUser(user);
+    goHome();
+  } catch (error) {
+    saving = false;
+    snackMessage(api.getErrorMessage(error));
+  }
+};
 </script>

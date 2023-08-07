@@ -98,17 +98,17 @@
 </template>
 
 <script setup>
-import router from '../../router';
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useField } from 'vee-validate';
 import { useApi } from '../../plugins/api'
 import * as yup from 'yup';
 import { MAX_USER_NAME_LEN, MIN_PASSWORD_LEN } from '../../global/const';
-import { mdiSourceCommitStartNextLocal } from '@mdi/js';
 
 const store = useStore();
+const router = useRouter();
 const { locale: i18nlocale, availableLocales, t: $t } = useI18n();
 const api = useApi();
 

@@ -22,6 +22,7 @@
           <v-row>
             <v-col cols="12">
               <v-select
+                :disabled="!accountVerified"
                 v-model="locale"
                 :items="locales"
                 :label="$t('account.locale')"
@@ -31,6 +32,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
+                :disabled="!accountVerified"
                 v-model="fullname"
                 type="text"
                 :counter="MAX_USER_NAME_LEN"
@@ -41,6 +43,7 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
+                :disabled="!accountVerified"
                 v-model="currentPassword"
                 type="password"
                 :hint="currentPasswordHint"
@@ -50,6 +53,7 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
+                :disabled="!accountVerified"
                 v-model="newPassword"
                 type="password"
                 :hint="newPasswordHint"
@@ -59,6 +63,7 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
+                :disabled="!accountVerified"
                 v-model="newPasswordRepeat"
                 type="password"
                 :hint="newPasswordRepeatHint"
@@ -78,7 +83,7 @@
             text
             tabindex="5"
             outlined
-            :disabled="canSave() === false"
+            :disabled="!accountVerified || canSave() === false"
             @click.stop="save()"
           >
             {{ $t('global.save') }}

@@ -87,7 +87,7 @@
             color="accent"
             text
             tabindex="6"
-            @click.stop="goHome()"
+            @click.stop="closeWithoutSaving()"
           >
             {{ $t('global.close') }}
           </v-btn>
@@ -98,12 +98,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useField } from 'vee-validate';
-import { useApi } from '../../plugins/api'
+import { useApi } from '../../plugins/api';
 import * as yup from 'yup';
 import { MAX_USER_NAME_LEN, MIN_PASSWORD_LEN } from '../../global/const';
 
@@ -203,10 +203,13 @@ const { value: newPasswordRepeat, meta: newPasswordRepeatMeta } = useField(
 
 fullnameReset({ value: account.fullname });
 
-const locale = account.locale || i18nlocale;
+const locale = ref(i18nlocale);
+const appLocale = i18nlocale.value;
 const locales = availableLocales
   .map((locale) => ({ value: locale, title: $t(locale) }))
   .filter((locale) => locale.title !== locale.value);
+
+const localeChanged = () => (locale.value !== appLocale);
 
 const validationInProgress = () =>
   fullnameMeta.pending ||
@@ -218,7 +221,8 @@ const nothingToSave = () =>
   !fullnameMeta.dirty &&
   !currentPasswordMeta.dirty &&
   !newPasswordMeta.dirty &&
-  !newPasswordRepeatMeta.dirty;
+  !newPasswordRepeatMeta.dirty &&
+  !localeChanged();
 
 const passwordFieldsEmpty = () =>
   (!currentPasswordMeta.dirty || !currentPassword.value?.length) &&
@@ -237,7 +241,12 @@ const canSavePasswords = () =>
 
 const canSave = () =>
   !(validationInProgress() || nothingToSave()) &&
-  ((canSaveFullname() && passwordFieldsEmpty()) || canSavePasswords());
+  (localeChanged() || (canSaveFullname() && passwordFieldsEmpty()) || canSavePasswords());
+
+const closeWithoutSaving = () => {
+  i18nlocale.value = appLocale;
+  goHome();
+}
 
 const goHome = () => {
   router.push({ path: '/' });

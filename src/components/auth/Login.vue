@@ -1,7 +1,5 @@
 <template>
-  <v-row
-    justify="center"
-  >
+  <v-row justify="center">
     <v-dialog
       v-model="showDialog"
       max-width="600px"
@@ -22,7 +20,6 @@
                   type="text"
                   required
                   :label="usernameLabel"
-                  :error-messages="usernameErrors"
                   :rules="usernameRules"
                   @keyup.enter="loginUser"
                 />
@@ -30,10 +27,9 @@
               <v-col cols="12">
                 <v-text-field
                   v-model="password"
-                  type="text"
+                  type="password"
                   required
                   :label="passwordLabel"
-                  :error-messages="passwordErrors"
                   :rules="passwordRules"
                   @keyup.enter="loginUser"
                 />
@@ -90,130 +86,104 @@
   </v-row>
 </template>
 
-<script>
-import { mapGetters, mapMutations, mapActions } from 'vuex';
+<script setup>
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import { useField } from 'vee-validate';
+import { useI18n } from 'vue-i18n';
+import { useApi } from '../../plugins/api';
 import * as yup from 'yup';
 
-export default {
-  name: 'LoginComponent',
-  emits: ['close'],
-  data: () => ({
-    username: '',
-    password: '',
-    errorMessage: '',
-    loading: false,
-    recovering: false,
-    showDialog: true,
-    usernameErrors: [],
-    usernameRules: [],
-    passwordErrors: [],
-    passwordRules: [],
-  }),
-  computed: {
-    ...mapGetters({
-      user: 'session/user',
-    }),
-    canRecoverPassword() {
-      return this.username && this.username.length > 0;
-    },
-    canLogin() {
-      return this.username && this.username.length > 0 && this.password && this.password.length > 0;
-    },
-    usernameLabel() {
-      return this.$t('login.username');
-    },
-    passwordLabel() {
-      return this.$t('login.password');
-    },
+const emit = defineEmits(['close'])
+const store = useStore();
+const { t: $t } = useI18n();
+const api = useApi();
+
+let showDialog = true;
+let errorMessage = ref('');
+let loading = false;
+let recovering = false;
+
+let usernameRules = [
+  async (value) => {
+    try {
+      await yup.string().required().email().validate(value);
+      return true;
+    } catch (error) {
+      return $t(error.message);
+    }
   },
-  watch: {
-    showDialog(newValue) {
-      if (newValue === false) {
-        this.close();
-      }
-    },
+];
+
+let passwordRules = [
+  async (value) => {
+    try {
+      await yup.string().required().validate(value);
+      return true;
+    } catch (error) {
+      return $t(error.message);
+    }
   },
-  mounted() {
-    const { value: username, errorMessage: usernameError } = useField('username');
-    const { value: password, errorMessage: passwordError } = useField('password');
+];
 
-    this.username = username;
-    this.usernameErrors = usernameError;
+const { value: username, meta: usernameMeta } = useField('username', usernameRules);
+const { value: password, meta: passwordMeta } = useField('password', passwordRules);
 
-    this.usernameRules = [
-      async (value) => {
-        try {
-          await yup.string().required().email().validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
+const user = store.getters['session/user'];
 
-    this.password = password;
-    this.passwordErrors = passwordError;
+const canRecoverPassword = computed(() => usernameMeta.valid && username.value?.length > 0);
+const canLogin = computed(
+  () =>
+    usernameMeta.valid &&
+    username.value?.length > 0 &&
+    passwordMeta.valid &&
+    password.value?.length > 0
+);
+const usernameLabel = computed(() => $t('login.username'));
+const passwordLabel = computed(() => $t('login.password'));
 
-    this.passwordRules = [
-      async (value) => {
-        try {
-          await yup.string().required().validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
-  },
-  methods: {
-    ...mapMutations(['snackMessage']),
-    ...mapActions({
-      login: 'session/login',
-    }),
-    async loginUser() {
-      this.errorMessage = '';
+const snackMessage = (message) => {
+  store.commit('snackMessage', message);
+};
 
-      this.loading = true;
-      this.login({
-        username: this.username,
-        password: this.password,
-      })
-        .then(() => {
-          if (this.user.locale) {
-            this.$root.$i18n.locale = this.user.locale;
-          }
-          this.close();
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.errorMessage = this.$t(this.api.getErrorMessage(error));
-        });
-    },
-    close() {
-      this.$emit('close');
-    },
-    closeIfEscape(key) {
-      if (key.keyCode === 27) {
-        this.close();
-      }
-    },
-    async recoverPassword() {
-      this.errorMessage = '';
+const loginUser = async () => {
+  errorMessage.value = '';
 
-      this.recovering = true;
-      this.api
-        .recoverPassword(this.username)
-        .then(() => {
-          this.snackMessage(this.$t('login.recovered'));
-          this.close();
-        })
-        .catch((error) => {
-          this.recovering = false;
-          this.errorMessage = this.$t(this.api.getErrorMessage(error));
-          this.error = true;
-        });
-    },
-  },
+  loading = true;
+  try {
+    await store.dispatch('session/login', {
+      username: username.value,
+      password: password.value,
+    });
+    close();
+  } catch (error) {
+    loading = false;
+    errorMessage.value = $t(api.getErrorMessage(error));
+  }
+};
+
+const recoverPassword = async () => {
+  errorMessage.value = '';
+
+  recovering = true;
+  try {
+    await api.recoverPassword(username);
+    snackMessage($t('login.recovered'));
+    close();
+  } catch (error) {
+    recovering = false;
+    errorMessage.value = $t(api.getErrorMessage(error));
+    error.value = true;
+  }
+};
+
+const close = () => {
+  emit('close');
+};
+
+const closeIfEscape = (key) => {
+  if (key.keyCode === 27) {
+    close();
+  }
 };
 </script>

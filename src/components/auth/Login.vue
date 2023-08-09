@@ -88,23 +88,23 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { useApi } from '../../plugins/api';
 import { useStore } from 'vuex';
 import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
-import { useApi } from '../../plugins/api';
 import * as yup from 'yup';
 
 const emit = defineEmits(['close'])
-const store = useStore();
+const { commit, dispatch } = useStore();
 const { t: $t } = useI18n();
 const api = useApi();
 
-let showDialog = true;
+const showDialog = true;
 let errorMessage = ref('');
 let loading = false;
 let recovering = false;
 
-let usernameRules = [
+const usernameRules = [
   async (value) => {
     try {
       await yup.string().required().email().validate(value);
@@ -115,7 +115,7 @@ let usernameRules = [
   },
 ];
 
-let passwordRules = [
+const passwordRules = [
   async (value) => {
     try {
       await yup.string().required().validate(value);
@@ -129,8 +129,6 @@ let passwordRules = [
 const { value: username, meta: usernameMeta } = useField('username', usernameRules);
 const { value: password, meta: passwordMeta } = useField('password', passwordRules);
 
-const user = store.getters['session/user'];
-
 const canRecoverPassword = computed(() => usernameMeta.valid && username.value?.length > 0);
 const canLogin = computed(
   () =>
@@ -143,7 +141,7 @@ const usernameLabel = computed(() => $t('login.username'));
 const passwordLabel = computed(() => $t('login.password'));
 
 const snackMessage = (message) => {
-  store.commit('snackMessage', message);
+  commit('snackMessage', message);
 };
 
 const loginUser = async () => {
@@ -151,7 +149,7 @@ const loginUser = async () => {
 
   loading = true;
   try {
-    await store.dispatch('session/login', {
+    await dispatch('session/login', {
       username: username.value,
       password: password.value,
     });

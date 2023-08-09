@@ -11,6 +11,7 @@
   "Field email is required": "El camp email es necessari",
   "Unauthorized": "No tens prou permisos",
   "Current password don't match": "La contrasenya actual no coincideix",
+  "User missing confirmation email": "Confirma primer el teu compte, si us plau.",
   "ca": "Català",
   "ca-ES": "fallback:ca",
   "en": "Anglès",

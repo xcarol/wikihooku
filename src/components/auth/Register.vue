@@ -22,7 +22,6 @@
                   type="text"
                   :counter="100"
                   :label="fullnameLabel"
-                  :error-messages="fullnameErrors"
                   :rules="fullnameRules"
                   @keyup.enter="registerUser"
                 />
@@ -32,7 +31,6 @@
                   v-model="username"
                   type="email"
                   :label="usernameLabel"
-                  :error-messages="usernameErrors"
                   :rules="usernameRules"
                   @keyup.enter="registerUser"
                 />
@@ -43,7 +41,6 @@
                   v-model="password"
                   type="password"
                   :label="passwordLabel"
-                  :error-messages="passwordErrors"
                   :rules="passwordRules"
                   @keyup.enter="registerUser"
                 />
@@ -53,7 +50,6 @@
                   v-model="passwordRepeat"
                   type="password"
                   :label="passwordLabelRepeat"
-                  :error-messages="passwordRepeatErrors"
                   :rules="passwordRepeatRules"
                   @keyup.enter="registerUser"
                 />
@@ -70,8 +66,8 @@
         </v-card-text>
         <v-alert
           :model-value="errorMessage !== ''"
-          dismissible
-          outlined
+          closable
+          variant="outlined"
           type="error"
         >
           {{ errorMessage }}
@@ -134,168 +130,134 @@
   </v-row>
 </template>
 
-<script>
-import VueRecaptcha from 'vue3-recaptcha2';
-import { mapActions } from 'vuex';
+<script setup>
+import { ref, computed } from 'vue';
+import { useApi } from '../../plugins/api';
+import { useStore } from 'vuex';
 import { useField } from 'vee-validate';
+import { useI18n } from 'vue-i18n';
+import VueRecaptcha from 'vue3-recaptcha2';
 import * as yup from 'yup';
 
-export default {
-  name: 'RegisterComponent',
-  components: {
-    VueRecaptcha,
+const emit = defineEmits(['close'])
+const { dispatch } = useStore();
+const { t: $t } = useI18n();
+const api = useApi();
+
+const showDialog = ref(true);
+const registerSuccess = ref(false);
+const recaptchaResponse = ref(null);
+const errorMessage = ref('');
+const loading = ref(false);
+
+const fullnameLabel = computed(() => $t('register.fullname'));
+const usernameLabel = computed(() => $t('register.username'));
+const passwordLabel = computed(() => $t('register.password'));
+const passwordLabelRepeat = computed(() => $t('register.passwordRepeat'));
+
+const recaptchaKey = import.meta.env.VITE_RECAPTCHA_KEY;
+
+const fullnameRules = [
+  async (value) => {
+    try {
+      await yup.string().required().max(100, 'register.fullnameMaxLength').validate(value);
+      return true;
+    } catch (error) {
+      return $t(error.message);
+    }
   },
-  emits: { close: null },
-  data: () => ({
-    fullname: '',
-    username: '',
-    password: '',
-    passwordRepeat: '',
-    errorMessage: '',
-    loading: false,
-    showDialog: true,
-    recaptchaKey: import.meta.env.VITE_RECAPTCHA_KEY,
-    recaptchaResponse: null,
-    registerSuccess: false,
-    fullnameErrors: [],
-    fullnameRules: [],
-    usernameErrors: [],
-    usernameRules: [],
-    passwordErrors: [],
-    passwordRules: [],
-    passwordRepeatErrors: [],
-    passwordRepeatRules: [],
-  }),
-  computed: {
-    canRegister() {
-      return (
-        this.fullname && this.fullname.length > 0
-        && this.username && this.username.length > 0
-        && this.password && this.password.length > 0
-        && this.passwordRepeat && this.passwordRepeat.length > 0
-        && this.passwordEqual
-        && this.recaptchaResponse !== null
-      );
-    },
-    fullnameLabel() {
-      return this.$t('register.fullname');
-    },
-    usernameLabel() {
-      return this.$t('register.username');
-    },
-    passwordLabel() {
-      return this.$t('register.password');
-    },
-    passwordLabelRepeat() {
-      return this.$t('register.passwordRepeat');
-    },
-    passwordEqual() {
-      return this.password === this.passwordRepeat;
-    },
+];
+
+const usernameRules = [
+  async (value) => {
+    try {
+      await yup.string().required().email().validate(value);
+      return true;
+    } catch (error) {
+      return $t(error.message);
+    }
   },
-  mounted() {
-    const { value: fullname, errorMessage: fullnameError } = useField('fullname');
-    const { value: username, errorMessage: usernameError } = useField('username');
-    const { value: password, errorMessage: passwordError } = useField('password');
-    const { value: passwordRepeat, errorMessage: passwordRepeatError } = useField('passwordRepeat');
+];
 
-    this.fullname = fullname;
-    this.fullnameErrors = fullnameError;
-    this.username = username;
-    this.usernameErrors = usernameError;
-    this.password = password;
-    this.passwordErrors = passwordError;
-    this.passwordRepeat = passwordRepeat;
-    this.passwordRepeatErrors = passwordRepeatError;
-
-    this.fullnameRules = [
-      async (value) => {
-        try {
-          await yup.string().required().max(100, this.$t('register.fullnameMaxLength')).validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
-
-    this.usernameRules = [
-      async (value) => {
-        try {
-          await yup.string().required().email().validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
-
-    this.passwordRules = [
-      async (value) => {
-        try {
-          await yup.string().required().min(8, this.$t('register.passwordMinLenght')).validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
-
-    this.passwordRepeatRules = [
-      async (value) => {
-        try {
-          await yup.string().test('passwords-match', this.$t('register.passwordsMatch'), (value) => this.password === value).required().validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
+const passwordRules = [
+  async (value) => {
+    try {
+      await yup.string().required().min(8, 'register.passwordMinLenght').validate(value);
+      return true;
+    } catch (error) {
+      return $t(error.message);
+    }
   },
-  watch: {
-    showDialog(newValue) {
-      if (newValue === false && this.registerSuccess === false) {
-        this.close();
-      }
-    },
-  },
-  methods: {
-    ...mapActions({
-      register: 'session/register',
-    }),
-    async registerUser() {
-      this.errorMessage = '';
+];
 
-      this.loading = true;
-      this.register({
-        fullname: this.fullname,
-        username: this.username,
-        password: this.password,
-      })
-        .then(() => {
-          this.registerSuccess = true;
-          this.showDialog = false;
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.errorMessage = this.$t(this.api.getErrorMessage(error));
-          this.error = true;
-        });
-    },
-    close() {
-      this.$emit('close');
-    },
-    closeIfEscape(key) {
-      if (key.keyCode === 27) {
-        this.close();
-      }
-    },
-    verifyCaptcha(response) {
-      this.recaptchaResponse = response;
-    },
-    expireRecaptcha() {
-      this.recaptchaResponse = null;
-    },
+const passwordRepeatRules = [
+  async (value) => {
+    try {
+      await yup
+        .string()
+        .test('passwords-match', 'register.passwordsMatch', (value) => password.value === value)
+        .required()
+        .validate(value);
+      return true;
+    } catch (error) {
+      return $t(error.message);
+    }
   },
+];
+
+const { value: fullname, meta: fullnameMeta } = useField('fullname', fullnameRules);
+const { value: username, meta: usernameMeta } = useField('username', usernameRules);
+const { value: password, meta: passwordMeta } = useField('password', passwordRules);
+const { value: passwordRepeat, meta: passwordRepeatMeta } = useField('passwordRepeat', passwordRules);
+
+const canRegister = computed(() => 
+    fullnameMeta.valid &&
+    fullname.value?.length > 0 &&
+    usernameMeta.valid &&
+    username.value?.length > 0 &&
+    passwordMeta.valid &&
+    password.value?.length > 0 &&
+    passwordRepeatMeta.valid &&
+    passwordRepeat.value?.length > 0 &&
+    password.value === passwordRepeat.value &&
+    recaptchaResponse.value !== null
+  );
+
+const registerUser = async () => {
+  errorMessage.value = '';
+
+  loading.value = true;
+  try {
+    await dispatch('session/register', {
+      fullname: fullname.value,
+      username: username.value,
+      password: password.value,
+    });
+
+    registerSuccess.value = true;
+    showDialog.value = false;
+    loading.value = false;
+  } catch (error) {
+    loading.value = false;
+    errorMessage.value = $t(api.getErrorMessage(error));
+  }
+};
+
+const verifyCaptcha = (response) => {
+  recaptchaResponse.value = response;
+};
+
+const expireRecaptcha = () => {
+  recaptchaResponse.value = null;
+};
+
+const close = () => {
+  emit('close');
+};
+
+const closeIfEscape = (key) => {
+  if (key.keyCode === 27) {
+    close();
+  }
 };
 </script>

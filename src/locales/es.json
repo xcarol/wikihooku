@@ -11,6 +11,7 @@
   "Field email is required": "El campo email es necessario",
   "Unauthorized": "No tienes suficientes permisos",
   "Current password don't match": "La contraseña actual no coincide",
+  "User missing confirmation email": "Confirma primero tu cuenta, por favor.",
   "en": "Inglés",
   "en-US": "fallback:en",
   "ca": "Catalán",

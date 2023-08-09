@@ -11,6 +11,7 @@
   "Field email is required": "Field email is required",
   "Unauthorized": "You don't have enough rights",
   "Current password don't match": "Current password don't match",
+  "User missing confirmation email": "Please confirm first your account",
   "ca": "Catalan",
   "ca-ES": "fallback:ca",
   "es": "Spanish",

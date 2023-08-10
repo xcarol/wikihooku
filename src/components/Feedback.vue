@@ -1,7 +1,5 @@
 <template>
-  <v-row
-    justify="center"
-  >
+  <v-row justify="center">
     <v-dialog
       v-model="showDialog"
       max-width="600px"
@@ -25,7 +23,6 @@
                   type="text"
                   required
                   :label="emailLabel"
-                  :error-messages="emailErrors"
                   :rules="emailRules"
                   @keyup.enter="sendFeedback"
                 />
@@ -36,7 +33,6 @@
                   type="text"
                   required
                   :label="feedbackLabel"
-                  :error-messages="feedbackErrors"
                   :rules="feedbackRules"
                 />
               </v-col>
@@ -86,137 +82,108 @@
   </v-row>
 </template>
 
-<script>
-import VueRecaptcha from 'vue3-recaptcha2';
-import { mapGetters, mapMutations } from 'vuex';
+<script setup>
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useApi } from '../plugins/api';
 import { useField } from 'vee-validate';
+import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
 import { MIN_FEEDBACK_LEN } from '../global/const';
+import VueRecaptcha from 'vue3-recaptcha2';
 
-export default {
-  name: 'FeedbackComponent',
-  components: {
-    VueRecaptcha,
+const emit = defineEmits(['close']);
+const { t: $t } = useI18n();
+const api = useApi();
+const { getters, commit } = useStore();
+
+const showDialog = ref(true);
+const recaptchaResponse = ref(null);
+const errorMessage = ref('');
+const loading = ref(false);
+const recaptchaKey = import.meta.env.VITE_RECAPTCHA_KEY;
+
+const emailLabel = computed(() => $t('feedback.email'));
+const feedbackLabel = computed(() => $t('feedback.feedback'));
+
+const { value: user } = getters['session/user'];
+const anonymousUser = computed(() => !user?.value);
+
+const emailRules = [
+  async (value) => {
+    try {
+      await yup.string().required().email().validate(value);
+      return true;
+    } catch (error) {
+      return $t(error.message);
+    }
   },
-  emits: ['close'],
-  data: () => ({
-    email: '',
-    feedback: '',
-    errorMessage: '',
-    loading: false,
-    showDialog: true,
-    recaptchaKey: import.meta.env.VITE_RECAPTCHA_KEY,
-    recaptchaResponse: null,
-    emailErrors: [],
-    emailRules: [],
-    feedbackErrors: [],
-    feedbackRules: [],
-  }),
-  computed: {
-    ...mapGetters({
-      loggedUser: 'session/isLoggedIn',
-      user: 'session/user',
-    }),
-    anonymousUser() {
-      return this.loggedUser === false;
-    },
-    canSendFeedback() {
-      if (this.anonymousUser) {
-        return (
-          this.email &&
-          this.email.length > 0 &&
-          this.feedback &&
-          this.feedback.length > 0 &&
-          this.recaptchaResponse !== null
-        );
-      }
+];
 
-      return this.feedback ? this.feedback.length > 0 : 0;
-    },
-    emailLabel() {
-      return this.$t('feedback.email');
-    },
-    feedbackLabel() {
-      return this.$t('feedback.feedback');
-    },
+const feedbackRules = [
+  async (value) => {
+    try {
+      await yup
+        .string()
+        .required($t('this is a required field'))
+        .min(MIN_FEEDBACK_LEN, $t('feedback.feedbackLength').replace('%s', MIN_FEEDBACK_LEN))
+        .validate(value);
+      return true;
+    } catch (error) {
+      return error.message;
+    }
   },
-  watch: {
-    showDialog(newValue) {
-      if (newValue === false) {
-        this.close();
-      }
-    },
-  },
-  mounted() {
-    const { value: email, errorMessage: emailError } = useField('email');
-    const { value: feedback, errorMessage: feedbackError } = useField('feedback');
+];
 
-    this.email = email;
-    this.emailErrors = emailError;
+const { value: email, meta: emailMeta } = useField('email', emailRules);
+const { value: feedback, meta: feedbackMeta } = useField('feedback', feedbackRules);
 
-    this.emailRules = [
-      async (value) => {
-        try {
-          await yup.string().required().email().validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
+const canSendFeedback = computed(() => {
+  if (anonymousUser.value) {
+    return (
+      emailMeta.valid &&
+      email.value?.length > 0 &&
+      feedbackMeta.valid &&
+      feedback.value?.length > 0 &&
+      recaptchaResponse.value !== null
+    );
+  }
+  return feedbackMeta.valid && feedback.value?.length > 0;
+});
 
-    this.feedback = feedback;
-    this.feedbackErrors = feedbackError;
+const snackMessage = (message) => {
+  commit('snackMessage', message);
+};
 
-    this.feedbackRules = [
-      async (value) => {
-        try {
-          await yup
-            .string()
-            .required()
-            .min(
-              MIN_FEEDBACK_LEN,
-              this.$t('feedback.feedbackLength').replace('%s', MIN_FEEDBACK_LEN)
-            )
-            .validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
-  },
-  methods: {
-    ...mapMutations(['snackMessage']),
-    async sendFeedback() {
-      this.errorMessage = '';
+const sendFeedback = async () => {
+  errorMessage.value = '';
 
-      this.loading = true;
-      this.api
-        .sendFeedback(this.email || this.user.email, this.feedback)
-        .then(() => {
-          this.snackMessage(this.$t('feedback.sendsuccesfully'));
-          this.close();
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.errorMessage = this.$t(this.api.getErrorMessage(error));
-        });
-    },
-    close() {
-      this.$emit('close');
-    },
-    closeIfEscape(key) {
-      if (key.keyCode === 27) {
-        this.close();
-      }
-    },
-    verifyCaptcha(response) {
-      this.recaptchaResponse = response;
-    },
-    expireRecaptcha() {
-      this.recaptchaResponse = null;
-    },
-  },
+  loading.value = true;
+  try {
+    await api.sendFeedback(email.value || user.email, feedback.value);
+    snackMessage($t('feedback.sendsuccesfully'));
+    close();
+  } catch (error) {
+    loading.value = false;
+    errorMessage.value = $t(api.getErrorMessage(error));
+  }
+};
+
+const close = () => {
+  emit('close');
+};
+
+const closeIfEscape = (key) => {
+  if (key.keyCode === 27) {
+    close();
+  }
+};
+
+const verifyCaptcha = (response) => {
+  recaptchaResponse.value = response;
+};
+
+const expireRecaptcha = () => {
+  recaptchaResponse.value = null;
 };
 </script>

@@ -165,13 +165,12 @@ const recoverPassword = async () => {
 
   recovering = true;
   try {
-    await api.recoverPassword(username);
+    await api.recoverPassword(username.value);
     snackMessage($t('login.recovered'));
     close();
   } catch (error) {
     recovering = false;
     errorMessage.value = $t(api.getErrorMessage(error));
-    error.value = true;
   }
 };
 

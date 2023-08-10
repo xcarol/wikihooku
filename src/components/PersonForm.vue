@@ -5,7 +5,7 @@
     <v-dialog
       v-model="showDialog"
       max-width="600px"
-      :fullscreen="$vuetify.xs"
+      :fullscreen="$vuetify.display.xs"
       scrollable
       @keydown="closeIfEscape"
     >
@@ -21,8 +21,7 @@
                   v-model="fullname"
                   type="text"
                   required
-                  :label="fullnameLabel"
-                  :error-messages="fullnameErrors"
+                  :label="$t('persona.fullname')"
                   :rules="fullnameRules"
                   @keyup.enter="addPersona"
                 />
@@ -104,7 +103,7 @@
                   <v-btn
                     color="blue darken-1"
                     text
-                    :disabled="cannotSave"
+                    :disabled="!canSave"
                     @click.stop="addPersona"
                   >
                     {{ $t('global.ok') }}
@@ -119,117 +118,65 @@
   </v-container>
 </template>
 
-<script>
-import { mapGetters, mapMutations, mapActions } from 'vuex';
+<script setup>
+import { ref, computed } from 'vue';
 import { useField } from 'vee-validate';
+import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
 
-export default {
-  name: 'PersonForm',
-  emits: {
-    add: null,
-    close: null,
-  },
-  data: () => ({
-    fullname: '',
-    birthday: null,
-    birthmonth: null,
-    birthyear: null,
-    deathday: null,
-    deathmonth: null,
-    deathyear: null,
-    showDialog: true,
-  }),
-  mounted() {
-    const { value: fullname, errorMessage: fullnameError } = useField('fullname');
+const emit = defineEmits(['add', 'close']);
+const { t: $t } = useI18n();
 
-    this.fullname = fullname;
-    this.fullnameErrors = fullnameError;
+const showDialog = ref(true);
+const birthday = ref('');
+const birthmonth = ref('');
+const birthyear = ref('');
+const deathday = ref('');
+const deathmonth = ref('');
+const deathyear = ref('');
 
-    this.fullnameRules = [
-      async (value) => {
-        try {
-          await yup.string().required().validate(value);
-          return true;
-        } catch (error) {
-          return this.$t(error.message);
-        }
-      },
-    ];
+const fullnameRules = [
+  async (value) => {
+    try {
+      await yup.string().required().validate(value);
+      return true;
+    } catch (error) {
+      return $t(error.message);
+    }
   },
-  computed: {
-    ...mapGetters({
-      user: 'session/user',
-    }),
-    fullnameLabel() {
-      return this.$t('persona.fullname');
-    },
-    birthdateLabel() {
-      return this.$t('persona.birthdate');
-    },
-    deathdateLabel() {
-      return this.$t('persona.deathdate');
-    },
-    days() {
-      const days = [];
-      for (let n = 1; n < 31; n += 1) {
-        days.push(n);
-      }
-      return days;
-    },
-    months() {
-      const months = [];
-      for (let n = 1; n <= 12; n += 1) {
-        months.push(n);
-      }
-      return months;
-    },
-    years() {
-      const curYear = new Date().getFullYear();
-      const years = [];
-      for (let n = curYear; n >= 1900; n -= 1) {
-        years.push(n);
-      }
-      return years;
-    },
-    cannotSave() {
-      return !this.fullname || !this.birthday || !this.birthmonth || !this.birthyear;
-    },
-  },
-  watch: {
-    showDialog(newValue) {
-      if (newValue === false) {
-        this.close();
-      }
-    },
-  },
-  methods: {
-    ...mapMutations(['snackMessage']),
-    ...mapActions({
-      login: 'session/login',
-    }),
-    async addPersona() {
-      const start = new Date(this.birthyear, this.birthmonth, this.birthday);
-      let end = new Date();
+];
+const { value: fullname, meta: fullnameMeta} = useField('fullname', fullnameRules);
 
-      if (this.deathyear && this.deathmonth && this.deathday) {
-        end = new Date(this.deathyear, this.deathmonth, this.deathday);
-      }
+const days = [...Array(30)].map((_, i) => i + 1);
+const months = [...Array(12)].map((_, i) => i + 1);
+const years = [...Array(new Date().getFullYear() - 1899)].map((_, i) => new Date().getFullYear() - i);
 
-      this.$emit('add', {
-        fullname: this.fullname,
-        start,
-        end,
-      });
-    },
-    close() {
-      this.$emit('close');
-    },
-    closeIfEscape(key) {
-      if (key.keyCode === 27) {
-        this.close();
-      }
-    },
-  },
+const canSave = computed(() => {
+  return fullname.value && fullnameMeta.valid && birthday.value && birthmonth.value && birthyear.value;
+});
+
+const addPersona = () => {
+  const start = new Date(birthyear.value, birthmonth.value - 1, birthday.value);
+  let end = new Date();
+
+  if (deathyear.value && deathmonth.value && deathday.value) {
+    end = new Date(deathyear.value, deathmonth.value - 1, deathday.value);
+  }
+
+  emit('add', {
+    fullname: fullname.value,
+    start,
+    end,
+  });
+};
+
+const close = () => {
+  emit('close');
+};
+
+const closeIfEscape = (key) => {
+  if (key.keyCode === 27) {
+    close();
+  }
 };
 </script>

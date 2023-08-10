@@ -138,6 +138,7 @@ import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import VueRecaptcha from 'vue3-recaptcha2';
 import * as yup from 'yup';
+import { MIN_PASSWORD_LEN, MAX_USER_NAME_LEN } from '../../global/const';
 
 const emit = defineEmits(['close'])
 const { dispatch } = useStore();
@@ -160,7 +161,7 @@ const recaptchaKey = import.meta.env.VITE_RECAPTCHA_KEY;
 const fullnameRules = [
   async (value) => {
     try {
-      await yup.string().required().max(100, 'register.fullnameMaxLength').validate(value);
+      await yup.string().required().max(MAX_USER_NAME_LEN, 'register.fullnameMaxLength').validate(value);
       return true;
     } catch (error) {
       return $t(error.message);
@@ -182,7 +183,7 @@ const usernameRules = [
 const passwordRules = [
   async (value) => {
     try {
-      await yup.string().required().min(8, 'register.passwordMinLenght').validate(value);
+      await yup.string().required().min(MIN_PASSWORD_LEN, 'register.passwordMinLenght').validate(value);
       return true;
     } catch (error) {
       return $t(error.message);

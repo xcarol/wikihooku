@@ -6,7 +6,7 @@
   >
     <v-app-bar-nav-icon @click.stop="toggleDrawer()" />
     <v-btn
-      v-if="mdAndUp"
+      v-if="$vuetify.display.mdAndUp"
       text
       rounded
       @click.stop="goHome()"
@@ -20,7 +20,7 @@
       @click.stop="goHome()"
     />
     <v-btn
-      v-if="mdAndUp"
+      v-if="$vuetify.display.mdAndUp"
       text
       rounded
       @click.stop="feedback()"
@@ -51,7 +51,6 @@
     </v-btn-toggle>
     <v-spacer />
     <v-autocomplete
-      v-model="select"
       v-model:search="search"
       :clear-icon="'$close'"
       :error-messages="errorMessage"
@@ -114,166 +113,158 @@
   </v-app-bar>
 </template>
 
-<script>
-import { mapMutations, mapGetters } from 'vuex';
-import { useDisplay } from 'vuetify';
+<script setup>
+import { ref, watch, computed, defineProps, defineEmits } from 'vue';
+import { useStore } from 'vuex';
+import { useApi } from '../plugins/api';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { TIMELINE, AGE } from '../global/const';
 
-export default {
-  name: 'ToolbarComponent',
-  props: {
-    view: {
-      type: String,
-      default: TIMELINE,
-    },
+const { getters, commit } = useStore();
+const { t: $t } = useI18n();
+const api = useApi();
+const router = useRouter();
+
+const props = defineProps({
+  view: {
+    type: String,
+    default: TIMELINE,
   },
-  emits: {
-    login: null,
-    feedback: null,
-    register: null,
-    selected: null,
-    switchView: null,
+});
+
+const emits = defineEmits([
+  'login',
+  'feedback',
+  'register',
+  'selected',
+  'switchView',
+]);
+
+const showMenu = ref(false);
+const items = ref([]);
+const isLoading = ref(false);
+const search = ref(null);
+const errorMessage = ref('');
+const toggle_exclusive = ref(0);
+
+const loggedUser = computed(() => getters['session/isLoggedIn']);
+
+const userMenuOptions = computed(() => [
+  {
+    icon: '$settings',
+    title: $t('menu.account'),
+    action: account,
   },
-  setup() {
-    const { xs, mdAndUp } = useDisplay();
-    return { xs, mdAndUp };
+  {
+    icon: '$logout',
+    title: $t('menu.logout'),
+    action: logout,
   },
-  data: () => ({
-    showMenu: false,
-    items: [],
-    isLoading: false,
-    select: null,
-    search: null,
-    errorMessage: '',
-    toggle_exclusive: 0,
-  }),
-  computed: {
-    ...mapGetters({
-      loggedUser: 'session/isLoggedIn',
-      user: 'session/user',
-    }),
-    userMenuOptions() {
-      const toolbar = this;
-      return [
-        {
-          icon: '$settings',
-          title: this.$t('menu.account'),
-          action() {
-            toolbar.account();
-          },
-        },
-        {
-          icon: '$logout',
-          title: this.$t('menu.logout'),
-          action() {
-            toolbar.logout();
-          },
-        },
-      ];
-    },
-    anonymousMenuOptions() {
-      const toolbar = this;
-      return [
-        {
-          icon: '$register',
-          title: this.$t('register.title'),
-          action() {
-            toolbar.register();
-          },
-        },
-        {
-          icon: '$login',
-          title: this.$t('login.title'),
-          action() {
-            toolbar.login();
-          },
-        },
-      ];
-    },
+]);
+
+const anonymousMenuOptions = computed(() => [
+  {
+    icon: '$register',
+    title: $t('register.title'),
+    action: register,
   },
-  watch: {
-    async search(val) {
-      this.items = [];
+  {
+    icon: '$login',
+    title: $t('login.title'),
+    action: login,
+  },
+]);
 
-      if (!val || val.length < 5) {
-        this.errorMessage = '';
-        return;
-      }
+const toggleDrawer = () => commit('toggleDrawer');
+const resetSession = () => commit('session/reset');
 
-      this.errorMessage = '';
-      this.isLoading = true;
+const viewToggle = (value) => {
+  emits('switchView', value === 0 ? TIMELINE : AGE);
+};
 
-      try {
-        const result = await this.api.searchPerson(val, 0, 50);
+const menuAction = (action) => {
+  showMenu.value = false;
+  action();
+};
 
-        if (result.status !== 200) {
-          throw new Error(result.statusText);
-        }
+const goHome = () => {
+  const currentPath = router.currentRoute.path;
+  if (currentPath === '/') {
+    router.go();
+  } else {
+    router.push({ path: '/' });
+  }
+};
 
-        if (result.data.query) {
-          result.data.query.pages.forEach((message) => {
-            if (message.revisions[0].slots.main.content.includes('birth_date')) {
-              this.items.push({
-                title: message.title,
-                value: message.pageid,
-                content: message.revisions[0].slots.main.content,
-              });
-            }
+const logout = () => {
+  resetSession();
+  goHome();
+};
+
+const account = () => {
+  router.push({ name: 'Account' });
+};
+
+const feedback = () => {
+  emits('feedback');
+};
+
+const register = () => {
+  emits('register');
+};
+
+const login = () => {
+  emits('login');
+};
+
+const input = (item) => {
+  if (item) {
+    emits('selected', item);
+  }
+};
+
+const setAge = () => {
+  viewToggle(AGE);
+};
+
+const setTimeline = () => {
+  viewToggle(TIMELINE);
+};
+
+watch(search, async (val) => {
+  items.value = [];
+
+  if (!val || val.length < 5) {
+    errorMessage.value = '';
+    return;
+  }
+
+  errorMessage.value = '';
+  isLoading.value = true;
+
+  try {
+    const result = await api.searchPerson(val, 0, 50);
+
+    if (result.status !== 200) {
+      throw new Error(result.statusText);
+    }
+
+    if (result.data.query) {
+      result.data.query.pages.forEach((message) => {
+        if (message.revisions[0].slots.main.content.includes('birth_date')) {
+          items.value.push({
+            title: message.title,
+            value: message.pageid,
+            content: message.revisions[0].slots.main.content,
           });
         }
-      } catch (error) {
-        this.errorMessage = error.message;
-      }
+      });
+    }
+  } catch (error) {
+    errorMessage.value = error.message;
+  }
 
-      this.isLoading = false;
-    },
-  },
-  methods: {
-    ...mapMutations({
-      toggleDrawer: 'toggleDrawer',
-      resetSession: 'session/reset',
-    }),
-    viewToggle(value) {
-      this.$emit('switchView', value === 0 ? TIMELINE : AGE);
-    },
-    menuAction(action) {
-      this.showMenu = false;
-      action();
-    },
-    goHome() {
-      if (this.$router.currentRoute.path === '/') {
-        this.$router.go();
-      } else {
-        this.$router.push({ path: '/' });
-      }
-    },
-    logout() {
-      this.resetSession();
-      this.goHome();
-    },
-    account() {
-      this.$router.push({ name: 'Account' });
-    },
-    feedback() {
-      this.$emit('feedback');
-    },
-    register() {
-      this.$emit('register');
-    },
-    login() {
-      this.$emit('login');
-    },
-    input(item) {
-      if (item) {
-        this.$emit('selected', item);
-      }
-    },
-    setAge() {
-      this.$emit('switchView', AGE);
-    },
-    setTimeline() {
-      this.$emit('switchView', TIMELINE);
-    },
-  },
-};
+  isLoading.value = false;
+});
 </script>

@@ -17,54 +17,51 @@
   </v-hover>
 </template>
 
-<script>
+<script setup>
+import { computed, defineProps, defineEmits } from 'vue';
 import { AGE, TIMELINE } from '../global/const';
 
-export default {
-  name: 'TimelineComponent',
-  props: {
-    view: {
-      type: String,
-      default: TIMELINE,
-    },
-    name: {
-      type: String,
-      default: '',
-    },
-    start: {
-      type: Number,
-      required: true,
-    },
-    end: {
-      type: Number,
-      required: true,
-    },
-    max: {
-      type: Number,
-      required: true,
-    },
-    min: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  view: {
+    type: String,
+    default: TIMELINE,
   },
-  emits: { remove: null },
-  computed: {
-    range() {
-      switch (this.view) {
-        case AGE: {
-          return [0, this.end - this.start];
-        }
-        case TIMELINE:
-        default:
-          return [this.start, this.end];
-      }
-    },
+  name: {
+    type: String,
+    default: '',
   },
-  methods: {
-    remove() {
-      this.$emit('remove', this.name);
-    },
+  start: {
+    type: Number,
+    required: true,
   },
+  end: {
+    type: Number,
+    required: true,
+  },
+  max: {
+    type: Number,
+    required: true,
+  },
+  min: {
+    type: Number,
+    required: true,
+  },
+});
+
+const emits = defineEmits(['remove']);
+
+const range = computed(() => {
+  switch (props.view) {
+    case AGE: {
+      return [0, props.end - props.start];
+    }
+    case TIMELINE:
+    default:
+      return [props.start, props.end];
+  }
+});
+
+const remove = () => {
+  emits.remove(props.name);
 };
 </script>

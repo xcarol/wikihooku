@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    v-model="success"
+    v-model="confirmSuccess"
     width="500"
     :fullscreen="$vuetify.display.xs"
     scrollable
@@ -34,7 +34,7 @@
   </v-dialog>
 
   <v-dialog
-    v-model="error"
+    v-model="confirmError"
     width="500"
     :fullscreen="$vuetify.display.xs"
     scrollable
@@ -68,39 +68,36 @@
   </v-dialog>
 </template>
 
-<script>
-import { mapActions } from 'vuex';
-import { localeFallback, getBrowserLang } from '../i18n';
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 
-export default {
-  name: 'ConfirmView',
-  data() {
-    return {
-      success: false,
-      error: false,
-    };
-  },
-  created() {
-    const { lang, email, token } = this.$route.query;
-    this.$i18n.locale = localeFallback(lang) || getBrowserLang();
-    this.confirm({
-      email,
-      token,
-    })
-      .then(() => {
-        this.success = true;
-      })
-      .catch(() => {
-        this.error = true;
-      });
-  },
-  methods: {
-    ...mapActions({
-      confirm: 'session/confirm',
-    }),
-    goHome() {
-      this.$router.push({ path: '/' });
-    },
-  },
+const { dispatch } = useStore();
+const { query } = useRoute();
+const router = useRouter();
+const { locale: i18nlocale, t: $t } = useI18n();
+
+const confirmSuccess = ref(false);
+const confirmError = ref(false);
+
+const { lang, email, token } = query;
+i18nlocale.value = lang;
+
+onMounted(async () => {
+  try {
+    await dispatch('session/confirm', {
+      email: email,
+      token: token,
+    });
+    confirmSuccess.value = true;
+  } catch (error) {
+    confirmError.value = true;
+  }
+});
+
+const goHome = () => {
+  router.push({ path: '/' });
 };
 </script>

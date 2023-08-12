@@ -35,65 +35,51 @@
   </v-list>
 </template>
 
-<script>
+<script setup>
 import { VueDraggableNext } from 'vue-draggable-next';
-import { mapGetters, mapMutations } from 'vuex';
+import { computed, defineProps } from 'vue';
+import { useStore } from 'vuex';
 import { TIMELINE, AGE } from '../../global/const';
 import Timeline from '../../components/Timeline.vue';
 
-export default {
-  name: 'HomeView',
-  components: {
-    VueDraggableNext,
-    Timeline,
+const props = defineProps({
+  view: {
+    type: String,
+    default: TIMELINE,
   },
-  props: {
-    view: {
-      type: String,
-      default: TIMELINE,
-    },
+});
+
+const { getters, commit } = useStore();
+
+const persons = computed({
+  get: () => getters['wiki/entities'],
+  set: (newValue) => {
+    setEntities(newValue);
   },
-  computed: {
-    ...mapGetters({
-      entities: 'wiki/entities',
-      larger: 'wiki/larger',
-      start: 'wiki/start',
-      end: 'wiki/end',
-    }),
-    persons: {
-      get() {
-        return this.entities;
-      },
-      set(newValue) {
-        this.setEntities(newValue);
-      },
-    },
-    min() {
-      switch (this.view) {
-        case AGE:
-          return 0;
-        case TIMELINE:
-        default:
-          return this.start;
-      }
-    },
-    max() {
-      switch (this.view) {
-        case AGE:
-          return this.larger;
-        case TIMELINE:
-        default:
-          return this.end;
-      }
-    },
-  },
-  methods: {
-    ...mapMutations({
-      setEntities: 'wiki/entities',
-      remPerson: 'wiki/remEntity',
-    }),
-  },
-};
+});
+
+const min = computed(() => {
+  switch (props.view) {
+    case AGE:
+      return 0;
+    case TIMELINE:
+    default:
+      return getters['wiki/start'];
+  }
+});
+
+const max = computed(() => {
+  switch (props.view) {
+    case AGE:
+      return getters['wiki/larger'];
+    case TIMELINE:
+    default:
+      return getters['wiki/end'];
+  }
+});
+
+const setEntities = (entities) => commit('wiki/entities', entities);
+const remPerson = (person) => commit('wiki/remEntity', person);
 </script>
 
 <style>

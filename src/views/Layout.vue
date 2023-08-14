@@ -4,9 +4,9 @@
       :view="viewToggle"
       @selected="selected"
       @switch-view="switchView"
-      @register="register"
-      @login="showLogin = true"
-      @feedback="showFeedback = true"
+      @register="openRegister"
+      @login="openLogin"
+      @feedback="openFeedback"
     />
     <v-overlay
       :absolute="true"
@@ -65,10 +65,13 @@
   </v-container>
 </template>
 
-<script>
+<script setup>
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useStore } from 'vuex';
+
 import dayjs from 'dayjs';
 import parseInfo from 'infobox-parser';
-import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 import { wikiEntity } from '../store/modules/wiki';
 import { TIMELINE, NO_PAGE_ID } from '../global/const';
@@ -80,121 +83,106 @@ import Feedback from '../components/Feedback.vue';
 import Register from '../components/auth/Register.vue';
 import Login from '../components/auth/Login.vue';
 
-export default {
-  name: 'LayoutView',
-  components: {
-    Drawer,
-    Toolbar,
-    Register,
-    Login,
-    Feedback,
-    PersonForm,
-  },
-  data: () => ({
-    showRegister: false,
-    showLogin: false,
-    showFeedback: false,
-    snackTimeout: 6000,
-    now: 0,
-    view: TIMELINE,
-    loading: false,
-    showNewPersonForm: false,
-  }),
-  computed: {
-    ...mapGetters({
-      snackMessage: 'snackMessage',
-      loggedUser: 'session/isLoggedIn',
-    }),
-    errorMessage() {
-      if (this.snackMessage.length) {
-        this.resetSnackMessage(this.snackTimeout);
-      }
-      return this.snackMessage;
-    },
-    viewToggle() {
-      return this.view;
-    },
-  },
-  methods: {
-    ...mapActions({
-      resetSnackMessage: 'resetSnackMessage',
-    }),
-    ...mapMutations({
-      setSnackMessage: 'snackMessage',
-      addEntity: 'wiki/addEntity',
-    }),
-    clearErrorMessage() {
-      this.resetSnackMessage(this.now);
-    },
-    closeRegister() {
-      this.showRegister = false;
-    },
-    closeLogin() {
-      this.showLogin = false;
-      if (this.loggedUser) {
-        this.$router.go();
-      }
-    },
-    closeFeedback() {
-      this.showFeedback = false;
-    },
-    register() {
-      this.showRegister = true;
-    },
-    async selected(item) {
-      this.loading = true;
-      let startDate;
-      let endDate = new Date();
+const nowTimeout = 0;
+const snackTimeout = 6000;
+const loading = ref(false);
+const view = ref(TIMELINE);
+const showFeedback = ref(false);
+const showLogin = ref(false);
+const showNewPersonForm = ref(false);
+const showRegister = ref(false);
 
-      try {
-        const infoBox = parseInfo(item.content);
+const { t: $t } = useI18n();
+const store = useStore();
 
-        if (
-          infoBox.general.birthDate &&
-          infoBox.general.birthDate.date &&
-          dayjs(infoBox.general.birthDate.date).isValid()
-        ) {
-          startDate = new Date(infoBox.general.birthDate.date);
-        } else {
-          throw new Error(this.$t('character.noBirthDateFound'));
-        }
+const viewToggle = computed(() => view.value);
+const switchView = (newView) => (view.value = newView);
 
-        if (
-          infoBox.general.deathDate &&
-          infoBox.general.birthDate.date &&
-          dayjs(infoBox.general.birthDate.date).isValid()
-        ) {
-          endDate = new Date(infoBox.general.deathDate.date);
-        }
+const snackMessage = computed(() => store.state.snackMessage);
 
-        this.addEntity(
-          wikiEntity(item.value, item.title, startDate.getFullYear(), endDate.getFullYear())
-        );
-      } catch (error) {
-        this.setSnackMessage(error);
-      }
-      this.loading = false;
-    },
-    newPerson() {
-      this.showNewPersonForm = true;
-    },
-    addNewPerson(person) {
-      this.addEntity(
-        wikiEntity(
-          NO_PAGE_ID,
-          person.fullname,
-          person.start.getFullYear(),
-          person.end.getFullYear()
-        )
-      );
-      this.closeNewPersonForm();
-    },
-    closeNewPersonForm() {
-      this.showNewPersonForm = false;
-    },
-    switchView(view) {
-      this.view = view;
-    },
-  },
+const errorMessage = computed(() => {
+  if (snackMessage.value?.length) {
+    store.dispatch('resetSnackMessage', snackTimeout);
+  }
+  return snackMessage.value || '';
+});
+
+const clearErrorMessage = () => {
+  resetSnackMessage(nowTimeout);
+};
+
+const openFeedback = () => {
+  showFeedback.value = true;
+};
+
+const closeFeedback = () => {
+  showFeedback.value = false;
+};
+
+const openLogin = () => {
+  showLogin.value = true;
+};
+
+const closeLogin = () => {
+  showLogin.value = false;
+};
+
+const newPerson = () => {
+  showNewPersonForm.value = true;
+};
+
+const addNewPerson = (person) => {
+  store.commit(
+    'wiki/addEntity',
+    wikiEntity(NO_PAGE_ID, person.fullname, person.start.getFullYear(), person.end.getFullYear())
+  );
+  closeNewPersonForm();
+};
+const closeNewPersonForm = () => {
+  showNewPersonForm.value = false;
+};
+
+const openRegister = () => {
+  showRegister.value = true;
+};
+
+const closeRegister = () => {
+  showRegister.value = false;
+};
+
+const selected = async (item) => {
+  loading.value = true;
+  let startDate;
+  let endDate = new Date();
+
+  try {
+    const infoBox = parseInfo(item.content);
+
+    if (
+      infoBox.general.birthDate &&
+      infoBox.general.birthDate.date &&
+      dayjs(infoBox.general.birthDate.date).isValid()
+    ) {
+      startDate = new Date(infoBox.general.birthDate.date);
+    } else {
+      throw new Error($t('character.noBirthDateFound'));
+    }
+
+    if (
+      infoBox.general.deathDate &&
+      infoBox.general.birthDate.date &&
+      dayjs(infoBox.general.birthDate.date).isValid()
+    ) {
+      endDate = new Date(infoBox.general.deathDate.date);
+    }
+
+    store.commit(
+      'wiki/addEntity',
+      wikiEntity(item.value, item.title, startDate.getFullYear(), endDate.getFullYear())
+    );
+  } catch (error) {
+    store.commit('snackMessage', error.message);
+  }
+  loading.value = false;
 };
 </script>

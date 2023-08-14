@@ -114,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, defineProps, defineEmits } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useApi } from '../plugins/api';
 import { useI18n } from 'vue-i18n';

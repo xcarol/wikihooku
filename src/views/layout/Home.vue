@@ -37,7 +37,7 @@
 
 <script setup>
 import { VueDraggableNext } from 'vue-draggable-next';
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { TIMELINE, AGE } from '../../global/const';
 import Timeline from '../../components/Timeline.vue';

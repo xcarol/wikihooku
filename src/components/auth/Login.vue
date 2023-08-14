@@ -94,7 +94,7 @@ import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close']);
 const { commit, dispatch } = useStore();
 const { t: $t } = useI18n();
 const api = useApi();

@@ -19,8 +19,8 @@ module.exports = {
     'max-len': 0,
     'vue/max-len': 0,
     'no-underscore-dangle': 'off',
-    'no-console': import.meta.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': import.meta.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'import/extensions': ['error', 'always', {
       js: 'never',
       vue: 'never',

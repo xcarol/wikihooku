@@ -1,25 +1,73 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
-import ca from 'vuetify/es5/locale/ca';
-import en from 'vuetify/es5/locale/en';
-import es from 'vuetify/es5/locale/es';
-import colors from 'vuetify/es5/util/colors';
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import 'vuetify/styles';
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import * as components from 'vuetify/components';
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import * as directives from 'vuetify/directives';
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
+import { createVuetify } from 'vuetify';
+import ca from 'vuetify/lib/locale/ca.mjs';
+import en from 'vuetify/lib/locale/en.mjs';
+import es from 'vuetify/lib/locale/es.mjs';
+import colors from 'vuetify/lib/util/colors.mjs';
+import {
+  mdiHome,
+  mdiPlus,
+  mdiCloseCircleOutline,
+  mdiCloseCircle,
+  mdiAlignHorizontalLeft,
+  mdiDistributeVerticalCenter,
+  mdiMessageAlert,
+  mdiAccountCircleOutline,
+  mdiAccountCircle,
+  mdiAccountPlusOutline,
+  mdiLoginVariant,
+  mdiLogoutVariant,
+  mdiDragVertical,
+} from '@mdi/js';
 
-Vue.use(Vuetify);
+const defaultTheme = import.meta.env.VITE_THEME || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
-export default new Vuetify({
+const vuetify = createVuetify({
+  components,
+  directives,
   icons: {
-    iconfont: 'mdi',
-    values: {
-      add: 'mdi-plus',
-      del: 'mdi-close-circle-outline',
+    defaultSet: 'mdi',
+    aliases: {
+      ...aliases,
+      home: mdiHome,
+      add: mdiPlus,
+      del: mdiCloseCircleOutline,
+      close: mdiCloseCircle,
+      age: mdiAlignHorizontalLeft,
+      timeline: mdiDistributeVerticalCenter,
+      messageAlert: mdiMessageAlert,
+      settings: mdiAccountCircle,
+      account: mdiAccountCircleOutline,
+      register: mdiAccountPlusOutline,
+      login: mdiLoginVariant,
+      logout: mdiLogoutVariant,
+      drag: mdiDragVertical,
+    },
+    sets: {
+      mdi,
     },
   },
   theme: {
+    defaultTheme,
     themes: {
       light: {
-        primary: '#424242',
-        secondary: colors.grey.base,
+        colors: {
+          primary: colors.grey.darken3,
+          secondary: colors.grey.base,
+        },
+      },
+      dark: {
+        colors: {
+          primary: colors.grey.darken3,
+          secondary: colors.grey.base,
+        },
       },
     },
   },
@@ -28,3 +76,5 @@ export default new Vuetify({
     current: 'ca',
   },
 });
+
+export default vuetify;

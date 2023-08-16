@@ -1,6 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
-import Vue from 'vue';
 import parseInfo from 'infobox-parser';
 
 class Api {
@@ -120,24 +118,15 @@ class Api {
 const api = new Api();
 
 const ApiPlugin = {
-  install(VueInstance, options) {
-    VueInstance.api = api;
-    Object.defineProperties(Vue.prototype, {
-      api: {
-        get() {
-          return api;
-        },
-      },
-    });
-    Vue.mixin({
-      created() {
-        api.axios = this.axios;
-      },
-    });
+  install(app, options) {
+    app.config.globalProperties.api = api;
+    api.axios = options.axios;
   },
+  api,
 };
 
-Vue.use(ApiPlugin);
+export function useApi() {
+  return api;
+}
 
-export { api };
 export default ApiPlugin;

@@ -1,177 +1,177 @@
 <template>
-  <v-flex>
-    <v-dialog
-      v-model="show"
-      width="500"
-      :fullscreen="$vuetify.breakpoint.xsOnly"
-      scrollable
-      persistent
-    >
-      <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
+  <v-dialog
+    v-model="showDialog"
+    width="500"
+    :fullscreen="$vuetify.display.xs"
+    scrollable
+    persistent
+  >
+    <v-card>
+      <v-card-title
+        class="headline grey lighten-2"
+        primary-title
+      >
+        <span class="headline">{{ $t('resetPassword.title') }}</span>
+      </v-card-title>
+
+      <v-card-text>
+        <v-container grid-list-md>
+          <v-row wrap>
+            <v-col cols="12">
+              <v-text-field
+                v-model="password"
+                type="password"
+                :label="passwordLabel"
+                :rules="passwordRules"
+                @keyup.enter="resetPassword"
+              />
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="passwordRepeat"
+                type="password"
+                :label="passwordLabelRepeat"
+                :rules="passwordRepeatRules"
+                @keyup.enter="resetPassword"
+              />
+            </v-col>
+            <v-col cols="12">
+              <vue-recaptcha
+                :sitekey="recaptchaKey"
+                @verify="verifyCaptcha"
+                @expire="expireRecaptcha"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
+
+      <v-alert
+        :model-value="errorMessage !== ''"
+        closable
+        variant="outlined"
+        type="error"
+      >
+        {{ errorMessage }}
+      </v-alert>
+      <v-divider />
+
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          color="blue darken-1"
+          text
+          :loading="loading"
+          :disabled="!canReset()"
+          @click.stop="resetPassword"
         >
-          <span class="headline">{{ $t('resetPassword.title') }}</span>
-        </v-card-title>
-
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12>
-                <ValidationProvider
-                  name="password"
-                  rules="min:8|required"
-                >
-                  <v-text-field
-                    ref="password"
-                    v-model="password"
-                    slot-scope="{
-                      errors,
-                      valid
-                    }"
-                    tabindex="1"
-                    type="password"
-                    :label="passwordLabel"
-                    :error-messages="errors"
-                    :success="valid"
-                    @keyup.enter="resetPassword"
-                  />
-                </ValidationProvider>
-              </v-flex>
-              <v-flex xs12>
-                <ValidationProvider
-                  name="passwordRepeat"
-                  rules="min:8|required|confirmed:password"
-                >
-                  <v-text-field
-                    v-model="passwordRepeat"
-                    slot-scope="{
-                      errors,
-                      valid
-                    }"
-                    tabindex="2"
-                    type="password"
-                    :label="passwordLabelRepeat"
-                    :error-messages="errors"
-                    :success="valid"
-                    @keyup.enter="resetPassword"
-                  />
-                </ValidationProvider>
-              </v-flex>
-              <v-flex xs12>
-                <vue-recaptcha
-                  :sitekey="recaptchaKey"
-                  :load-recaptcha-script="true"
-                  tabindex="3"
-                  @verify="verifyCaptcha"
-                  @expired="expireRecaptcha"
-                />
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card-text>
-
-        <v-alert
-          :value="errorMessage !== ''"
-          dismissible
-          outlined
-          type="error"
-        >
-          {{ errorMessage }}
-        </v-alert>
-        <v-divider />
-
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="blue darken-1"
-            text
-            tabindex="4"
-            :loading="loading"
-            :disabled="!canReset"
-            @click.stop="resetPassword"
-          >
-            {{ $t('resetPassword.button') }}
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-flex>
+          {{ $t('resetPassword.button') }}
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
-<script>
-import VueRecaptcha from 'vue-recaptcha';
-import { mapActions } from 'vuex';
+<script setup>
+import { ref } from 'vue';
+import { useField } from 'vee-validate';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import * as yup from 'yup';
+import VueRecaptcha from 'vue3-recaptcha2';
+import { useApi } from '../plugins/api';
+import { MIN_PASSWORD_LEN } from '../global/const';
 
-export default {
-  components: {
-    VueRecaptcha,
-  },
-  data() {
-    return {
-      password: '',
-      passwordRepeat: '',
-      recaptchaKey: process.env.VUE_APP_RECAPTCHA_KEY,
-      recaptchaResponse: null,
-      loading: false,
-      show: true,
-      errorMessage: '',
-    };
-  },
-  computed: {
-    canReset() {
-      return this.password.length > 0
-        && this.passwordRepeat.length > 0
-        && this.passwordEqual
-        && this.recaptchaResponse !== null;
-    },
-    passwordLabel() {
-      return this.$t('resetPassword.password');
-    },
-    passwordLabelRepeat() {
-      return this.$t('resetPassword.passwordRepeat');
-    },
-    passwordEqual() {
-      return this.password === this.passwordRepeat;
-    },
-  },
-  created() {
-    const { lang, email, token } = this.$route.query;
-    this.$i18n.locale = lang;
-    this.email = email;
-    this.token = token;
-  },
-  methods: {
-    ...mapActions({
-      reset: 'session/resetPassword',
-    }),
-    async resetPassword() {
-      this.errorMessage = '';
+const { dispatch } = useStore();
+const { query } = useRoute();
+const { locale: i18nlocale, t: $t } = useI18n();
+const api = useApi();
+const router = useRouter();
 
-      this.loading = true;
-      this.reset({
-        email: this.email,
-        password: this.password,
-        token: this.token,
-      })
-        .then(() => {
-          this.goHome();
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.errorMessage = this.$t(this.api.getErrorMessage(error));
-        });
-    },
-    goHome() {
-      this.$router.push({ path: '/' });
-    },
-    verifyCaptcha(response) {
-      this.recaptchaResponse = response;
-    },
-    expireRecaptcha() {
-      this.recaptchaResponse = null;
-    },
+const { lang, email, token } = query;
+i18nlocale.value = lang;
+
+const passwordRules = [
+  async (value) => {
+    try {
+      await yup
+        .string()
+        .required()
+        .min(MIN_PASSWORD_LEN, 'register.passwordMinLenght')
+        .validate(value);
+      return true;
+    } catch (error) {
+      return $t(error.message);
+    }
   },
+];
+
+const { value: password, meta: passwordMeta } = useField('password', passwordRules);
+
+const passwordRepeatRules = [
+  async (value) => {
+    try {
+      await yup
+        .string()
+        .test('passwords-match', 'register.passwordsMatch', (passwordValue) => password.value === passwordValue)
+        .required()
+        .validate(value);
+      return true;
+    } catch (error) {
+      return $t(error.message);
+    }
+  },
+];
+
+const { value: passwordRepeat, meta: passwordRepeatMeta } = useField(
+  'passwordRepeat',
+  passwordRepeatRules
+);
+
+const recaptchaKey = import.meta.env.VITE_RECAPTCHA_KEY;
+const recaptchaResponse = ref(null);
+const loading = ref(false);
+const showDialog = ref(true);
+const errorMessage = ref('');
+
+const goHome = () => {
+  router.push({ path: '/' });
+};
+
+const verifyCaptcha = (response) => {
+  recaptchaResponse.value = response;
+};
+
+const expireRecaptcha = () => {
+  recaptchaResponse.value = null;
+};
+
+const canReset = () =>
+  passwordMeta.valid &&
+  password.value?.length > 0 &&
+  passwordRepeatMeta.valid &&
+  passwordRepeat.value?.length > 0 &&
+  password.value === passwordRepeat.value &&
+  recaptchaResponse.value !== null;
+
+const passwordLabel = $t('resetPassword.password');
+const passwordLabelRepeat = $t('resetPassword.passwordRepeat');
+
+const resetPassword = async () => {
+  errorMessage.value = '';
+
+  loading.value = true;
+  try {
+    await dispatch('session/resetPassword', {
+      email,
+      password: password.value,
+      token,
+    });
+    goHome();
+  } catch (error) {
+    loading.value = false;
+    errorMessage.value = $t(api.getErrorMessage(error));
+  }
 };
 </script>

@@ -1,4 +1,6 @@
 {
+  "this is a required field": "This is a required field",
+  "this must be a valid email": "This must be a valid email",
   "User or Password error": "Invalid email or password",
   "Not Found": "Not Found",
   "Internal Server Error": "An error ocurred. Try it again later...",
@@ -9,6 +11,7 @@
   "Field email is required": "Field email is required",
   "Unauthorized": "You don't have enough rights",
   "Current password don't match": "Current password don't match",
+  "User missing confirmation email": "Please confirm first your account",
   "ca": "Catalan",
   "ca-ES": "fallback:ca",
   "es": "Spanish",
@@ -37,8 +40,10 @@
     "title": "Register",
     "button": "Register",
     "fullname": "Name",
+    "fullnameMaxLength": "Name cannot be longer than 100 characters",
     "username": "Email",
     "password": "Password",
+    "passwordMinLenght": "Password must be at least 8 characters long",
     "passwordRepeat": "Repeat your password",
     "passwordsMatch": "Passwords must match",
     "successTitle": "Register successful!",
@@ -91,13 +96,16 @@
     "title": "Account settings",
     "name": "Name",
     "nameHint": "Your public name",
+    "usernameLength": "Your name cannot be longer that %s characters",
     "currentPassword": "Password",
     "currentPasswordHint": "Type your current password",
     "newPassword": "New Password",
     "newPasswordHint": "Type your new password",
+    "newPasswordLength": "New password must be at least %s characters long",
+    "newPasswordRule": "New password cannot be equal to the current password",
     "newPasswordRepeat": "Repeat Password",
     "newPasswordRepeatHint": "Repeat your new password",
-    "samePasswords": "New password and old password cannot be the same",
+    "newPasswordRepeatRule": "This must be equal to the new password",
     "locale": "Language",
     "notVerified": "Please confirm first your account through the link in the registration email"
   },
@@ -106,6 +114,7 @@
     "button": "Send feedback",
     "email": "Email",
     "feedback": "Your feedback",
+    "feedbackLength": "Type a minimum of %s caracters",
     "sendsuccesfully": "Your feedback has been registered succesfully. Thanks for contributing!"
   }
 }

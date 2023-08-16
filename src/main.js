@@ -1,20 +1,19 @@
-import Vue from 'vue';
-import './plugins/axios';
-import './vee-validate';
-import './plugins/api';
-import App from './App';
+import { createApp } from 'vue';
+import axios from './plugins/axios';
+import App from './App.vue';
 import router from './router';
-import store from './store/config';
 import vuetify from './plugins/vuetify';
 import i18n from './i18n';
-import './registerServiceWorker';
+import store from './store/config';
+import api from './plugins/api';
 
-Vue.config.productionTip = false;
+const app = createApp(App);
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  i18n,
-  render: (h) => h(App),
-}).$mount('#app');
+app.use(router);
+app.use(vuetify);
+app.use(i18n);
+app.use(store);
+app.use(axios);
+app.use(api, { axios: app.config.globalProperties.axios });
+
+app.mount('#app');

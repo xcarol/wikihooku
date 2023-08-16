@@ -7,18 +7,18 @@ module.exports = {
   },
 
   extends: [
-    'plugin:vue/recommended',
-    '@vue/airbnb',
-    'plugin:security/recommended'
+    'plugin:vue/vue3-recommended',
+    '@vue/eslint-config-airbnb',
+    'prettier',
   ],
 
   plugins: [
     'vue',
-    'security'
   ],
 
   rules: {
-    'max-len': 'off',
+    'max-len': 0,
+    'vue/max-len': 0,
     'no-underscore-dangle': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -27,23 +27,11 @@ module.exports = {
       vue: 'never',
     }],
     'arrow-parens': ['error', 'always'],
-    'vue/component-name-in-template-casing': ['error', 'kebab-case']
+    'vue/component-name-in-template-casing': ['error', 'kebab-case'],
   },
 
   parserOptions: {
-    parser: 'babel-eslint',
-    ecmaVersion: 2018,
+    ecmaVersion: 'latest',
     sourceType: 'module',
   },
-
-  overrides: [
-    {
-      files: [
-        '**/__tests__/*.{j,t}s?(x)'
-      ],
-      env: {
-        mocha: true
-      }
-    }
-  ]
 };

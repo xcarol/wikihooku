@@ -5,12 +5,11 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 
-import Vue from 'vue';
 import axios from 'axios';
 import store from '../store/config';
 
 // Full config:  https://github.com/axios/axios#request-config
-axios.defaults.baseURL = process.env.VUE_APP_API_URL || '';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || '';
 
 const _axios = axios.create();
 
@@ -43,24 +42,9 @@ _axios.interceptors.response.use(
 );
 
 const AxiosPlugin = {
-  install(VueInstance, options) {
-    VueInstance.axios = _axios;
-    window.axios = _axios;
-    Object.defineProperties(Vue.prototype, {
-      axios: {
-        get() {
-          return _axios;
-        },
-      },
-      $axios: {
-        get() {
-          return _axios;
-        },
-      },
-    });
+  install(app, options) {
+    app.config.globalProperties.axios = _axios;
   },
 };
-
-Vue.use(AxiosPlugin);
 
 export default AxiosPlugin;

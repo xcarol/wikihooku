@@ -1,4 +1,6 @@
 {
+  "this is a required field": "Este campo es obligatorio",
+  "this must be a valid email": "Debe ser una dirección de email válida",
   "User or Password error": "email o contraseña inválidos",
   "Not Found": "No encontrado",
   "Internal Server Error": "Ha ocurrido un error. Vuelve a probarlo más tarde...",
@@ -9,6 +11,7 @@
   "Field email is required": "El campo email es necessario",
   "Unauthorized": "No tienes suficientes permisos",
   "Current password don't match": "La contraseña actual no coincide",
+  "User missing confirmation email": "Confirma primero tu cuenta, por favor.",
   "en": "Inglés",
   "en-US": "fallback:en",
   "ca": "Catalán",
@@ -37,8 +40,10 @@
     "title": "Registro",
     "button": "Registro",
     "fullname": "Nombre",
+    "fullnameMaxLength": "El nombre no puede ser más largo de 100 caracteres",
     "username": "Email",
     "password": "Contraseña",
+    "passwordMinLenght": "La contraseña debe tener un mínimo de 8 caracteres",
     "passwordRepeat": "Repite la contraseña",
     "passwordsMatch": "Las contraseñas deben coincidir",
     "successTitle": "Registro finalizado!",
@@ -91,13 +96,16 @@
     "title": "Configuración de la cuenta",
     "name": "Nombre",
     "nameHint": "Tu nombre público",
+    "usernameLength": "Tu nombre no puede ocupar més de %s caracteres",
     "currentPassword": "Contraseña",
     "currentPasswordHint": "Introduce la contraseña actual",
     "newPassword": "Nueva contraseña",
     "newPasswordHint": "Introduce tu nueva contraseña",
+    "newPasswordLength": "La nueva contraseña debe ser de %s caracters como mínimo",
+    "newPasswordRule": "La nueva contraseña no puede ser igual a la actual",
     "newPasswordRepeat": "Repite la contraseña",
     "newPasswordRepeatHint": "Repite tu nueva contraseña",
-    "samePasswords": "La nueva contraseña y la antigua no pueden ser iguales",
+    "newPasswordRepeatRule": "Ésta y la nueva contraseña deben ser iguales",
     "locale": "Idioma",
     "notVerified": "Por favor confirma primero tu cuenta a través del enlace del email de registro"
   },
@@ -106,6 +114,7 @@
     "button": "Enviar feedback",
     "email": "Email",
     "feedback": "Tu feedback",
+    "feedbackLength": "Debes escribir %s caracteres como mínimo",
     "sendsuccesfully": "Tu feedback se ha registrado con éxito. Gracias por contribuir!"
   }
 }

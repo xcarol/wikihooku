@@ -1,25 +1,22 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import store from './store/config';
-import Layout from './views/Layout';
-import ResetPassword from './views/ResetPassword';
-
-Vue.use(VueRouter);
+import LayoutView from './views/LayoutView.vue';
+import ResetPassword from './views/ResetPassword.vue';
 
 const routes = [
   {
     path: '/',
-    component: Layout,
+    component: LayoutView,
     children: [
       {
         path: '/',
         name: 'Home',
-        component: () => import('./views/layout/Home'),
+        component: () => import('./views/layout/HomeLayout.vue'),
       },
       {
         path: '/account',
         name: 'Account',
-        component: () => import('./views/layout/Account'),
+        component: () => import('./views/layout/AccountLayout.vue'),
         meta: { requiresAuth: true },
       },
     ],
@@ -27,7 +24,7 @@ const routes = [
   {
     path: '/confirm',
     name: 'Confirm',
-    component: () => import('./views/Confirm'),
+    component: () => import('./views/ConfirmView.vue'),
   },
   {
     path: '/resetpass',
@@ -35,17 +32,17 @@ const routes = [
     component: ResetPassword,
   },
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     redirect: '/',
   },
 ];
 
-const Router = new VueRouter({
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 
-Router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
   const isLoggedIn = store.getters['session/isLoggedIn'];
 
   if (
@@ -59,4 +56,4 @@ Router.beforeEach((to, from, next) => {
   next();
 });
 
-export default Router;
+export default router;

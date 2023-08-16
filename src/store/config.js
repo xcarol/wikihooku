@@ -1,14 +1,10 @@
-/* eslint no-param-reassign: ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
-import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import VuexPersistence from 'vuex-persist';
 import session from './modules/session';
-import collections from './modules/collections';
+// import collections from './modules/collections';
 import wiki from './modules/wiki';
 
-Vue.use(Vuex);
-
-export const storeConfig = {
+const store = createStore({
   state: {
     drawerVisible: true,
     snackMessage: '',
@@ -35,13 +31,14 @@ export const storeConfig = {
   },
   modules: {
     session,
-    collections,
+    // collections,
     wiki,
   },
   plugins: [
-    new VuexPersistence().plugin,
+    new VuexPersistence({
+      storage: window.localStorage,
+    }).plugin,
   ],
-};
+});
 
-const store = new Vuex.Store(storeConfig);
 export default store;

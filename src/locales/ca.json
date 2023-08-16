@@ -1,4 +1,6 @@
 {
+  "this is a required field": "Aquest camp és obligatori",
+  "this must be a valid email": "Cal que sigui una adreça d'email vàlida",
   "User or Password error": "email o contrasenya incorrectes",
   "Not Found": "No s'ha trobat",
   "Internal Server Error": "S'ha produit un error. Torna-ho a provar més tard...",
@@ -9,6 +11,7 @@
   "Field email is required": "El camp email es necessari",
   "Unauthorized": "No tens prou permisos",
   "Current password don't match": "La contrasenya actual no coincideix",
+  "User missing confirmation email": "Confirma primer el teu compte, si us plau.",
   "ca": "Català",
   "ca-ES": "fallback:ca",
   "en": "Anglès",
@@ -37,8 +40,10 @@
     "title": "Registre",
     "button": "Registra't",
     "fullname": "Nom",
+    "fullnameMaxLength": "El nom no pot ser més llarg de 100 caracters",
     "username": "Email",
     "password": "Contrasenya",
+    "passwordMinLenght": "La contrasenya ha de tenir un mínim de 8 caracters",
     "passwordRepeat": "Repeteix la contrasenya",
     "passwordsMatch": "Les contrasenyes han de coincidir",
     "successTitle": "Registre finalitzat!",
@@ -91,13 +96,16 @@
     "title": "Configuració del compte",
     "name": "Nom",
     "nameHint": "El teu nom públic",
+    "usernameLength": "El teu nom no pot ocupar més de %s caracters",
     "currentPassword": "Contrasenya actual",
     "currentPasswordHint": "Introdueix la contrasenya actual",
     "newPassword": "Nova contrasenya",
     "newPasswordHint": "Introdueix la teva nova contrasenya",
+    "newPasswordLength": "La nova contrasenya ha de ser de %s caracters com a mínim",
+    "newPasswordRule": "La nova contrasenya no pot ser igual a l'actual",
     "newPasswordRepeat": "Repeteix la contrasenya",
     "newPasswordRepeatHint": "Repeteix la teva nova contrasenya",
-    "samePasswords": "La nova contrasenya i l'antiga no poden ser iguals",
+    "newPasswordRepeatRule": "Aquesta i la nova contrasenya han de ser iguals",
     "locale": "Idioma",
     "notVerified": "Si us plau confirma primer el teu compte a través de l'enllaç al email de registre"
   },
@@ -106,6 +114,7 @@
     "button": "Enviar feedback",
     "email": "Email",
     "feedback": "El teu feedback",
+    "feedbackLength": "Has d'escriure %s caracters com a mínim",
     "sendsuccesfully": "El teu feedback s'ha registrat amb èxit. Gràcies per contribuir!"
   }
 }

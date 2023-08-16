@@ -9,6 +9,7 @@ module.exports = {
   extends: [
     'plugin:vue/vue3-recommended',
     '@vue/eslint-config-airbnb',
+    'prettier',
   ],
 
   plugins: [

@@ -88,8 +88,8 @@ i18nlocale.value = lang;
 onMounted(async () => {
   try {
     await dispatch('session/confirm', {
-      email: email,
-      token: token,
+      email,
+      token,
     });
     confirmSuccess.value = true;
   } catch (error) {

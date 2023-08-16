@@ -151,9 +151,7 @@ const days = [...Array(30)].map((_, i) => i + 1);
 const months = [...Array(12)].map((_, i) => i + 1);
 const years = [...Array(new Date().getFullYear() - 1899)].map((_, i) => new Date().getFullYear() - i);
 
-const canSave = computed(() => {
-  return fullname.value && fullnameMeta.valid && birthday.value && birthmonth.value && birthyear.value;
-});
+const canSave = computed(() => fullname.value && fullnameMeta.valid && birthday.value && birthmonth.value && birthyear.value);
 
 const addPersona = () => {
   const start = new Date(birthyear.value, birthmonth.value - 1, birthday.value);

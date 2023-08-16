@@ -1,6 +1,6 @@
 <template>
   <v-hover>
-    <template v-slot:default="{ isHovering, props }">
+    <template #default="{ isHovering, props }">
       <v-range-slider
         v-model="range"
         v-bind="props"
@@ -21,7 +21,7 @@
 import { computed } from 'vue';
 import { AGE, TIMELINE } from '../global/const';
 
-const props = defineProps({
+const TimelineProps = defineProps({
   view: {
     type: String,
     default: TIMELINE,
@@ -51,17 +51,17 @@ const props = defineProps({
 const emits = defineEmits(['remove']);
 
 const range = computed(() => {
-  switch (props.view) {
+  switch (TimelineProps.view) {
     case AGE: {
-      return [0, props.end - props.start];
+      return [0, TimelineProps.end - TimelineProps.start];
     }
     case TIMELINE:
     default:
-      return [props.start, props.end];
+      return [TimelineProps.start, TimelineProps.end];
   }
 });
 
 const remove = () => {
-  emits.remove(props.name);
+  emits.remove(TimelineProps.name);
 };
 </script>

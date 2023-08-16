@@ -61,7 +61,6 @@
           <v-btn
             color="blue darken-1"
             text
-            tabindex="5"
             @click.stop="close"
           >
             {{ $t('global.close') }}
@@ -69,7 +68,6 @@
           <v-btn
             color="blue darken-1"
             text
-            tabindex="4"
             :loading="loading"
             :disabled="!canSendFeedback"
             @click.stop="sendFeedback"
@@ -85,12 +83,12 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
-import { useApi } from '../plugins/api';
 import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
-import { MIN_FEEDBACK_LEN } from '../global/const';
 import VueRecaptcha from 'vue3-recaptcha2';
+import { MIN_FEEDBACK_LEN } from '../global/const';
+import { useApi } from '../plugins/api';
 
 const emit = defineEmits(['close']);
 const { t: $t } = useI18n();
@@ -108,6 +106,24 @@ const feedbackLabel = computed(() => $t('feedback.feedback'));
 
 const { value: user } = getters['session/user'];
 const anonymousUser = computed(() => !user?.value);
+
+const close = () => {
+  emit('close');
+};
+
+const closeIfEscape = (key) => {
+  if (key.keyCode === 27) {
+    close();
+  }
+};
+
+const verifyCaptcha = (response) => {
+  recaptchaResponse.value = response;
+};
+
+const expireRecaptcha = () => {
+  recaptchaResponse.value = null;
+};
 
 const emailRules = [
   async (value) => {
@@ -167,23 +183,5 @@ const sendFeedback = async () => {
     loading.value = false;
     errorMessage.value = $t(api.getErrorMessage(error));
   }
-};
-
-const close = () => {
-  emit('close');
-};
-
-const closeIfEscape = (key) => {
-  if (key.keyCode === 27) {
-    close();
-  }
-};
-
-const verifyCaptcha = (response) => {
-  recaptchaResponse.value = response;
-};
-
-const expireRecaptcha = () => {
-  recaptchaResponse.value = null;
 };
 </script>

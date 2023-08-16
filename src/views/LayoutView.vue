@@ -1,12 +1,12 @@
 <template>
   <v-container fluid>
-    <toolbar
+    <app-toolbar
       :view="viewToggle"
       @selected="selected"
       @switch-view="switchView"
-      @register="openRegister"
-      @login="openLogin"
-      @feedback="openFeedback"
+      @register="openRegisterDialog"
+      @login="openLoginDialog"
+      @feedback="openFeedbackDialog"
     />
     <v-overlay
       :absolute="true"
@@ -19,17 +19,17 @@
         indeterminate
       />
     </v-overlay>
-    <feedback
-      v-if="showFeedback"
-      @close="closeFeedback"
+    <feedback-dialog
+      v-if="showFeedbackDialog"
+      @close="closeFeedbackDialog"
     />
-    <login
-      v-if="showLogin"
-      @close="closeLogin"
+    <login-dialog
+      v-if="showLoginDialog"
+      @close="closeLoginDialog"
     />
-    <register
-      v-if="showRegister"
-      @close="closeRegister"
+    <register-dialog
+      v-if="showRegisterDialog"
+      @close="closeRegisterDialog"
     />
     <v-snackbar
       color="primary"
@@ -46,12 +46,12 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <person-form
-      v-if="showNewPersonForm"
+    <person-dialog
+      v-if="showNewPersonDialog"
       @add="addNewPerson"
-      @close="closeNewPersonForm"
+      @close="closeNewPersonDialog"
     />
-    <drawer />
+    <app-drawer />
     <router-view :view="viewToggle" />
     <v-btn
       position="fixed"
@@ -75,28 +75,28 @@ import parseInfo from 'infobox-parser';
 
 import { wikiEntity } from '../store/modules/wiki';
 import { TIMELINE, NO_PAGE_ID } from '../global/const';
-import PersonForm from '../components/PersonForm.vue';
+import PersonDialog from '../components/PersonDialog.vue';
 
-import Drawer from '../components/Drawer.vue';
-import Toolbar from '../components/Toolbar.vue';
-import Feedback from '../components/Feedback.vue';
-import Register from '../components/auth/Register.vue';
-import Login from '../components/auth/Login.vue';
+import AppDrawer from '../components/AppDrawer.vue';
+import AppToolbar from '../components/AppToolbar.vue';
+import FeedbackDialog from '../components/FeedbackDialog.vue';
+import RegisterDialog from '../components/auth/RegisterDialog.vue';
+import LoginDialog from '../components/auth/LoginDialog.vue';
 
 const nowTimeout = 0;
 const snackTimeout = 6000;
 const loading = ref(false);
 const view = ref(TIMELINE);
-const showFeedback = ref(false);
-const showLogin = ref(false);
-const showNewPersonForm = ref(false);
-const showRegister = ref(false);
+const showFeedbackDialog = ref(false);
+const showLoginDialog = ref(false);
+const showNewPersonDialog = ref(false);
+const showRegisterDialog = ref(false);
 
 const { t: $t } = useI18n();
 const store = useStore();
 
 const viewToggle = computed(() => view.value);
-const switchView = (newView) => (view.value = newView);
+const switchView = (newView) => { view.value = newView };
 
 const snackMessage = computed(() => store.state.snackMessage);
 
@@ -108,27 +108,39 @@ const errorMessage = computed(() => {
 });
 
 const clearErrorMessage = () => {
-  resetSnackMessage(nowTimeout);
+  store.dispatch('resetSnackMessage', nowTimeout);
 };
 
-const openFeedback = () => {
-  showFeedback.value = true;
+const openFeedbackDialog = () => {
+  showFeedbackDialog.value = true;
 };
 
-const closeFeedback = () => {
-  showFeedback.value = false;
+const closeFeedbackDialog = () => {
+  showFeedbackDialog.value = false;
 };
 
-const openLogin = () => {
-  showLogin.value = true;
+const openLoginDialog = () => {
+  showLoginDialog.value = true;
 };
 
-const closeLogin = () => {
-  showLogin.value = false;
+const closeLoginDialog = () => {
+  showLoginDialog.value = false;
 };
 
 const newPerson = () => {
-  showNewPersonForm.value = true;
+  showNewPersonDialog.value = true;
+};
+
+const closeNewPersonDialog = () => {
+  showNewPersonDialog.value = false;
+};
+
+const openRegisterDialog = () => {
+  showRegisterDialog.value = true;
+};
+
+const closeRegisterDialog = () => {
+  showRegisterDialog.value = false;
 };
 
 const addNewPerson = (person) => {
@@ -136,18 +148,7 @@ const addNewPerson = (person) => {
     'wiki/addEntity',
     wikiEntity(NO_PAGE_ID, person.fullname, person.start.getFullYear(), person.end.getFullYear())
   );
-  closeNewPersonForm();
-};
-const closeNewPersonForm = () => {
-  showNewPersonForm.value = false;
-};
-
-const openRegister = () => {
-  showRegister.value = true;
-};
-
-const closeRegister = () => {
-  showRegister.value = false;
+  closeNewPersonDialog();
 };
 
 const selected = async (item) => {

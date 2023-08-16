@@ -1,22 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import store from './store/config';
-import Layout from './views/Layout.vue';
+import LayoutView from './views/LayoutView.vue';
 import ResetPassword from './views/ResetPassword.vue';
 
 const routes = [
   {
     path: '/',
-    component: Layout,
+    component: LayoutView,
     children: [
       {
         path: '/',
         name: 'Home',
-        component: () => import('./views/layout/Home.vue'),
+        component: () => import('./views/layout/HomeLayout.vue'),
       },
       {
         path: '/account',
         name: 'Account',
-        component: () => import('./views/layout/Account.vue'),
+        component: () => import('./views/layout/AccountLayout.vue'),
         meta: { requiresAuth: true },
       },
     ],
@@ -24,7 +24,7 @@ const routes = [
   {
     path: '/confirm',
     name: 'Confirm',
-    component: () => import('./views/Confirm.vue'),
+    component: () => import('./views/ConfirmView.vue'),
   },
   {
     path: '/resetpass',

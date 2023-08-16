@@ -34,7 +34,7 @@
       @click.stop="feedback()"
     />
     <v-btn-toggle
-      v-model="toggle_exclusive"
+      v-model="toggleExclusive"
       dense
       @update:model-value="viewToggle"
     >
@@ -116,9 +116,9 @@
 <script setup>
 import { ref, watch, computed } from 'vue';
 import { useStore } from 'vuex';
-import { useApi } from '../plugins/api';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import { useApi } from '../plugins/api';
 import { TIMELINE, AGE } from '../global/const';
 
 const { getters, commit } = useStore();
@@ -126,7 +126,7 @@ const { t: $t } = useI18n();
 const api = useApi();
 const router = useRouter();
 
-const props = defineProps({
+defineProps({
   view: {
     type: String,
     default: TIMELINE,
@@ -146,35 +146,9 @@ const items = ref([]);
 const isLoading = ref(false);
 const search = ref(null);
 const errorMessage = ref('');
-const toggle_exclusive = ref(0);
+const toggleExclusive = ref(0);
 
 const loggedUser = computed(() => getters['session/isLoggedIn']);
-
-const userMenuOptions = computed(() => [
-  {
-    icon: '$settings',
-    title: $t('menu.account'),
-    action: account,
-  },
-  {
-    icon: '$logout',
-    title: $t('menu.logout'),
-    action: logout,
-  },
-]);
-
-const anonymousMenuOptions = computed(() => [
-  {
-    icon: '$register',
-    title: $t('register.title'),
-    action: register,
-  },
-  {
-    icon: '$login',
-    title: $t('login.title'),
-    action: login,
-  },
-]);
 
 const toggleDrawer = () => commit('toggleDrawer');
 const resetSession = () => commit('session/reset');
@@ -267,4 +241,30 @@ watch(search, async (val) => {
 
   isLoading.value = false;
 });
+
+const userMenuOptions = computed(() => [
+  {
+    icon: '$settings',
+    title: $t('menu.account'),
+    action: account,
+  },
+  {
+    icon: '$logout',
+    title: $t('menu.logout'),
+    action: logout,
+  },
+]);
+
+const anonymousMenuOptions = computed(() => [
+  {
+    icon: '$register',
+    title: $t('register.title'),
+    action: register,
+  },
+  {
+    icon: '$login',
+    title: $t('login.title'),
+    action: login,
+  },
+]);
 </script>

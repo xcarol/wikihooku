@@ -22,8 +22,8 @@
           <v-row>
             <v-col cols="12">
               <v-select
-                :disabled="!accountVerified"
                 v-model="locale"
+                :disabled="!accountVerified"
                 :items="locales"
                 :label="$t('account.locale')"
               />
@@ -32,8 +32,8 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                :disabled="!accountVerified"
                 v-model="fullname"
+                :disabled="!accountVerified"
                 type="text"
                 :counter="MAX_USER_NAME_LEN"
                 :hint="fullnameHint"
@@ -43,8 +43,8 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
-                :disabled="!accountVerified"
                 v-model="currentPassword"
+                :disabled="!accountVerified"
                 type="password"
                 :hint="currentPasswordHint"
                 :label="currentPasswordLabel"
@@ -53,8 +53,8 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
-                :disabled="!accountVerified"
                 v-model="newPassword"
+                :disabled="!accountVerified"
                 type="password"
                 :hint="newPasswordHint"
                 :label="newPasswordLabel"
@@ -63,8 +63,8 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
-                :disabled="!accountVerified"
                 v-model="newPasswordRepeat"
+                :disabled="!accountVerified"
                 type="password"
                 :hint="newPasswordRepeatHint"
                 :label="newPasswordRepeatLabel"
@@ -81,7 +81,6 @@
             :loading="saving"
             color="secondary"
             text
-            tabindex="5"
             outlined
             :disabled="!accountVerified || canSave() === false"
             @click.stop="save()"
@@ -91,7 +90,6 @@
           <v-btn
             color="accent"
             text
-            tabindex="6"
             @click.stop="closeWithoutSaving()"
           >
             {{ $t('global.close') }}
@@ -108,8 +106,8 @@ import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useField } from 'vee-validate';
-import { useApi } from '../../plugins/api';
 import * as yup from 'yup';
+import { useApi } from '../../plugins/api';
 import { MAX_USER_NAME_LEN, MIN_PASSWORD_LEN } from '../../global/const';
 
 const store = useStore();
@@ -131,6 +129,11 @@ const accountVerified = user.verified;
 
 let saving = false;
 const account = { ...user };
+const locale = ref(i18nlocale);
+const appLocale = i18nlocale.value;
+const locales = availableLocales
+  .map((availableLocale) => ({ value: availableLocale, title: $t(availableLocale) }))
+  .filter((availableLocale) => availableLocale.title !== availableLocale.value);
 
 const fullnameRules = [
   async (value) => {
@@ -147,6 +150,12 @@ const fullnameRules = [
   },
 ];
 
+const {
+  value: fullname,
+  meta: fullnameMeta,
+  resetField: fullnameReset,
+} = useField('fullname', fullnameRules);
+
 const currentPasswordRules = [
   async (value) => {
     try {
@@ -158,17 +167,30 @@ const currentPasswordRules = [
   },
 ];
 
+const { value: currentPassword, meta: currentPasswordMeta } = useField(
+  'currentPassword',
+  currentPasswordRules
+);
+
 const newPasswordRules = [
   async (value) => {
     try {
       await yup
         .string()
-        .test('min', $t('account.newPasswordLength').replace('%s', MIN_PASSWORD_LEN), (value) => {
-          return value === undefined || value.length === 0 || value.length >= MIN_PASSWORD_LEN;
-        })
-        .test('notOneOf', $t('account.newPasswordRule'), (value) => {
-          return value === undefined || value.length === 0 || value !== currentPassword.value;
-        })
+        .test(
+          'min',
+          $t('account.newPasswordLength').replace('%s', MIN_PASSWORD_LEN),
+          (minValue) =>
+            minValue === undefined || minValue.length === 0 || minValue.length >= MIN_PASSWORD_LEN
+        )
+        .test(
+          'notOneOf',
+          $t('account.newPasswordRule'),
+          (passwordValue) =>
+            passwordValue === undefined ||
+            passwordValue.length === 0 ||
+            passwordValue !== currentPassword.value
+        )
         .validate(value);
       return true;
     } catch (error) {
@@ -176,6 +198,8 @@ const newPasswordRules = [
     }
   },
 ];
+
+const { value: newPassword, meta: newPasswordMeta } = useField('newPassword', newPasswordRules);
 
 const newPasswordRepeatRules = [
   async (value) => {
@@ -191,16 +215,6 @@ const newPasswordRepeatRules = [
   },
 ];
 
-const {
-  value: fullname,
-  meta: fullnameMeta,
-  resetField: fullnameReset,
-} = useField('fullname', fullnameRules);
-const { value: currentPassword, meta: currentPasswordMeta } = useField(
-  'currentPassword',
-  currentPasswordRules
-);
-const { value: newPassword, meta: newPasswordMeta } = useField('newPassword', newPasswordRules);
 const { value: newPasswordRepeat, meta: newPasswordRepeatMeta } = useField(
   'newPasswordRepeat',
   newPasswordRepeatRules
@@ -208,13 +222,7 @@ const { value: newPasswordRepeat, meta: newPasswordRepeatMeta } = useField(
 
 fullnameReset({ value: account.fullname });
 
-const locale = ref(i18nlocale);
-const appLocale = i18nlocale.value;
-const locales = availableLocales
-  .map((locale) => ({ value: locale, title: $t(locale) }))
-  .filter((locale) => locale.title !== locale.value);
-
-const localeChanged = () => (locale.value !== appLocale);
+const localeChanged = () => locale.value !== appLocale;
 
 const validationInProgress = () =>
   fullnameMeta.pending ||
@@ -248,21 +256,21 @@ const canSave = () =>
   !(validationInProgress() || nothingToSave()) &&
   (localeChanged() || (canSaveFullname() && passwordFieldsEmpty()) || canSavePasswords());
 
+const goHome = () => {
+  router.push({ path: '/' });
+};
+
 const closeWithoutSaving = () => {
   i18nlocale.value = appLocale;
   goHome();
-}
-
-const goHome = () => {
-  router.push({ path: '/' });
 };
 
 const snackMessage = (message) => {
   store.commit('snackMessage', message);
 };
 
-const sessionUser = (user) => {
-  store.commit('session/user', user);
+const sessionUser = (newSessionUser) => {
+  store.commit('session/user', newSessionUser);
 };
 
 const save = async () => {

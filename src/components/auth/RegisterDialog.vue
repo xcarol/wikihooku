@@ -132,12 +132,12 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { useApi } from '../../plugins/api';
 import { useStore } from 'vuex';
 import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import VueRecaptcha from 'vue3-recaptcha2';
 import * as yup from 'yup';
+import { useApi } from '../../plugins/api';
 import { MIN_PASSWORD_LEN, MAX_USER_NAME_LEN } from '../../global/const';
 
 const emit = defineEmits(['close'])
@@ -169,6 +169,8 @@ const fullnameRules = [
   },
 ];
 
+const { value: fullname, meta: fullnameMeta } = useField('fullname', fullnameRules);
+
 const usernameRules = [
   async (value) => {
     try {
@@ -179,6 +181,8 @@ const usernameRules = [
     }
   },
 ];
+
+const { value: username, meta: usernameMeta } = useField('username', usernameRules);
 
 const passwordRules = [
   async (value) => {
@@ -191,12 +195,14 @@ const passwordRules = [
   },
 ];
 
+const { value: password, meta: passwordMeta } = useField('password', passwordRules);
+
 const passwordRepeatRules = [
   async (value) => {
     try {
       await yup
         .string()
-        .test('passwords-match', 'register.passwordsMatch', (value) => password.value === value)
+        .test('passwords-match', 'register.passwordsMatch', (passwordValue) => password.value === passwordValue)
         .required()
         .validate(value);
       return true;
@@ -206,9 +212,6 @@ const passwordRepeatRules = [
   },
 ];
 
-const { value: fullname, meta: fullnameMeta } = useField('fullname', fullnameRules);
-const { value: username, meta: usernameMeta } = useField('username', usernameRules);
-const { value: password, meta: passwordMeta } = useField('password', passwordRules);
 const { value: passwordRepeat, meta: passwordRepeatMeta } = useField('passwordRepeat', passwordRules);
 
 const canRegister = computed(() => 

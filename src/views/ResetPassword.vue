@@ -78,9 +78,9 @@ import { useField } from 'vee-validate';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-import { useApi } from '../plugins/api';
 import * as yup from 'yup';
 import VueRecaptcha from 'vue3-recaptcha2';
+import { useApi } from '../plugins/api';
 import { MIN_PASSWORD_LEN } from '../global/const';
 
 const { dispatch } = useStore();
@@ -107,12 +107,14 @@ const passwordRules = [
   },
 ];
 
+const { value: password, meta: passwordMeta } = useField('password', passwordRules);
+
 const passwordRepeatRules = [
   async (value) => {
     try {
       await yup
         .string()
-        .test('passwords-match', 'register.passwordsMatch', (value) => password.value === value)
+        .test('passwords-match', 'register.passwordsMatch', (passwordValue) => password.value === passwordValue)
         .required()
         .validate(value);
       return true;
@@ -122,16 +124,28 @@ const passwordRepeatRules = [
   },
 ];
 
-const { value: password, meta: passwordMeta } = useField('password', passwordRules);
 const { value: passwordRepeat, meta: passwordRepeatMeta } = useField(
   'passwordRepeat',
   passwordRepeatRules
 );
+
 const recaptchaKey = import.meta.env.VITE_RECAPTCHA_KEY;
 const recaptchaResponse = ref(null);
 const loading = ref(false);
 const showDialog = ref(true);
 const errorMessage = ref('');
+
+const goHome = () => {
+  router.push({ path: '/' });
+};
+
+const verifyCaptcha = (response) => {
+  recaptchaResponse.value = response;
+};
+
+const expireRecaptcha = () => {
+  recaptchaResponse.value = null;
+};
 
 const canReset = () =>
   passwordMeta.valid &&
@@ -150,26 +164,14 @@ const resetPassword = async () => {
   loading.value = true;
   try {
     await dispatch('session/resetPassword', {
-      email: email,
+      email,
       password: password.value,
-      token: token,
+      token,
     });
     goHome();
   } catch (error) {
     loading.value = false;
     errorMessage.value = $t(api.getErrorMessage(error));
   }
-};
-
-const goHome = () => {
-  router.push({ path: '/' });
-};
-
-const verifyCaptcha = (response) => {
-  recaptchaResponse.value = response;
-};
-
-const expireRecaptcha = () => {
-  recaptchaResponse.value = null;
 };
 </script>

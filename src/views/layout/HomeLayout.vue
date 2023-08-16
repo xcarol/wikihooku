@@ -10,19 +10,19 @@
         v-for="(person, index) in persons"
         :key="index"
       >
-        <template v-slot:prepend>
+        <template #prepend>
           <v-icon
-            @click="remPerson(person)"
             :icon="'$del'"
+            @click="remPerson(person)"
           ></v-icon>
         </template>
-        <template v-slot:append>
+        <template #append>
           <v-icon
             class="draggable-time-line"
             :icon="'$drag'"
           ></v-icon>
         </template>
-        <timeline
+        <timeline-widget
           :view="view"
           :name="person.name"
           :min="min"
@@ -40,7 +40,7 @@ import { VueDraggableNext } from 'vue-draggable-next';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { TIMELINE, AGE } from '../../global/const';
-import Timeline from '../../components/Timeline.vue';
+import TimelineWidget from '../../components/TimelineWidget.vue';
 
 const props = defineProps({
   view: {
@@ -50,6 +50,9 @@ const props = defineProps({
 });
 
 const { getters, commit } = useStore();
+
+const setEntities = (entities) => commit('wiki/entities', entities);
+const remPerson = (person) => commit('wiki/remEntity', person);
 
 const persons = computed({
   get: () => getters['wiki/entities'],
@@ -77,9 +80,6 @@ const max = computed(() => {
       return getters['wiki/end'];
   }
 });
-
-const setEntities = (entities) => commit('wiki/entities', entities);
-const remPerson = (person) => commit('wiki/remEntity', person);
 </script>
 
 <style>

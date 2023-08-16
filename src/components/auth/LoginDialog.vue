@@ -88,11 +88,11 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { useApi } from '../../plugins/api';
 import { useStore } from 'vuex';
 import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
+import { useApi } from '../../plugins/api';
 
 const emit = defineEmits(['close']);
 const { commit, dispatch } = useStore();
@@ -100,7 +100,7 @@ const { t: $t } = useI18n();
 const api = useApi();
 
 const showDialog = true;
-let errorMessage = ref('');
+const errorMessage = ref('');
 let loading = false;
 let recovering = false;
 
@@ -144,6 +144,16 @@ const snackMessage = (message) => {
   commit('snackMessage', message);
 };
 
+const close = () => {
+  emit('close');
+};
+
+const closeIfEscape = (key) => {
+  if (key.keyCode === 27) {
+    close();
+  }
+};
+
 const loginUser = async () => {
   errorMessage.value = '';
 
@@ -171,16 +181,6 @@ const recoverPassword = async () => {
   } catch (error) {
     recovering = false;
     errorMessage.value = $t(api.getErrorMessage(error));
-  }
-};
-
-const close = () => {
-  emit('close');
-};
-
-const closeIfEscape = (key) => {
-  if (key.keyCode === 27) {
-    close();
   }
 };
 </script>

@@ -99,20 +99,20 @@ const max = computed(() => {
   }
 });
 
-const addNewPerson = (person) => {
-  commit(
-    'wiki/addEntity',
-    wikiEntity(NO_PAGE_ID, person.fullname, person.start.getFullYear(), person.end.getFullYear())
-  );
-  closeNewPersonDialog();
-};
-
 const closeNewPersonDialog = () => {
   showNewPersonDialog.value = false;
 };
 
 const newPerson = () => {
   showNewPersonDialog.value = true;
+};
+
+const addNewPerson = (person) => {
+  commit(
+    'wiki/addEntity',
+    wikiEntity(NO_PAGE_ID, person.fullname, person.start.getFullYear(), person.end.getFullYear())
+  );
+  closeNewPersonDialog();
 };
 </script>
 

@@ -46,22 +46,8 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <person-dialog
-      v-if="showNewPersonDialog"
-      @add="addNewPerson"
-      @close="closeNewPersonDialog"
-    />
     <app-drawer />
     <router-view :view="viewToggle" />
-    <v-btn
-      position="fixed"
-      location="bottom right"
-      size="small"
-      color="primary"
-      :icon="'$add'"
-      class="ma-2"
-      @click.stop="newPerson"
-    />
   </v-container>
 </template>
 
@@ -73,9 +59,7 @@ import { useStore } from 'vuex';
 import dayjs from 'dayjs';
 import parseInfo from 'infobox-parser';
 
-import { wikiEntity } from '../store/modules/wiki';
-import { TIMELINE, NO_PAGE_ID } from '../global/const';
-import PersonDialog from '../components/PersonDialog.vue';
+import { TIMELINE } from '../global/const';
 
 import AppDrawer from '../components/AppDrawer.vue';
 import AppToolbar from '../components/AppToolbar.vue';
@@ -89,7 +73,6 @@ const loading = ref(false);
 const view = ref(TIMELINE);
 const showFeedbackDialog = ref(false);
 const showLoginDialog = ref(false);
-const showNewPersonDialog = ref(false);
 const showRegisterDialog = ref(false);
 
 const { t: $t } = useI18n();
@@ -127,28 +110,12 @@ const closeLoginDialog = () => {
   showLoginDialog.value = false;
 };
 
-const newPerson = () => {
-  showNewPersonDialog.value = true;
-};
-
-const closeNewPersonDialog = () => {
-  showNewPersonDialog.value = false;
-};
-
 const openRegisterDialog = () => {
   showRegisterDialog.value = true;
 };
 
 const closeRegisterDialog = () => {
   showRegisterDialog.value = false;
-};
-
-const addNewPerson = (person) => {
-  store.commit(
-    'wiki/addEntity',
-    wikiEntity(NO_PAGE_ID, person.fullname, person.start.getFullYear(), person.end.getFullYear())
-  );
-  closeNewPersonDialog();
 };
 
 const selected = async (item) => {

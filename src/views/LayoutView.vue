@@ -60,6 +60,7 @@ import dayjs from 'dayjs';
 import parseInfo from 'infobox-parser';
 
 import { TIMELINE } from '../global/const';
+import { wikiEntity } from '../store/modules/wiki';
 
 import AppDrawer from '../components/AppDrawer.vue';
 import AppToolbar from '../components/AppToolbar.vue';

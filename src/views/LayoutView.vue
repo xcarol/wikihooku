@@ -9,8 +9,9 @@
       @feedback="openFeedbackDialog"
     />
     <v-overlay
-      :absolute="true"
-      :value="loading"
+      v-model="loading"
+      contained
+      class="align-center justify-center"
     >
       <v-progress-circular
         :size="70"

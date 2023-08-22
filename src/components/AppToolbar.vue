@@ -133,13 +133,7 @@ defineProps({
   },
 });
 
-const emits = defineEmits([
-  'login',
-  'feedback',
-  'register',
-  'selected',
-  'switchView',
-]);
+const emits = defineEmits(['login', 'feedback', 'register', 'selected', 'switchView']);
 
 const showMenu = ref(false);
 const items = ref([]);

@@ -140,7 +140,7 @@ import * as yup from 'yup';
 import { useApi } from '../../plugins/api';
 import { MIN_PASSWORD_LEN, MAX_USER_NAME_LEN } from '../../global/const';
 
-const emit = defineEmits(['close'])
+const emits = defineEmits(['close'])
 const { dispatch } = useStore();
 const { t: $t } = useI18n();
 const api = useApi();
@@ -255,9 +255,7 @@ const expireRecaptcha = () => {
   recaptchaResponse.value = null;
 };
 
-const close = () => {
-  emit('close');
-};
+const close = () => emits('close');
 
 const closeIfEscape = (key) => {
   if (key.keyCode === 27) {

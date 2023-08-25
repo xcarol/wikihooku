@@ -61,7 +61,5 @@ const range = computed(() => {
   }
 });
 
-const remove = () => {
-  emits.remove(TimelineProps.name);
-};
+const remove = () => emits('remove', TimelineProps.name);
 </script>

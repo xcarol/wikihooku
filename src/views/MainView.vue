@@ -1,12 +1,14 @@
 <template>
   <v-container fluid>
-    <app-toolbar
+    <main-toolbar
       :view="viewToggle"
+      @home="goHome"
       @selected="selected"
       @switch-view="switchView"
       @register="openRegisterDialog"
       @login="openLoginDialog"
       @feedback="openFeedbackDialog"
+      @logout="logout"
     />
     <v-overlay
       v-model="loading"
@@ -47,7 +49,7 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <app-drawer />
+    <main-drawer />
     <router-view :view="viewToggle" />
   </v-container>
 </template>
@@ -56,6 +58,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 import dayjs from 'dayjs';
 import parseInfo from 'infobox-parser';
@@ -63,8 +66,8 @@ import parseInfo from 'infobox-parser';
 import { TIMELINE } from '../global/const';
 import { wikiEntity } from '../store/modules/wiki';
 
-import AppDrawer from '../components/AppDrawer.vue';
-import AppToolbar from '../components/AppToolbar.vue';
+import MainDrawer from '../components/MainDrawer.vue';
+import MainToolbar from '../components/toolbar/MainToolbar.vue';
 import FeedbackDialog from '../components/FeedbackDialog.vue';
 import RegisterDialog from '../components/auth/RegisterDialog.vue';
 import LoginDialog from '../components/auth/LoginDialog.vue';
@@ -79,6 +82,7 @@ const showRegisterDialog = ref(false);
 
 const { t: $t } = useI18n();
 const store = useStore();
+const router = useRouter();
 
 const viewToggle = computed(() => view.value);
 const switchView = (newView) => { view.value = newView };
@@ -154,5 +158,20 @@ const selected = async (item) => {
     store.commit('snackMessage', error.message);
   }
   loading.value = false;
+};
+
+const goHome = () => {
+  const currentPath = router.currentRoute.path;
+  if (currentPath === '/') {
+    router.go();
+  } else {
+    router.push({ path: '/' });
+  }
+};
+
+const logout = () => {
+  store.commit('session/reset');
+  goHome();
+
 };
 </script>

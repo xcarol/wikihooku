@@ -90,7 +90,7 @@ import VueRecaptcha from 'vue3-recaptcha2';
 import { MIN_FEEDBACK_LEN } from '../global/const';
 import { useApi } from '../plugins/api';
 
-const emit = defineEmits(['close']);
+const emits = defineEmits(['close']);
 const { t: $t } = useI18n();
 const api = useApi();
 const { getters, commit } = useStore();
@@ -104,12 +104,10 @@ const recaptchaKey = import.meta.env.VITE_RECAPTCHA_KEY;
 const emailLabel = computed(() => $t('feedback.email'));
 const feedbackLabel = computed(() => $t('feedback.feedback'));
 
-const { value: user } = getters['session/user'];
-const anonymousUser = computed(() => !user?.value);
+const user = getters['session/user'];
+const anonymousUser = getters['session/isLoggedIn'] === false;
 
-const close = () => {
-  emit('close');
-};
+const close = () => emits('close');
 
 const closeIfEscape = (key) => {
   if (key.keyCode === 27) {

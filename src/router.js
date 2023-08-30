@@ -1,25 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import store from './store/config';
-import LayoutView from './views/LayoutView.vue';
-import ResetPassword from './views/ResetPassword.vue';
+import MainView from './views/MainView.vue';
 
 const routes = [
   {
     path: '/',
-    component: LayoutView,
+    component: MainView,
     children: [
       {
         path: '/',
         name: 'Home',
-        component: () => import('./views/layout/HomeLayout.vue'),
-      },
-      {
-        path: '/account',
-        name: 'Account',
-        component: () => import('./views/layout/AccountLayout.vue'),
-        meta: { requiresAuth: true },
+        component: () => import('./views/layout/TimelineLayout.vue'),
       },
     ],
+  },
+  {
+    path: '/account',
+    name: 'Account',
+    component: () => import('./views/AccountView.vue'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/confirm',
@@ -29,7 +28,7 @@ const routes = [
   {
     path: '/resetpass',
     name: 'ResetPassword',
-    component: ResetPassword,
+    component: () => import('./views/ResetPassword.vue'),
   },
   {
     path: '/:pathMatch(.*)*',

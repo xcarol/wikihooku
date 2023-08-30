@@ -94,7 +94,7 @@ import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
 import { useApi } from '../../plugins/api';
 
-const emit = defineEmits(['close']);
+const emits = defineEmits(['close']);
 const { commit, dispatch } = useStore();
 const { t: $t } = useI18n();
 const api = useApi();
@@ -144,9 +144,7 @@ const snackMessage = (message) => {
   commit('snackMessage', message);
 };
 
-const close = () => {
-  emit('close');
-};
+const close = () => emits('close');
 
 const closeIfEscape = (key) => {
   if (key.keyCode === 27) {

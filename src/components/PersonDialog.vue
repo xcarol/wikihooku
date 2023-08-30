@@ -124,7 +124,7 @@ import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
 
-const emit = defineEmits(['add', 'close']);
+const emits = defineEmits(['add', 'close']);
 const { t: $t } = useI18n();
 
 const showDialog = ref(true);
@@ -161,16 +161,14 @@ const addPersona = () => {
     end = new Date(deathyear.value, deathmonth.value - 1, deathday.value);
   }
 
-  emit('add', {
+  emits('add', {
     fullname: fullname.value,
     start,
     end,
   });
 };
 
-const close = () => {
-  emit('close');
-};
+const close = () => emits('close');
 
 const closeIfEscape = (key) => {
   if (key.keyCode === 27) {

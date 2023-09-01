@@ -4,6 +4,7 @@
       :view="viewToggle"
       @selected="selected"
       @switch-view="switchView"
+      @new-person="newPerson"
     />
     <v-overlay
       v-model="loading"
@@ -34,6 +35,11 @@
     </v-snackbar>
     <main-drawer />
     <router-view :view="viewToggle" />
+    <person-dialog
+      v-if="showNewPersonDialog"
+      @add="addNewPerson"
+      @close="closeNewPersonDialog"
+    />
   </v-container>
 </template>
 
@@ -45,11 +51,12 @@ import { useStore } from 'vuex';
 import dayjs from 'dayjs';
 import parseInfo from 'infobox-parser';
 
-import { TIMELINE } from '../global/const';
+import { TIMELINE, NO_PAGE_ID } from '../global/const';
 import { wikiEntity } from '../store/modules/wiki';
 
 import MainDrawer from '../components/MainDrawer.vue';
 import MainToolbar from '../components/toolbar/MainToolbar.vue';
+import PersonDialog from '../components/PersonDialog.vue';
 
 const nowTimeout = 0;
 const snackTimeout = 6000;
@@ -58,6 +65,8 @@ const view = ref(TIMELINE);
 
 const { t: $t } = useI18n();
 const store = useStore();
+
+const showNewPersonDialog = ref(false);
 
 const viewToggle = computed(() => view.value);
 const switchView = (newView) => { view.value = newView };
@@ -109,5 +118,21 @@ const selected = async (item) => {
     store.commit('snackMessage', error.message);
   }
   loading.value = false;
+};
+
+const closeNewPersonDialog = () => {
+  showNewPersonDialog.value = false;
+};
+
+const newPerson = () => {
+  showNewPersonDialog.value = true;
+};
+
+const addNewPerson = (person) => {
+  store.commit(
+    'wiki/addEntity',
+    wikiEntity(NO_PAGE_ID, person.fullname, person.start.getFullYear(), person.end.getFullYear())
+  );
+  closeNewPersonDialog();
 };
 </script>

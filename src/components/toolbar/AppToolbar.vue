@@ -5,7 +5,7 @@
     <home-button @home="home" />
     <feedback-button @feedback="feedback" />
     <v-spacer />
-    <toolbar-menu
+    <app-toolbar-menu
       @login="login"
       @logout="logout"
       @register="register"
@@ -16,7 +16,7 @@
 <script setup>
 import HomeButton from './HomeButton.vue';
 import FeedbackButton from './FeedbackButton.vue';
-import ToolbarMenu from './ToolbarMenu.vue';
+import AppToolbarMenu from './AppToolbarMenu.vue'
 
 const emits = defineEmits(['login', 'logout', 'register', 'home', 'feedback']);
 const feedback = () => emits('feedback');

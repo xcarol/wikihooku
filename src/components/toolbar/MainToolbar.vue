@@ -33,6 +33,13 @@
       return-object
       @update:model-value="input"
     />
+    <v-btn
+      size="small"
+      color="primary"
+      :icon="'$add'"
+      class="ma-2"
+      @click.stop="newPerson"
+    />
   </v-app-bar>
 </template>
 
@@ -54,7 +61,7 @@ defineProps({
   },
 });
 
-const emits = defineEmits(['selected', 'switchView']);
+const emits = defineEmits(['selected', 'switchView', 'newPerson']);
 
 const items = ref([]);
 const isLoading = ref(false);
@@ -63,6 +70,7 @@ const errorMessage = ref('');
 const toggleExclusive = ref(0);
 
 const toggleDrawer = () => commit('toggleDrawer');
+const newPerson = () => emits('newPerson');
 const viewToggle = (value) => emits('switchView', value === 0 ? TIMELINE : AGE);
 
 const input = (item) => {

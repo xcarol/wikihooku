@@ -2,13 +2,8 @@
   <v-container fluid>
     <main-toolbar
       :view="viewToggle"
-      @home="goHome"
       @selected="selected"
       @switch-view="switchView"
-      @register="openRegisterDialog"
-      @login="openLoginDialog"
-      @feedback="openFeedbackDialog"
-      @logout="logout"
     />
     <v-overlay
       v-model="loading"
@@ -22,18 +17,6 @@
         indeterminate
       />
     </v-overlay>
-    <feedback-dialog
-      v-if="showFeedbackDialog"
-      @close="closeFeedbackDialog"
-    />
-    <login-dialog
-      v-if="showLoginDialog"
-      @close="closeLoginDialog"
-    />
-    <register-dialog
-      v-if="showRegisterDialog"
-      @close="closeRegisterDialog"
-    />
     <v-snackbar
       color="primary"
       :model-value="errorMessage !== ''"
@@ -58,7 +41,6 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
 
 import dayjs from 'dayjs';
 import parseInfo from 'infobox-parser';
@@ -68,21 +50,14 @@ import { wikiEntity } from '../store/modules/wiki';
 
 import MainDrawer from '../components/MainDrawer.vue';
 import MainToolbar from '../components/toolbar/MainToolbar.vue';
-import FeedbackDialog from '../components/FeedbackDialog.vue';
-import RegisterDialog from '../components/auth/RegisterDialog.vue';
-import LoginDialog from '../components/auth/LoginDialog.vue';
 
 const nowTimeout = 0;
 const snackTimeout = 6000;
 const loading = ref(false);
 const view = ref(TIMELINE);
-const showFeedbackDialog = ref(false);
-const showLoginDialog = ref(false);
-const showRegisterDialog = ref(false);
 
 const { t: $t } = useI18n();
 const store = useStore();
-const router = useRouter();
 
 const viewToggle = computed(() => view.value);
 const switchView = (newView) => { view.value = newView };
@@ -98,30 +73,6 @@ const errorMessage = computed(() => {
 
 const clearErrorMessage = () => {
   store.dispatch('resetSnackMessage', nowTimeout);
-};
-
-const openFeedbackDialog = () => {
-  showFeedbackDialog.value = true;
-};
-
-const closeFeedbackDialog = () => {
-  showFeedbackDialog.value = false;
-};
-
-const openLoginDialog = () => {
-  showLoginDialog.value = true;
-};
-
-const closeLoginDialog = () => {
-  showLoginDialog.value = false;
-};
-
-const openRegisterDialog = () => {
-  showRegisterDialog.value = true;
-};
-
-const closeRegisterDialog = () => {
-  showRegisterDialog.value = false;
 };
 
 const selected = async (item) => {
@@ -158,20 +109,5 @@ const selected = async (item) => {
     store.commit('snackMessage', error.message);
   }
   loading.value = false;
-};
-
-const goHome = () => {
-  const currentPath = router.currentRoute.path;
-  if (currentPath === '/') {
-    router.go();
-  } else {
-    router.push({ path: '/' });
-  }
-};
-
-const logout = () => {
-  store.commit('session/reset');
-  goHome();
-
 };
 </script>

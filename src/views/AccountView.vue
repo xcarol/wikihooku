@@ -1,9 +1,4 @@
 <template>
-  <basic-toolbar
-    @home="goHome"
-    @feedback="openFeedbackDialog"
-    @logout="logout"
-  />
   <v-row justify="center">
     <v-col cols="12">
       <v-alert
@@ -101,10 +96,6 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-      <feedback-dialog
-        v-if="showFeedbackDialog"
-        @close="closeFeedbackDialog"
-      />
     </v-col>
   </v-row>
 </template>
@@ -118,15 +109,12 @@ import { useField } from 'vee-validate';
 import * as yup from 'yup';
 import { useApi } from '../plugins/api';
 import { MAX_USER_NAME_LEN, MIN_PASSWORD_LEN } from '../global/const';
-import BasicToolbar from '../components/toolbar/BasicToolbar.vue';
-import FeedbackDialog from '../components/FeedbackDialog.vue';
 
 const store = useStore();
 const router = useRouter();
 const { locale: i18nlocale, availableLocales, t: $t } = useI18n();
 const api = useApi();
 
-const showFeedbackDialog = ref(false);
 const fullnameLabel = computed(() => $t('account.name'));
 const fullnameHint = computed(() => $t('account.nameHint'));
 const currentPasswordLabel = computed(() => $t('account.currentPassword'));
@@ -277,14 +265,6 @@ const closeWithoutSaving = () => {
   goHome();
 };
 
-const openFeedbackDialog = () => {
-  showFeedbackDialog.value = true;
-};
-
-const closeFeedbackDialog = () => {
-  showFeedbackDialog.value = false;
-};
-
 const snackMessage = (message) => {
   store.commit('snackMessage', message);
 };
@@ -310,10 +290,5 @@ const save = async () => {
     saving = false;
     snackMessage(api.getErrorMessage(error));
   }
-};
-
-const logout = () => {
-  store.commit('session/reset');
-  goHome();
 };
 </script>

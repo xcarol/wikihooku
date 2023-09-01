@@ -1,16 +1,7 @@
 <template>
   <v-app-bar
-    clipped-left
-    theme="dark"
-    app
   >
     <v-app-bar-nav-icon @click.stop="toggleDrawer()" />
-    <home-button
-      @home="home"
-    />
-    <feedback-button
-      @feedback="feedback"
-    />
     <v-btn-toggle
       v-model="toggleExclusive"
       dense
@@ -42,12 +33,6 @@
       return-object
       @update:model-value="input"
     />
-    <v-spacer />
-    <toolbar-menu
-      @login="login"
-      @logout="logout"
-      @register="register"
-    />
   </v-app-bar>
 </template>
 
@@ -57,10 +42,6 @@ import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useApi } from '../../plugins/api';
 import { TIMELINE, AGE } from '../../global/const';
-
-import HomeButton from './HomeButton.vue';
-import FeedbackButton from './FeedbackButton.vue';
-import ToolbarMenu from './ToolbarMenu.vue';
 
 const { commit } = useStore();
 const { t: $t } = useI18n();
@@ -73,7 +54,7 @@ defineProps({
   },
 });
 
-const emits = defineEmits(['login', 'logout', 'register', 'home', 'feedback', 'selected', 'switchView']);
+const emits = defineEmits(['selected', 'switchView']);
 
 const items = ref([]);
 const isLoading = ref(false);
@@ -82,11 +63,6 @@ const errorMessage = ref('');
 const toggleExclusive = ref(0);
 
 const toggleDrawer = () => commit('toggleDrawer');
-const feedback = () => emits('feedback');
-const home = () => emits('home');
-const login = () => emits('login');
-const logout = () => emits('logout');
-const register = () => emits('register');
 const viewToggle = (value) => emits('switchView', value === 0 ? TIMELINE : AGE);
 
 const input = (item) => {

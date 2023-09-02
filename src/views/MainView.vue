@@ -119,7 +119,7 @@ const selected = async (item) => {
       'wiki/addEntity',
       wikiEntity(item.value, item.title, startDate.getFullYear(), endDate.getFullYear())
     );
-    visibleItem.value = item.value;
+    visibleItem.value = item.value.toString();
   } catch (error) {
     store.commit('snackMessage', error.message);
   }

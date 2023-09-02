@@ -8,6 +8,7 @@
     >
       <v-list-item
         v-for="(person, index) in persons"
+        :id="person.pageid"
         :key="index"
       >
         <template #prepend>
@@ -36,7 +37,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onUpdated } from 'vue';
 import { VueDraggableNext } from 'vue-draggable-next';
 import { useStore } from 'vuex';
 import { TIMELINE, AGE } from '../../global/const';
@@ -46,6 +47,10 @@ const props = defineProps({
   view: {
     type: String,
     default: TIMELINE,
+  },
+  visibleItem: {
+    type: String,
+    default: '',
   },
 });
 
@@ -79,6 +84,10 @@ const max = computed(() => {
     default:
       return getters['wiki/end'];
   }
+});
+
+onUpdated(() => {
+  document.getElementById(props.visibleItem).scrollIntoView();
 });
 </script>
 

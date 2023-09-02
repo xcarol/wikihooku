@@ -34,7 +34,10 @@
       </template>
     </v-snackbar>
     <main-drawer />
-    <router-view :view="viewToggle" />
+    <router-view 
+      :view="viewToggle"
+      :visible-item="visibleItem"
+      />
     <person-dialog
       v-if="showNewPersonDialog"
       @add="addNewPerson"
@@ -47,11 +50,12 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
+import { uuid } from "vue-uuid";
 
 import dayjs from 'dayjs';
 import parseInfo from 'infobox-parser';
 
-import { TIMELINE, NO_PAGE_ID } from '../global/const';
+import { TIMELINE } from '../global/const';
 import { wikiEntity } from '../store/modules/wiki';
 
 import MainDrawer from '../components/MainDrawer.vue';
@@ -67,6 +71,7 @@ const { t: $t } = useI18n();
 const store = useStore();
 
 const showNewPersonDialog = ref(false);
+const visibleItem = ref('');
 
 const viewToggle = computed(() => view.value);
 const switchView = (newView) => { view.value = newView };
@@ -114,6 +119,7 @@ const selected = async (item) => {
       'wiki/addEntity',
       wikiEntity(item.value, item.title, startDate.getFullYear(), endDate.getFullYear())
     );
+    visibleItem.value = item.value;
   } catch (error) {
     store.commit('snackMessage', error.message);
   }
@@ -129,10 +135,13 @@ const newPerson = () => {
 };
 
 const addNewPerson = (person) => {
+  const entityUuid = uuid.v4();
+
   store.commit(
     'wiki/addEntity',
-    wikiEntity(NO_PAGE_ID, person.fullname, person.start.getFullYear(), person.end.getFullYear())
+    wikiEntity(entityUuid, person.fullname, person.start.getFullYear(), person.end.getFullYear())
   );
   closeNewPersonDialog();
+  visibleItem.value = entityUuid;
 };
 </script>

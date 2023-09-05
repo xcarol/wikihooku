@@ -44,6 +44,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isLoggedIn = store.getters['session/isLoggedIn'];
 
+  store.commit('viewTitle', '');
+
   if (
     (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn)
     || (to.path === '/' && isLoggedIn && to.name !== 'Home')

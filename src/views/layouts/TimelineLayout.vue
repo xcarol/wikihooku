@@ -94,7 +94,7 @@ onUpdated(() => {
 <style>
 .timeline-list {
   width: 100%;
-  padding-top: 2em;
+  padding-top: 2em !important;
 }
 .v-list-item__content {
   overflow: visible !important;

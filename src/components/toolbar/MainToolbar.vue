@@ -18,26 +18,27 @@
         @click-stop="setTimeline"
       />
     </v-btn-toggle>
-    <v-spacer />
     <v-autocomplete
       v-model:search="search"
-      :clear-icon="'$close'"
       :error-messages="errorMessage"
       :items="items"
       :loading="isLoading"
-      color="secondary"
+      :placeholder="$t('searchHint')"
+      class="ma-2"
       clearable
       hide-no-data
       no-filter
-      :placeholder="$t('searchHint')"
       return-object
       @update:model-value="input"
     />
     <v-btn
-      size="small"
-      color="primary"
+      variant="tonal"
+      :icon="'$save'"
+      @click.stop="saveCollection"
+    />
+    <v-btn
+      variant="tonal"
       :icon="'$add'"
-      class="ma-2"
       @click.stop="newPerson"
     />
   </v-app-bar>
@@ -61,7 +62,7 @@ defineProps({
   },
 });
 
-const emits = defineEmits(['selected', 'switchView', 'newPerson']);
+const emits = defineEmits(['selected', 'switchView', 'newPerson', 'saveCollection']);
 
 const items = ref([]);
 const isLoading = ref(false);
@@ -71,6 +72,7 @@ const toggleExclusive = ref(0);
 
 const toggleDrawer = () => commit('toggleDrawer');
 const newPerson = () => emits('newPerson');
+const saveCollection = () => emits('saveCollection');
 const viewToggle = (value) => emits('switchView', value === 0 ? TIMELINE : AGE);
 
 const input = (item) => {

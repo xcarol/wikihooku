@@ -6,13 +6,6 @@ const routes = [
   {
     path: '/',
     component: MainView,
-    children: [
-      {
-        path: '/',
-        name: 'Home',
-        component: () => import('./views/layout/TimelineLayout.vue'),
-      },
-    ],
   },
   {
     path: '/account',

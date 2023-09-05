@@ -34,7 +34,7 @@
       </template>
     </v-snackbar>
     <main-drawer />
-    <router-view 
+    <timeline-layout
       :view="viewToggle"
       :visible-item="visibleItem"
       />
@@ -61,6 +61,7 @@ import { wikiEntity } from '../store/modules/wiki';
 import MainDrawer from '../components/MainDrawer.vue';
 import MainToolbar from '../components/toolbar/MainToolbar.vue';
 import PersonDialog from '../components/PersonDialog.vue';
+import TimelineLayout from './layouts/TimelineLayout.vue';
 
 const nowTimeout = 0;
 const snackTimeout = 6000;

@@ -14,6 +14,7 @@ class Api {
     sendFeedback: 'feedback',
     searchPerson: 'mediawiki/search-person/{1}/{2}/{3}',
     page: 'mediawiki/page/{1}',
+    saveCollection: 'collection',
   };
 
   genericError = 'An error ocurred. Try it again later...';
@@ -112,6 +113,12 @@ class Api {
     const url = Api.endpoint(this.endpoints.page, pageId);
     const { data: { parse: { wikitext: { '*': content } } } } = await this.axios.get(url);
     return parseInfo(content);
+  }
+
+  async saveCollection(userId, name, items) {
+    const url = Api.endpoint(this.endpoints.saveCollection);
+    const data = { _id: userId, name, items };
+    return this.axios.post(url, data);
   }
 }
 

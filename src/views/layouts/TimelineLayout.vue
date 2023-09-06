@@ -87,7 +87,9 @@ const max = computed(() => {
 });
 
 onUpdated(() => {
-  document.getElementById(props.visibleItem).scrollIntoView();
+  if (props.visibleItem) {
+    document.getElementById(props.visibleItem).scrollIntoView();
+  }
 });
 </script>
 

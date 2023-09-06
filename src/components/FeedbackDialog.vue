@@ -5,7 +5,6 @@
       max-width="600px"
       :fullscreen="$vuetify.display.xs"
       scrollable
-      @keydown="closeIfEscape"
     >
       <v-card>
         <v-card-title>
@@ -81,7 +80,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
@@ -109,11 +108,11 @@ const anonymousUser = getters['session/isLoggedIn'] === false;
 
 const close = () => emits('close');
 
-const closeIfEscape = (key) => {
-  if (key.keyCode === 27) {
+watch(showDialog, (val) => {
+  if (val === false) {
     close();
   }
-};
+});
 
 const verifyCaptcha = (response) => {
   recaptchaResponse.value = response;

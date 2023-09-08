@@ -12,6 +12,7 @@
   "Unauthorized": "No tienes suficientes permisos",
   "Current password don't match": "La contraseña actual no coincide",
   "User missing confirmation email": "Confirma primero tu cuenta, por favor.",
+  "collection already exists": "Ya hay una colección con este nombre",
   "en": "Inglés",
   "en-US": "fallback:en",
   "ca": "Catalán",
@@ -116,5 +117,9 @@
     "feedback": "Tu feedback",
     "feedbackLength": "Debes escribir %s caracteres como mínimo",
     "sendsuccesfully": "Tu feedback se ha registrado con éxito. Gracias por contribuir!"
+  },
+  "collection": {
+    "title": "Nombre de la colección",
+    "button": "Guardar"
   }
 }

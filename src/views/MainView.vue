@@ -4,7 +4,8 @@
       :view="viewToggle"
       @selected="selected"
       @switch-view="switchView"
-      @new-person="newPerson"
+      @new-person="openNewPersonDialog"
+      @save-collection="openSaveCollectionDialog"
     />
     <v-overlay
       v-model="loading"
@@ -37,23 +38,28 @@
     <timeline-layout
       :view="viewToggle"
       :visible-item="visibleItem"
-      />
+    />
     <person-dialog
       v-if="showNewPersonDialog"
       @add="addNewPerson"
       @close="closeNewPersonDialog"
     />
+    <collection-dialog
+      v-if="showCollectionDialog"
+      :current-name="collectionName"
+      @close="closeCollectionDialog"
+    />
   </v-container>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onBeforeMount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
-import { uuid } from "vue-uuid";
+import { uuid } from 'vue-uuid';
 
-import dayjs from 'dayjs';
 import parseInfo from 'infobox-parser';
+import dayjs from 'dayjs';
 
 import { TIMELINE } from '../global/const';
 import { wikiEntity } from '../store/modules/wiki';
@@ -62,6 +68,7 @@ import MainDrawer from '../components/MainDrawer.vue';
 import MainToolbar from '../components/toolbar/MainToolbar.vue';
 import PersonDialog from '../components/PersonDialog.vue';
 import TimelineLayout from './layouts/TimelineLayout.vue';
+import CollectionDialog from '../components/CollectionDialog.vue';
 
 const nowTimeout = 0;
 const snackTimeout = 6000;
@@ -71,11 +78,15 @@ const view = ref(TIMELINE);
 const { t: $t } = useI18n();
 const store = useStore();
 
+const collectionName = computed(() => store.getters['collections/activeCollectionName']);
 const showNewPersonDialog = ref(false);
+const showCollectionDialog = ref(false);
 const visibleItem = ref('');
 
 const viewToggle = computed(() => view.value);
-const switchView = (newView) => { view.value = newView };
+const switchView = (newView) => {
+  view.value = newView;
+};
 
 const snackMessage = computed(() => store.state.snackMessage);
 
@@ -89,6 +100,10 @@ const errorMessage = computed(() => {
 const clearErrorMessage = () => {
   store.dispatch('resetSnackMessage', nowTimeout);
 };
+
+onBeforeMount(() => {
+  store.commit('viewTitle', collectionName.value);
+});
 
 const selected = async (item) => {
   loading.value = true;
@@ -131,7 +146,7 @@ const closeNewPersonDialog = () => {
   showNewPersonDialog.value = false;
 };
 
-const newPerson = () => {
+const openNewPersonDialog = () => {
   showNewPersonDialog.value = true;
 };
 
@@ -145,4 +160,12 @@ const addNewPerson = (person) => {
   closeNewPersonDialog();
   visibleItem.value = entityUuid;
 };
+
+const openSaveCollectionDialog = () => {
+  showCollectionDialog.value = true;
+};
+
+const closeCollectionDialog = () => {
+  showCollectionDialog.value = false;
+}
 </script>

@@ -169,7 +169,7 @@ const currentPasswordRules = [
 
 const { value: currentPassword, meta: currentPasswordMeta } = useField(
   'currentPassword',
-  currentPasswordRules
+  currentPasswordRules,
 );
 
 const newPasswordRules = [
@@ -181,7 +181,7 @@ const newPasswordRules = [
           'min',
           $t('account.newPasswordLength').replace('%s', MIN_PASSWORD_LEN),
           (minValue) =>
-            minValue === undefined || minValue.length === 0 || minValue.length >= MIN_PASSWORD_LEN
+            minValue === undefined || minValue.length === 0 || minValue.length >= MIN_PASSWORD_LEN,
         )
         .test(
           'notOneOf',
@@ -189,7 +189,7 @@ const newPasswordRules = [
           (passwordValue) =>
             passwordValue === undefined ||
             passwordValue.length === 0 ||
-            passwordValue !== currentPassword.value
+            passwordValue !== currentPassword.value,
         )
         .validate(value);
       return true;
@@ -217,7 +217,7 @@ const newPasswordRepeatRules = [
 
 const { value: newPasswordRepeat, meta: newPasswordRepeatMeta } = useField(
   'newPasswordRepeat',
-  newPasswordRepeatRules
+  newPasswordRepeatRules,
 );
 
 fullnameReset({ value: account.fullname });

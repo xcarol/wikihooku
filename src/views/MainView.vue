@@ -133,7 +133,7 @@ const selected = async (item) => {
 
     store.commit(
       'wiki/addEntity',
-      wikiEntity(item.value, item.title, startDate.getFullYear(), endDate.getFullYear())
+      wikiEntity(item.value, item.title, startDate.getFullYear(), endDate.getFullYear()),
     );
     visibleItem.value = item.value.toString();
   } catch (error) {
@@ -155,7 +155,7 @@ const addNewPerson = (person) => {
 
   store.commit(
     'wiki/addEntity',
-    wikiEntity(entityUuid, person.fullname, person.start.getFullYear(), person.end.getFullYear())
+    wikiEntity(entityUuid, person.fullname, person.start.getFullYear(), person.end.getFullYear()),
   );
   closeNewPersonDialog();
   visibleItem.value = entityUuid;
@@ -167,5 +167,5 @@ const openSaveCollectionDialog = () => {
 
 const closeCollectionDialog = () => {
   showCollectionDialog.value = false;
-}
+};
 </script>

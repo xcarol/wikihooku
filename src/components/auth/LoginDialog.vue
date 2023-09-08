@@ -134,7 +134,7 @@ const canLogin = computed(
     usernameMeta.valid &&
     username.value?.length > 0 &&
     passwordMeta.valid &&
-    password.value?.length > 0
+    password.value?.length > 0,
 );
 const usernameLabel = computed(() => $t('login.username'));
 const passwordLabel = computed(() => $t('login.password'));

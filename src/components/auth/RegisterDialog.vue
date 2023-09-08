@@ -139,7 +139,7 @@ import * as yup from 'yup';
 import { useApi } from '../../plugins/api';
 import { MIN_PASSWORD_LEN, MAX_USER_NAME_LEN } from '../../global/const';
 
-const emits = defineEmits(['close'])
+const emits = defineEmits(['close']);
 const { dispatch } = useStore();
 const { t: $t } = useI18n();
 const api = useApi();
@@ -223,7 +223,7 @@ const canRegister = computed(() =>
     passwordRepeatMeta.valid &&
     passwordRepeat.value?.length > 0 &&
     password.value === passwordRepeat.value &&
-    recaptchaResponse.value !== null
+    recaptchaResponse.value !== null,
   );
 
 const registerUser = async () => {

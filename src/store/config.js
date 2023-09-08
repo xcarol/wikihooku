@@ -20,8 +20,8 @@ const store = createStore({
     snackMessage(state, message) {
       state.snackMessage = message;
     },
-    viewTitle(state, message) {
-      state.viewTitle = message;
+    viewTitle(state, title) {
+      state.viewTitle = title;
     },
   },
   getters: {

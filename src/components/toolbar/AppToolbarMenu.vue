@@ -5,7 +5,7 @@
     >
       <template #activator="{ props }">
         <v-btn
-          :icon="'$account'"
+          :icon="accountIcon"
           v-bind="props"
         />
       </template>
@@ -60,6 +60,7 @@ const emits = defineEmits(['login', 'logout', 'register']);
 
 const showMenu = ref(false);
 const loggedUser = computed(() => getters['session/isLoggedIn']);
+const accountIcon = computed(() => loggedUser.value ? '$accountIn' : '$accountOut');
 
 const menuAction = (action) => {
   showMenu.value = false;

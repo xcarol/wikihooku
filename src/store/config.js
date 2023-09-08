@@ -1,13 +1,14 @@
 import { createStore } from 'vuex';
 import VuexPersistence from 'vuex-persist';
 import session from './modules/session';
-// import collections from './modules/collections';
+import collections from './modules/collections';
 import wiki from './modules/wiki';
 
 const store = createStore({
   state: {
-    drawerVisible: true,
+    drawerVisible: false,
     snackMessage: '',
+    viewTitle: '',
   },
   mutations: {
     toggleDrawer(state) {
@@ -19,10 +20,14 @@ const store = createStore({
     snackMessage(state, message) {
       state.snackMessage = message;
     },
+    viewTitle(state, title) {
+      state.viewTitle = title;
+    },
   },
   getters: {
     drawerVisible: (state) => state.drawerVisible,
     snackMessage: (state) => state.snackMessage,
+    viewTitle: (state) => state.viewTitle,
   },
   actions: {
     resetSnackMessage({ commit }, timeout) {
@@ -31,7 +36,7 @@ const store = createStore({
   },
   modules: {
     session,
-    // collections,
+    collections,
     wiki,
   },
   plugins: [

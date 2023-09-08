@@ -4,8 +4,7 @@
     :fixed="$vuetify.display.mdAndDown"
     :bottom="$vuetify.display.xs"
     @input="updateDrawer"
-  >
-  </v-navigation-drawer>
+  />
 </template>
 
 <script setup>

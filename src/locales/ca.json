@@ -12,6 +12,7 @@
   "Unauthorized": "No tens prou permisos",
   "Current password don't match": "La contrasenya actual no coincideix",
   "User missing confirmation email": "Confirma primer el teu compte, si us plau.",
+  "collection already exists": "Ja hi ha una col·lecció amb aquest nom",
   "ca": "Català",
   "ca-ES": "fallback:ca",
   "en": "Anglès",
@@ -116,5 +117,9 @@
     "feedback": "El teu feedback",
     "feedbackLength": "Has d'escriure %s caracters com a mínim",
     "sendsuccesfully": "El teu feedback s'ha registrat amb èxit. Gràcies per contribuir!"
+  },
+  "collection": {
+    "title": "Nom de la col·lecció",
+    "button": "Guardar"
   }
 }

@@ -25,6 +25,8 @@ import {
   mdiLoginVariant,
   mdiLogoutVariant,
   mdiDragVertical,
+  mdiContentSave,
+  mdiAccountDetails,
 } from '@mdi/js';
 
 const defaultTheme = import.meta.env.VITE_THEME || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -43,12 +45,14 @@ const vuetify = createVuetify({
       age: mdiAlignHorizontalLeft,
       timeline: mdiDistributeVerticalCenter,
       messageAlert: mdiMessageAlert,
-      settings: mdiAccountCircle,
-      account: mdiAccountCircleOutline,
+      settings: mdiAccountDetails,
+      accountIn: mdiAccountCircle,
+      accountOut: mdiAccountCircleOutline,
       register: mdiAccountPlusOutline,
       login: mdiLoginVariant,
       logout: mdiLogoutVariant,
       drag: mdiDragVertical,
+      save: mdiContentSave,
     },
     sets: {
       mdi,

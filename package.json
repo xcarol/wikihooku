@@ -27,6 +27,7 @@
     "vue-draggable-next": "^2.2.0",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.2.2",
+    "vue-uuid": "^3.0.0",
     "vue3-recaptcha2": "^1.8.0",
     "vuetify": "^3.3.2",
     "vuex": "^4.1.0",

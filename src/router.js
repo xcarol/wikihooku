@@ -5,14 +5,8 @@ import MainView from './views/MainView.vue';
 const routes = [
   {
     path: '/',
+    name: 'Home',
     component: MainView,
-    children: [
-      {
-        path: '/',
-        name: 'Home',
-        component: () => import('./views/layout/TimelineLayout.vue'),
-      },
-    ],
   },
   {
     path: '/account',
@@ -43,6 +37,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isLoggedIn = store.getters['session/isLoggedIn'];
+
+  store.commit('viewTitle', '');
 
   if (
     (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn)

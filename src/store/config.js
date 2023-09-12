@@ -14,9 +14,6 @@ const store = createStore({
     toggleDrawer(state) {
       state.drawerVisible = !state.drawerVisible;
     },
-    drawerVisible(state, show) {
-      state.drawerVisible = show;
-    },
     snackMessage(state, message) {
       state.snackMessage = message;
     },

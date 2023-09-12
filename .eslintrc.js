@@ -33,7 +33,7 @@ module.exports = {
   },
 
   parserOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: 14,
     sourceType: 'module',
   },
 };

@@ -6,18 +6,22 @@
   >
     <v-list v-model="collectionNames">
       <v-list-item
-        class="list-item"
         v-for="(collectionName, index) in collectionNames"
         :key="index"
+        class="list-item"
       >
-        <v-btn flat class="collection">{{ collectionName.name }}</v-btn>
+        <v-btn
+          flat
+          class="collection"
+          >{{ collectionName.name }}</v-btn
+        >
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script setup>
-import { computed, watch, onActivated, onBeforeMount, onBeforeUpdate, onMounted, onUpdated } from 'vue';
+import { computed, onBeforeUpdate } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -26,7 +30,7 @@ const drawerVisible = computed(() => store.state.drawerVisible);
 const collectionNames = computed(() => store.getters['collections/collectionNames']);
 
 onBeforeUpdate(async () => {
-  if ( drawerVisible.value === true) {
+  if (drawerVisible.value === true) {
     await store.dispatch('collections/getAllCollectionNames');
   }
 });

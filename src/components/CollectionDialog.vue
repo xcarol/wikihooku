@@ -113,7 +113,7 @@ collectionNameReset({
 });
 
 const cansaveCollection = computed(
-  () => collectionNameMeta.valid && collectionName.value?.length > 0
+  () => collectionNameMeta.valid && collectionName.value?.length > 0,
 );
 
 const saveCollection = async () => {

@@ -27,11 +27,13 @@ module.exports = {
       vue: 'never',
     }],
     'arrow-parens': ['error', 'always'],
+    "comma-dangle": ["error", "always-multiline"],
+    "semi": ["error", "always"],
     'vue/component-name-in-template-casing': ['error', 'kebab-case'],
   },
 
   parserOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: 14,
     sourceType: 'module',
   },
 };

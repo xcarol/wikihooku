@@ -3,18 +3,53 @@
     v-model="drawerVisible"
     :fixed="$vuetify.display.mdAndDown"
     :bottom="$vuetify.display.xs"
-    @input="updateDrawer"
-  />
+  >
+    <v-list v-model="collectionNames">
+      <v-list-item
+        v-for="(collectionName, index) in collectionNames"
+        :key="index"
+        class="list-item"
+      >
+        <v-btn
+          flat
+          class="collection"
+          @click="selectCollection(collectionName._id)"
+          >{{ collectionName.name }}</v-btn
+        >
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onBeforeUpdate } from 'vue';
 import { useStore } from 'vuex';
 
+const emits = defineEmits(['collectionSelected']);
 const store = useStore();
 
 const drawerVisible = computed(() => store.state.drawerVisible);
-const updateDrawer = (status) => {
-  store.commit('showDrawer', status);
+const collectionNames = computed(() => store.getters['collections/collectionNames']);
+
+onBeforeUpdate(async () => {
+  if (drawerVisible.value === true) {
+    await store.dispatch('collections/getAllCollectionNames');
+  }
+});
+
+const selectCollection = (id) => {
+  emits('collectionSelected', id);
+  store.commit('toggleDrawer');
 };
 </script>
+
+<style scoped>
+.list-item {
+  padding: 0px !important;
+}
+.collection {
+  justify-content: left;
+  width: 100%;
+  text-transform: none;
+}
+</style>

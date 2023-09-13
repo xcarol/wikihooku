@@ -21,7 +21,7 @@ import { useStore } from 'vuex';
 
 import HomeButton from './HomeButton.vue';
 import FeedbackButton from './FeedbackButton.vue';
-import AppToolbarMenu from './AppToolbarMenu.vue'
+import AppToolbarMenu from './AppToolbarMenu.vue';
 
 const emits = defineEmits(['login', 'logout', 'register', 'home', 'feedback']);
 const feedback = () => emits('feedback');

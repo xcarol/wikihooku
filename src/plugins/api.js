@@ -14,6 +14,7 @@ class Api {
     sendFeedback: 'feedback',
     searchPerson: 'mediawiki/search-person/{1}/{2}/{3}',
     page: 'mediawiki/page/{1}',
+    allCollectionNames: 'collection/names',
     saveCollection: 'collection',
   };
 
@@ -113,6 +114,16 @@ class Api {
     const url = Api.endpoint(this.endpoints.page, pageId);
     const { data: { parse: { wikitext: { '*': content } } } } = await this.axios.get(url);
     return parseInfo(content);
+  }
+
+  async getAllCollectionNames() {
+    const url = Api.endpoint(this.endpoints.allCollectionNames);
+    return this.axios.get(url);
+  }
+
+  async getCollection(id) {
+    const url = Api.endpoint(this.endpoints.collectionSelection, id);
+    return this.axios.get(url);
   }
 
   async saveCollection(userId, name, items) {

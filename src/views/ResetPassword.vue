@@ -126,7 +126,7 @@ const passwordRepeatRules = [
 
 const { value: passwordRepeat, meta: passwordRepeatMeta } = useField(
   'passwordRepeat',
-  passwordRepeatRules
+  passwordRepeatRules,
 );
 
 const recaptchaKey = import.meta.env.VITE_RECAPTCHA_KEY;

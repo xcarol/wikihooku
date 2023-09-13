@@ -3,29 +3,47 @@ import ApiPlugin from '../../plugins/api';
 const { api } = ApiPlugin;
 
 const getters = {
-  activeCollectionName: (state) => state.activeCollectionName,
+  activeCollectionName: (state) => state.activeCollection.name,
+  activeCollection: (state) => state.activeCollection,
+  collectionNames: (state) => state.collectionNames,
 };
 
 const mutations = {
-  activeCollectionName(state, collectionName) {
-    state.activeCollectionName = collectionName;
+  collectionNames(state, collectionNames) {
+    state.collectionNames = collectionNames;
+  },
+  activeCollection(state, collection) {
+    state.activeCollection = collection;
   },
 };
 
 const actions = {
   save({ commit }, collectionInfo) {
     return api.saveCollection(collectionInfo.userId, collectionInfo.name, collectionInfo.items)
-    .then((res) => {
-      const collectionName = res.data.collection.name;
-      commit('activeCollectionName', collectionName)
-      commit('viewTitle', collectionName, { root: true });
+      .then((res) => {
+        const { collection } = res.data;
+        commit('activeCollection', collection);
+        commit('viewTitle', collection.name, { root: true });
+      });
+  },
+  getAllCollectionNames({ commit }) {
+    return api.getAllCollectionNames().then((res) => {
+      const { collectionNames } = res.data;
+      commit('collectionNames', collectionNames);
     });
-  }
+  },
+  selectCollection({ commit }, id) {
+    return api.getCollection(id).then((res) => {
+      const { collection } = res.data;
+      commit('activeCollection', collection);
+      commit('wiki/entities', collection.items, { root: true });
+    });
+  },
 };
 
 const state = {
-  activeCollectionName: '',
-  collections: [],
+  activeCollection: {},
+  collectionNames: [],
 };
 
 export default {

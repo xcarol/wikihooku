@@ -121,6 +121,11 @@ class Api {
     return this.axios.get(url);
   }
 
+  async getCollection(id) {
+    const url = Api.endpoint(this.endpoints.collectionSelection, id);
+    return this.axios.get(url);
+  }
+
   async saveCollection(userId, name, items) {
     const url = Api.endpoint(this.endpoints.saveCollection);
     const data = { _id: userId, name, items };

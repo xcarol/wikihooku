@@ -34,7 +34,9 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <main-drawer />
+    <main-drawer 
+      @collection-selected="selectCollection"
+    />
     <timeline-layout
       :view="viewToggle"
       :visible-item="visibleItem"
@@ -97,12 +99,16 @@ const errorMessage = computed(() => {
   return snackMessage.value || '';
 });
 
+const setViewTitle = () => {
+  store.commit('viewTitle', collectionName.value);
+};
+
 const clearErrorMessage = () => {
   store.dispatch('resetSnackMessage', nowTimeout);
 };
 
 onBeforeMount(() => {
-  store.commit('viewTitle', collectionName.value);
+  setViewTitle();
 });
 
 const selected = async (item) => {
@@ -167,5 +173,10 @@ const openSaveCollectionDialog = () => {
 
 const closeCollectionDialog = () => {
   showCollectionDialog.value = false;
+};
+
+const selectCollection = async (id) => {
+  await store.dispatch('collections/selectCollection', id);
+  setViewTitle();
 };
 </script>

@@ -13,6 +13,7 @@
         <v-btn
           flat
           class="collection"
+          @click="selectCollection(collectionName._id)"
           >{{ collectionName.name }}</v-btn
         >
       </v-list-item>
@@ -24,6 +25,7 @@
 import { computed, onBeforeUpdate } from 'vue';
 import { useStore } from 'vuex';
 
+const emits = defineEmits(['collectionSelected']);
 const store = useStore();
 
 const drawerVisible = computed(() => store.state.drawerVisible);
@@ -34,6 +36,11 @@ onBeforeUpdate(async () => {
     await store.dispatch('collections/getAllCollectionNames');
   }
 });
+
+const selectCollection = (id) => {
+  emits('collectionSelected', id);
+  store.commit('toggleDrawer');
+};
 </script>
 
 <style scoped>

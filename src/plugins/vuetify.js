@@ -27,6 +27,7 @@ import {
   mdiDragVertical,
   mdiContentSave,
   mdiAccountDetails,
+  mdiDeleteForever,
 } from '@mdi/js';
 
 const defaultTheme = import.meta.env.VITE_THEME || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -53,6 +54,7 @@ const vuetify = createVuetify({
       logout: mdiLogoutVariant,
       drag: mdiDragVertical,
       save: mdiContentSave,
+      deleteForever: mdiDeleteForever,
     },
     sets: {
       mdi,

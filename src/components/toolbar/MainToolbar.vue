@@ -34,7 +34,13 @@
     <v-btn
       variant="tonal"
       :icon="'$save'"
+      :disabled="anonymousUser || noEntity"
       @click.stop="saveCollection"
+    />
+    <v-btn
+      variant="tonal"
+      :icon="'$deleteForever'"
+      @click.stop="clearActiveCollection"
     />
     <v-btn
       variant="tonal"
@@ -45,13 +51,13 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch,computed } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useApi } from '../../plugins/api';
 import { TIMELINE, AGE } from '../../global/const';
 
-const { commit } = useStore();
+const { getters, commit, dispatch } = useStore();
 const { t: $t } = useI18n();
 const api = useApi();
 
@@ -74,6 +80,8 @@ const toggleDrawer = () => commit('toggleDrawer');
 const newPerson = () => emits('newPerson');
 const saveCollection = () => emits('saveCollection');
 const viewToggle = (value) => emits('switchView', value === 0 ? TIMELINE : AGE);
+const anonymousUser = computed(() => getters['session/isLoggedIn'] === false);
+const noEntity = computed(() => getters['wiki/entities'].length === 0);
 
 const input = (item) => {
   if (item) {
@@ -124,4 +132,8 @@ watch(search, async (val) => {
 
   isLoading.value = false;
 });
+
+const clearActiveCollection = () => {
+  dispatch('collections/clearActiveCollection', {});
+};
 </script>

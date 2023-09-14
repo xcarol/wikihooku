@@ -3,8 +3,10 @@
 **Wiki** from hawaian Wikiwiki - Quick  
 **Hooku** from hawaian Hookuku - Compare  
 
-WikiHooku aims to compare data from diferents entries in the Wikipedia  
+WikiHooku aims to compare data from diferents entities in the Wikipedia  
 First one is Lifetime & Age of Characters  
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f7daf12a06e4424f93b171d30f301821)](https://app.codacy.com/gh/xcarol/wikihooku/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ## Project setup
 

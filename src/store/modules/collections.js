@@ -3,8 +3,7 @@ import ApiPlugin from '../../plugins/api';
 const { api } = ApiPlugin;
 
 const getters = {
-  activeCollectionName: (state) => state.activeCollection.name,
-  activeCollection: (state) => state.activeCollection,
+  activeCollectionName: (state) => state.activeCollectionName,
   collectionNames: (state) => state.collectionNames,
 };
 
@@ -12,8 +11,8 @@ const mutations = {
   collectionNames(state, collectionNames) {
     state.collectionNames = collectionNames;
   },
-  activeCollection(state, collection) {
-    state.activeCollection = collection;
+  activeCollectionName(state, activeCollectionName) {
+    state.activeCollectionName = activeCollectionName;
   },
 };
 
@@ -22,7 +21,7 @@ const actions = {
     return api.saveCollection(collectionInfo.userId, collectionInfo.name, collectionInfo.items)
       .then((res) => {
         const { collection } = res.data;
-        commit('activeCollection', collection);
+        commit('activeCollectionName', collection.name);
         commit('viewTitle', collection.name, { root: true });
       });
   },
@@ -35,14 +34,20 @@ const actions = {
   selectCollection({ commit }, id) {
     return api.getCollection(id).then((res) => {
       const { collection } = res.data;
-      commit('activeCollection', collection);
+      commit('activeCollectionName', collection.name);
+      commit('viewTitle', collection.name, { root: true });
       commit('wiki/entities', collection.items, { root: true });
     });
+  },
+  clearActiveCollection({ commit }) {
+    commit('activeCollectionName', '');
+    commit('viewTitle', '', { root: true });
+    commit('wiki/entities', [], { root: true });
   },
 };
 
 const state = {
-  activeCollection: {},
+  activeCollectionName: '',
   collectionNames: [],
 };
 

@@ -98,7 +98,7 @@ const { commit, dispatch } = useStore();
 const { t: $t } = useI18n();
 const api = useApi();
 
-const showDialog = true;
+const showDialog = ref(true);
 const errorMessage = ref('');
 let loading = false;
 let recovering = false;

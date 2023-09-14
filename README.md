@@ -42,3 +42,7 @@ Stored in `.env` or `.env.test.local` file for development and test respectively
 ### Lints and fixes files
 
 `npm run lint`
+
+## Backend
+
+The [WikiHooku API](https://github.com/xcarol/wikihooku-api) provides the infrastructure for the project.

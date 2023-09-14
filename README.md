@@ -10,7 +10,7 @@ First one is Lifetime & Age of Characters
 
 ## Project setup
 
-`yarn install`
+`npm install`
 
 ### Environment variables
 
@@ -33,15 +33,15 @@ Stored in `.env` or `.env.test.local` file for development and test respectively
 
 ### Compiles and hot-reloads for development
 
-`yarn dev`
+`npm run dev`
 
 ### Compiles and minifies for production
 
-`yarn build`
+`npm run build`
 
 ### Lints and fixes files
 
-`yarn lint`
+`npm run lint`
 
 ## Customize configuration
 

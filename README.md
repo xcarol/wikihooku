@@ -42,7 +42,3 @@ Stored in `.env` or `.env.test.local` file for development and test respectively
 ### Lints and fixes files
 
 `npm run lint`
-
-## Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).

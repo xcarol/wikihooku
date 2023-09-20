@@ -28,12 +28,22 @@ import { useStore } from 'vuex';
 const emits = defineEmits(['collectionSelected']);
 const store = useStore();
 
-const drawerVisible = computed(() => store.state.drawerVisible);
+const drawerVisible = computed({
+  get() {
+    return store.state.drawerVisible;
+  },
+  set(newValue) {
+    store.commit('toggleDrawer', newValue);
+  },
+});
 const collectionNames = computed(() => store.getters['collections/collectionNames']);
+const user = computed(() => store.getters['session/user']);
 
 onBeforeUpdate(async () => {
-  if (drawerVisible.value === true) {
-    await store.dispatch('collections/getAllCollectionNames');
+  if (drawerVisible.value === true && user.value._id) {
+    await store.dispatch('collections/getUserCollectionNames', user.value._id);
+  } else {
+    store.commit('collections/collectionNames', []);
   }
 });
 

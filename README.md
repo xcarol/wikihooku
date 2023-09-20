@@ -3,12 +3,14 @@
 **Wiki** from hawaian Wikiwiki - Quick  
 **Hooku** from hawaian Hookuku - Compare  
 
-WikiHooku aims to compare data from diferents entries in the Wikipedia  
+WikiHooku aims to compare data from diferents entities in the Wikipedia  
 First one is Lifetime & Age of Characters  
+
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f7daf12a06e4424f93b171d30f301821)](https://app.codacy.com/gh/xcarol/wikihooku/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ## Project setup
 
-`yarn install`
+`npm install`
 
 ### Environment variables
 
@@ -31,16 +33,16 @@ Stored in `.env` or `.env.test.local` file for development and test respectively
 
 ### Compiles and hot-reloads for development
 
-`yarn dev`
+`npm run dev`
 
 ### Compiles and minifies for production
 
-`yarn build`
+`npm run build`
 
 ### Lints and fixes files
 
-`yarn lint`
+`npm run lint`
 
-## Customize configuration
+## Backend
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+The [WikiHooku API](https://github.com/xcarol/wikihooku-api) provides the infrastructure for the project.

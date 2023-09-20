@@ -31,6 +31,12 @@ const actions = {
       commit('collectionNames', collectionNames);
     });
   },
+  getUserCollectionNames({ commit }, userId) {
+    return api.getUserCollectionNames(userId).then((res) => {
+      const { collectionNames } = res.data;
+      commit('collectionNames', collectionNames);
+    });
+  },
   selectCollection({ commit }, id) {
     return api.getCollection(id).then((res) => {
       const { collection } = res.data;

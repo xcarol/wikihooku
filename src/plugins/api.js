@@ -15,6 +15,7 @@ class Api {
     searchPerson: 'mediawiki/search-person/{1}/{2}/{3}',
     page: 'mediawiki/page/{1}',
     allCollectionNames: 'collection/names',
+    userCollectionNames: 'collection/names/{1}',
     saveCollection: 'collection',
   };
 
@@ -118,6 +119,11 @@ class Api {
 
   async getAllCollectionNames() {
     const url = Api.endpoint(this.endpoints.allCollectionNames);
+    return this.axios.get(url);
+  }
+
+  async getUserCollectionNames(userId) {
+    const url = Api.endpoint(this.endpoints.userCollectionNames, userId);
     return this.axios.get(url);
   }
 

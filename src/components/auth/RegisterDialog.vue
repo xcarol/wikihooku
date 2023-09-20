@@ -1,7 +1,5 @@
 <template>
-  <v-row
-    justify="center"
-  >
+  <v-row justify="center">
     <v-dialog
       v-model="showDialog"
       max-width="600px"
@@ -57,7 +55,7 @@
                 <vue-recaptcha
                   :sitekey="recaptchaKey"
                   @verify="verifyCaptcha"
-                  @expired="expireRecaptcha"
+                  @expire="expireRecaptcha"
                 />
               </v-col>
             </v-row>
@@ -160,7 +158,11 @@ const recaptchaKey = import.meta.env.VITE_RECAPTCHA_KEY;
 const fullnameRules = [
   async (value) => {
     try {
-      await yup.string().required().max(MAX_USER_NAME_LEN, 'register.fullnameMaxLength').validate(value);
+      await yup
+        .string()
+        .required()
+        .max(MAX_USER_NAME_LEN, 'register.fullnameMaxLength')
+        .validate(value);
       return true;
     } catch (error) {
       return $t(error.message);
@@ -186,7 +188,11 @@ const { value: username, meta: usernameMeta } = useField('username', usernameRul
 const passwordRules = [
   async (value) => {
     try {
-      await yup.string().required().min(MIN_PASSWORD_LEN, 'register.passwordMinLenght').validate(value);
+      await yup
+        .string()
+        .required()
+        .min(MIN_PASSWORD_LEN, 'register.passwordMinLenght')
+        .validate(value);
       return true;
     } catch (error) {
       return $t(error.message);
@@ -201,7 +207,11 @@ const passwordRepeatRules = [
     try {
       await yup
         .string()
-        .test('passwords-match', 'register.passwordsMatch', (passwordValue) => password.value === passwordValue)
+        .test(
+          'passwords-match',
+          'register.passwordsMatch',
+          (passwordValue) => password.value === passwordValue,
+        )
         .required()
         .validate(value);
       return true;
@@ -211,9 +221,13 @@ const passwordRepeatRules = [
   },
 ];
 
-const { value: passwordRepeat, meta: passwordRepeatMeta } = useField('passwordRepeat', passwordRules);
+const { value: passwordRepeat, meta: passwordRepeatMeta } = useField(
+  'passwordRepeat',
+  passwordRules,
+);
 
-const canRegister = computed(() => 
+const canRegister = computed(
+  () =>
     fullnameMeta.valid &&
     fullname.value?.length > 0 &&
     usernameMeta.valid &&
@@ -224,7 +238,7 @@ const canRegister = computed(() =>
     passwordRepeat.value?.length > 0 &&
     password.value === passwordRepeat.value &&
     recaptchaResponse.value !== null,
-  );
+);
 
 const registerUser = async () => {
   errorMessage.value = '';

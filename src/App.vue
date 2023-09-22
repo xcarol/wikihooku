@@ -26,15 +26,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 import { useTheme } from 'vuetify';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
-import AppToolbar from './components/toolbar/AppToolbar.vue';
-import FeedbackDialog from './components/FeedbackDialog.vue';
-import RegisterDialog from './components/auth/RegisterDialog.vue';
-import LoginDialog from './components/auth/LoginDialog.vue';
+const AppToolbar = defineAsyncComponent(() => import('./components/toolbar/AppToolbar.vue'));
+const FeedbackDialog = defineAsyncComponent(() => import('./components/FeedbackDialog.vue'));
+const RegisterDialog = defineAsyncComponent(() => import('./components/auth/RegisterDialog.vue'));
+const LoginDialog = defineAsyncComponent(() => import('./components/auth/LoginDialog.vue'));
 
 const theme = useTheme();
 const store = useStore();

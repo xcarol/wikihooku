@@ -46,39 +46,32 @@
         </v-alert>
         <v-divider />
         <v-card-actions>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-btn
-                  text
-                  color="secondary"
-                  :loading="recovering"
-                  :disabled="!canRecoverPassword"
-                  @click.stop="recoverPassword"
-                >
-                  {{ $t('login.recoverPassword') }}
-                </v-btn>
-              </v-col>
-              <v-col cols="12">
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  @click.stop="close"
-                >
-                  {{ $t('global.close') }}
-                </v-btn>
-                <v-btn
-                  color="blue darken-1"
-                  text
-                  :loading="loading"
-                  :disabled="!canLogin"
-                  @click.stop="loginUser"
-                >
-                  {{ $t('login.button') }}
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-container>
+          <v-btn
+            text
+            color="secondary"
+            :loading="recovering"
+            :disabled="!canRecoverPassword"
+            @click.stop="recoverPassword"
+          >
+            {{ $t('login.recoverPassword') }}
+          </v-btn>
+          <v-spacer />
+          <v-btn
+            color="blue darken-1"
+            text
+            @click.stop="close"
+          >
+            {{ $t('global.close') }}
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            :loading="loading"
+            :disabled="!canLogin"
+            @click.stop="loginUser"
+          >
+            {{ $t('login.button') }}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

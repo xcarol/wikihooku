@@ -1,12 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import store from './store/config';
-import MainView from './views/MainView.vue';
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: MainView,
+    component: () => import('./views/MainView.vue'),
   },
   {
     path: '/account',

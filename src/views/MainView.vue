@@ -63,7 +63,7 @@ import { uuid } from 'vue-uuid';
 import parseInfo from 'infobox-parser';
 import dayjs from 'dayjs';
 
-import { TIMELINE } from '../global/const';
+import { TIMELINE } from '../lib/const';
 import { wikiEntity } from '../store/modules/wiki';
 
 import MainDrawer from '../components/MainDrawer.vue';

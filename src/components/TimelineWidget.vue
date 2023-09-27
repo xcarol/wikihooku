@@ -19,7 +19,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import { AGE, TIMELINE } from '../global/const';
+import { AGE, TIMELINE } from '../lib/const';
 
 const TimelineProps = defineProps({
   view: {

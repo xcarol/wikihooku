@@ -40,7 +40,7 @@
 import { computed, onUpdated } from 'vue';
 import { VueDraggableNext } from 'vue-draggable-next';
 import { useStore } from 'vuex';
-import { TIMELINE, AGE } from '../../global/const';
+import { TIMELINE, AGE } from '../../lib/const';
 import TimelineWidget from '../../components/TimelineWidget.vue';
 
 const props = defineProps({

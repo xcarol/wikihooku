@@ -108,7 +108,7 @@ import { useI18n } from 'vue-i18n';
 import { useField } from 'vee-validate';
 import * as yup from 'yup';
 import { useApi } from '../plugins/api';
-import { MAX_USER_NAME_LEN, MIN_PASSWORD_LEN } from '../global/const';
+import { MAX_USER_NAME_LEN, MIN_PASSWORD_LEN } from '../lib/const';
 
 const store = useStore();
 const router = useRouter();

@@ -55,7 +55,7 @@ import { ref, watch,computed } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useApi } from '../../plugins/api';
-import { TIMELINE, AGE } from '../../global/const';
+import { TIMELINE, AGE } from '../../lib/const';
 
 const { getters, commit, dispatch } = useStore();
 const { t: $t } = useI18n();

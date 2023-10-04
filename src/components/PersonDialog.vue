@@ -1,7 +1,5 @@
 <template>
-  <v-container
-    fluid
-  >
+  <v-container fluid>
     <v-dialog
       v-model="showDialog"
       max-width="600px"
@@ -10,7 +8,7 @@
     >
       <v-card>
         <v-card-title>
-          <span class="headline">{{ $t('persona.title') }}</span>
+          <span class="headline">{{ $t('person.title') }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -20,9 +18,9 @@
                   v-model="fullname"
                   type="text"
                   required
-                  :label="$t('persona.fullname')"
+                  :label="$t('person.fullname')"
                   :rules="fullnameRules"
-                  @keyup.enter="addPersona"
+                  @keyup.enter="addPerson"
                 />
               </v-col>
             </v-row>
@@ -33,7 +31,7 @@
                     v-model="birthday"
                     :items="days"
                     :label="$t('global.day')"
-                    :hint="$t('persona.birthdate')"
+                    :hint="$t('person.birthdate')"
                     required
                     persistent-hint
                   />
@@ -63,7 +61,7 @@
                     v-model="deathday"
                     :items="days"
                     :label="$t('global.day')"
-                    :hint="$t('persona.deathdate')"
+                    :hint="$t('person.deathdate')"
                     persistent-hint
                   />
                 </v-col>
@@ -103,7 +101,7 @@
                     color="blue darken-1"
                     text
                     :disabled="!canSave"
-                    @click.stop="addPersona"
+                    @click.stop="addPerson"
                   >
                     {{ $t('global.ok') }}
                   </v-btn>
@@ -121,7 +119,9 @@
 import { ref, computed, watch } from 'vue';
 import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
+import { uuid } from 'vue-uuid';
 import * as yup from 'yup';
+import WikiPerson from '../lib/wikiPerson';
 
 const emits = defineEmits(['add', 'close']);
 const { t: $t } = useI18n();
@@ -144,27 +144,30 @@ const fullnameRules = [
     }
   },
 ];
-const { value: fullname, meta: fullnameMeta} = useField('fullname', fullnameRules);
+const { value: fullname, meta: fullnameMeta } = useField('fullname', fullnameRules);
 
 const days = [...Array(30)].map((_, i) => i + 1);
 const months = [...Array(12)].map((_, i) => i + 1);
-const years = [...Array(new Date().getFullYear() - 1899)].map((_, i) => new Date().getFullYear() - i);
+const years = [...Array(new Date().getFullYear() - 1899)].map(
+  (_, i) => new Date().getFullYear() - i,
+);
 
-const canSave = computed(() => fullname.value && fullnameMeta.valid && birthday.value && birthmonth.value && birthyear.value);
+const canSave = computed(
+  () =>
+    fullname.value && fullnameMeta.valid && birthday.value && birthmonth.value && birthyear.value,
+);
 
-const addPersona = () => {
+const addPerson = () => {
+  const person = new WikiPerson();
   const start = new Date(birthyear.value, birthmonth.value - 1, birthday.value);
-  let end = new Date();
+  let end;
 
   if (deathyear.value && deathmonth.value && deathday.value) {
     end = new Date(deathyear.value, deathmonth.value - 1, deathday.value);
   }
 
-  emits('add', {
-    fullname: fullname.value,
-    start,
-    end,
-  });
+  person.setPerson(`WH-${uuid.v4()}`, fullname.value, start, end);
+  emits('add', person);
 };
 
 const close = () => emits('close');

@@ -8,7 +8,7 @@
     >
       <v-list-item
         v-for="(person, index) in persons"
-        :id="person.pageid"
+        :id="person.id"
         :key="index"
       >
         <template #prepend>
@@ -28,8 +28,8 @@
           :name="person.name"
           :min="min"
           :max="max"
-          :start="person.start"
-          :end="person.end"
+          :start="person.birthDate"
+          :end="person.deathDate"
         />
       </v-list-item>
     </vue-draggable-next>
@@ -56,13 +56,17 @@ const props = defineProps({
 
 const { getters, commit } = useStore();
 
-const setEntities = (entities) => commit('wiki/entities', entities);
-const remPerson = (person) => commit('wiki/remEntity', person);
+// const setPersons = (persons) => commit('wiki/persons', persons);
+const remPerson = (person) => commit('wiki/remPerson', person);
 
 const persons = computed({
-  get: () => getters['wiki/entities'],
+  get: () => {
+    console.log('-');
+    return getters['wiki/persons'];
+  },
+  // eslint-disable-next-line no-unused-vars
   set: (newValue) => {
-    setEntities(newValue);
+    // setPersons(newValue);
   },
 });
 

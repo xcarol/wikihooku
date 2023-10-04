@@ -121,9 +121,9 @@ const saveCollection = async () => {
 
   loading.value = true;
   try {
-    const entities = getters['wiki/entities'];
+    const persons = getters['wiki/persons'];
     const user = getters['session/user'];
-    const items = entities.flat();
+    const items = persons.flat();
     await dispatch('collections/save', {
       userId: user._id,
       name: collectionName.value,

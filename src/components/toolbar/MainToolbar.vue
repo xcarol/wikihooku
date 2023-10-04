@@ -34,7 +34,7 @@
     <v-btn
       variant="tonal"
       :icon="'$save'"
-      :disabled="anonymousUser || noEntity"
+      :disabled="anonymousUser || noPerson"
       @click.stop="saveCollection"
     />
     <v-btn
@@ -81,7 +81,7 @@ const newPerson = () => emits('newPerson');
 const saveCollection = () => emits('saveCollection');
 const viewToggle = (value) => emits('switchView', value === 0 ? TIMELINE : AGE);
 const anonymousUser = computed(() => getters['session/isLoggedIn'] === false);
-const noEntity = computed(() => getters['wiki/entities'].length === 0);
+const noPerson = computed(() => getters['wiki/persons'].length === 0);
 
 const input = (item) => {
   if (item) {
@@ -120,7 +120,7 @@ watch(search, async (val) => {
         if (message.revisions[0].slots.main.content.includes('birth_date')) {
           items.value.push({
             title: message.title,
-            value: message.pageid,
+            value: message.id,
             content: message.revisions[0].slots.main.content,
           });
         }

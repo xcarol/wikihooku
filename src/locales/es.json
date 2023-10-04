@@ -87,7 +87,7 @@
     "birthmonth": "mes del nacimiento",
     "birthyear": "any del nacimiento"
   },
-  "persona": {
+  "person": {
     "title": "Persona",
     "fullname": "Nombre",
     "birthdate": "Fecha del nacimiento",

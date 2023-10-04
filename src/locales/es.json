@@ -70,9 +70,6 @@
   "messages": {
     "oldPassword": "La nueva contraseña no puede coincidir con la antigua."
   },
-  "character": {
-    "noBirthDateFound": "No se ha encontrado la fecha de nacimiento!"
-  },
   "fields": {
     "fullname": "Nombre completo",
     "email": "Email",
@@ -91,7 +88,8 @@
     "title": "Persona",
     "fullname": "Nombre",
     "birthdate": "Fecha del nacimiento",
-    "deathdate": "Fecha de la defunción"
+    "deathdate": "Fecha de la defunción",
+    "noBirthDateFound": "No se ha encontrado la fecha de nacimiento!"
   },
   "account": {
     "title": "Configuración de la cuenta",

@@ -1,39 +1,32 @@
-const wikiEntity = (pageid, name, start, end) => ({
-  pageid,
-  name,
-  start,
-  end,
-});
-
-export { wikiEntity };
+import dayjs from 'dayjs';
 
 const mutations = {
-  entities(state, entities) {
-    state.entities = entities;
+  persons(state, persons) {
+    state.persons = persons;
   },
-  addEntity(state, entity) {
-    state.entities.push(entity);
+  addPerson(state, person) {
+    state.persons.push(person);
   },
-  remEntity(state, entity) {
-    state.entities.splice(state.entities.indexOf(entity), 1);
+  remPerson(state, person) {
+    state.persons.splice(state.persons.indexOf(person), 1);
   },
 };
 
 const getters = {
-  entities: (state) => state.entities,
-  larger: (state) => state.entities.reduce((larger, entity) => Math.max(larger, entity.end - entity.start), 0),
+  persons: (state) => state.persons,
+  larger: (state) => state.persons.reduce((larger, person) => Math.max(larger, dayjs(person.deathDate).year() - dayjs(person.birthDate).year()), 0),
   start: (state) => {
-    const min = state.entities.reduce((year, entity) => Math.min(year, entity.start), state.curYear);
+    const min = state.persons.reduce((year, person) => Math.min(year, dayjs(person.birthDate).year()), state.curYear);
     return min;
   },
   end: (state) => {
-    const max = state.entities.reduce((year, entity) => Math.max(year, entity.end), state.curYear);
+    const max = state.persons.reduce((year, person) => Math.max(year, dayjs(person.deathDate).year()), state.curYear);
     return max;
   },
 };
 
 const state = {
-  entities: [],
+  persons: [],
   curYear: new Date().getFullYear(),
 };
 

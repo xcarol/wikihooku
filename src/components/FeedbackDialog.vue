@@ -86,7 +86,7 @@ import { useField } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
 import VueRecaptcha from 'vue3-recaptcha2';
-import { MIN_FEEDBACK_LEN } from '../global/const';
+import { MIN_FEEDBACK_LEN } from '../lib/const';
 import { useApi } from '../plugins/api';
 
 const emits = defineEmits(['close']);

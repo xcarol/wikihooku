@@ -34,7 +34,7 @@
     <v-btn
       variant="tonal"
       :icon="'$save'"
-      :disabled="anonymousUser || noEntity"
+      :disabled="anonymousUser || noPerson"
       @click.stop="saveCollection"
     />
     <v-btn
@@ -55,7 +55,7 @@ import { ref, watch,computed } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useApi } from '../../plugins/api';
-import { TIMELINE, AGE } from '../../global/const';
+import { TIMELINE, AGE } from '../../lib/const';
 
 const { getters, commit, dispatch } = useStore();
 const { t: $t } = useI18n();
@@ -81,7 +81,7 @@ const newPerson = () => emits('newPerson');
 const saveCollection = () => emits('saveCollection');
 const viewToggle = (value) => emits('switchView', value === 0 ? TIMELINE : AGE);
 const anonymousUser = computed(() => getters['session/isLoggedIn'] === false);
-const noEntity = computed(() => getters['wiki/entities'].length === 0);
+const noPerson = computed(() => getters['wiki/persons'].length === 0);
 
 const input = (item) => {
   if (item) {

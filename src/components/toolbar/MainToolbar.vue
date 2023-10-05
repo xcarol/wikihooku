@@ -1,6 +1,5 @@
 <template>
-  <v-app-bar
-  >
+  <v-app-bar>
     <v-app-bar-nav-icon @click.stop="toggleDrawer()" />
     <v-btn-toggle
       v-model="toggleExclusive"
@@ -30,6 +29,7 @@
       no-filter
       return-object
       @update:model-value="input"
+      @update:search="updateItems"
     />
     <v-btn
       variant="tonal"
@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { ref, watch,computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useApi } from '../../plugins/api';
@@ -97,10 +97,10 @@ const setTimeline = () => {
   viewToggle(TIMELINE);
 };
 
-watch(search, async (val) => {
+const updateItems = async (val) => {
   items.value = [];
 
-  if (!val || val.length < 5) {
+  if (!val || val.length < 5 || isLoading.value === true) {
     errorMessage.value = '';
     return;
   }
@@ -131,7 +131,7 @@ watch(search, async (val) => {
   }
 
   isLoading.value = false;
-});
+};
 
 const clearActiveCollection = () => {
   dispatch('collections/clearActiveCollection', {});

@@ -42,10 +42,10 @@ export default class WikiPerson {
     this.deathDate = deathDate;
   }
 
-  setFromPageInfo(pageId, pageInfo) {
-    this.infoBox = parseInfo(pageInfo);
-    this.id = pageId;
-    this.name = this.infoBox.general.name;
+  setFromSearch(item) {
+    this.infoBox = parseInfo(item.content);
+    this.id = item.value;
+    this.name = this.infoBox.general.name || item.title;
     this.birthDate = this._parseBirthDate();
     this.deathDate = this._parseDeathDate();
   };

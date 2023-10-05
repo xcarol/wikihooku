@@ -111,7 +111,7 @@ const selected = async (item) => {
   try {
     const person = new WikiPerson();
 
-    person.setFromPageInfo(item.value, item.content);
+    person.setFromSearch(item);
     const startDate = person.getBirthDate();
     if (!startDate) {
       throw new Error($t('person.noBirthDateFound'));

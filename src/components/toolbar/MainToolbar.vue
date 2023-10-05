@@ -30,6 +30,7 @@
       return-object
       @update:model-value="input"
       @update:search="updateItems"
+      @click:clear="items = []"
     />
     <v-btn
       variant="tonal"
@@ -97,10 +98,8 @@ const setTimeline = () => {
   viewToggle(TIMELINE);
 };
 
-const updateItems = async (val) => {
-  items.value = [];
-
-  if (!val || val.length < 5 || isLoading.value === true) {
+const updateItems = (val) => {
+  if (!val || val.length < 5) {
     errorMessage.value = '';
     return;
   }
@@ -108,13 +107,13 @@ const updateItems = async (val) => {
   errorMessage.value = '';
   isLoading.value = true;
 
-  try {
-    const result = await api.searchPerson(val, 0, 50);
-
+  api.searchPerson(val, 0, 50).then((result) => {
     if (result.status !== 200) {
-      throw new Error(result.statusText);
+      errorMessage.value = result.statusText;
+      return;
     }
 
+    items.value = [];
     if (result.data.query) {
       result.data.query.pages.forEach((message) => {
         if (message.revisions[0].slots.main.content.includes('birth_date')) {
@@ -126,11 +125,12 @@ const updateItems = async (val) => {
         }
       });
     }
-  } catch (error) {
-    errorMessage.value = error.message;
-  }
 
-  isLoading.value = false;
+    isLoading.value = false;
+  }).catch((error) => {
+    errorMessage.value = error.message;
+    isLoading.value = false;
+  });
 };
 
 const clearActiveCollection = () => {

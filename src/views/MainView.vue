@@ -109,16 +109,16 @@ const selected = async (item) => {
   loading.value = true;
 
   try {
-    const character = new WikiPerson();
+    const person = new WikiPerson();
 
-    character.setFromPageInfo(item.content);
-    const startDate = character.getBirthDate();
+    person.setFromPageInfo(item.value, item.content);
+    const startDate = person.getBirthDate();
     if (!startDate) {
-      throw new Error($t('character.noBirthDateFound'));
+      throw new Error($t('person.noBirthDateFound'));
     }
 
-    store.commit('wiki/addPerson', character);
-    visibleItem.value = item.value.toString();
+    store.commit('wiki/addPerson', person);
+    visibleItem.value = person.id.toString();
   } catch (error) {
     store.commit('snackMessage', error.message);
   }

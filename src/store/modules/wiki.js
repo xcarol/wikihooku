@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 const mutations = {
   persons(state, persons) {
     state.persons = persons;
@@ -12,13 +14,13 @@ const mutations = {
 
 const getters = {
   persons: (state) => state.persons,
-  larger: (state) => state.persons.reduce((larger, person) => Math.max(larger, person.deathDate - person.birthDate), 0),
+  larger: (state) => state.persons.reduce((larger, person) => Math.max(larger, dayjs(person.deathDate).year() - dayjs(person.birthDate).year()), 0),
   start: (state) => {
-    const min = state.persons.reduce((year, person) => Math.min(year, person.birthDate.getFullYear()), state.curYear);
+    const min = state.persons.reduce((year, person) => Math.min(year, dayjs(person.birthDate).year()), state.curYear);
     return min;
   },
   end: (state) => {
-    const max = state.persons.reduce((year, person) => Math.max(year, person.deathDate?.getFullYear()), state.curYear);
+    const max = state.persons.reduce((year, person) => Math.max(year, dayjs(person.deathDate).year()), state.curYear);
     return max;
   },
 };

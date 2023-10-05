@@ -1,14 +1,14 @@
 import parseInfo from 'infobox-parser';
 import dayjs from 'dayjs';
 
-class WikiPerson {
+export default class WikiPerson {
   _parseBirthDate() {
     if (
       this.infoBox.general.birthDate &&
       this.infoBox.general.birthDate.date &&
       dayjs(this.infoBox.general.birthDate.date).isValid()
     ) {
-      return this.infoBox.general.birthDate.date;
+      return dayjs(this.infoBox.general.birthDate.date).toJSON();
     }
 
     if (
@@ -16,7 +16,7 @@ class WikiPerson {
       this.infoBox.general.birthDate[0].date &&
       dayjs(this.infoBox.general.birthDate[0].date).isValid()
     ) {
-      return this.infoBox.general.birthDate[0].date;
+      return dayjs(this.infoBox.general.birthDate[0].date).toJSON();
     }
 
     return undefined;
@@ -28,7 +28,7 @@ class WikiPerson {
       this.infoBox.general.deathDate.date &&
       dayjs(this.infoBox.general.deathDate.date).isValid()
     ) {
-      return this.infoBox.general.deathDate.date;
+      return dayjs(this.infoBox.general.deathDate.date).toJSON();
     }
 
     return undefined;
@@ -42,9 +42,9 @@ class WikiPerson {
     this.deathDate = deathDate;
   }
 
-  setFromPageInfo(pageInfo) {
+  setFromPageInfo(pageId, pageInfo) {
     this.infoBox = parseInfo(pageInfo);
-    this.id = this.infoBox.pageId;
+    this.id = pageId;
     this.name = this.infoBox.general.name;
     this.birthDate = this._parseBirthDate();
     this.deathDate = this._parseDeathDate();
@@ -59,4 +59,4 @@ class WikiPerson {
   }
 };
 
-export default WikiPerson;
+export const wikiDate = (JSONDate) => new Date(JSONDate || Date.now());

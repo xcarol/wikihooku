@@ -166,7 +166,7 @@ const addPerson = () => {
     end = new Date(deathyear.value, deathmonth.value - 1, deathday.value);
   }
 
-  person.setPerson(`WH-${uuid.v4()}`, fullname.value, start, end);
+  person.setPerson(`WH-${uuid.v4()}`, fullname.value, start.toJSON(), end?.toJSON());
   emits('add', person);
 };
 

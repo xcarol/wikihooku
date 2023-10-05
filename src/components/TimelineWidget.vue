@@ -53,11 +53,11 @@ const emits = defineEmits(['remove']);
 const range = computed(() => {
   switch (TimelineProps.view) {
     case AGE: {
-      return [0, TimelineProps.deathDate - TimelineProps.birthDate];
+      return [0, TimelineProps.end - TimelineProps.start];
     }
     case TIMELINE:
     default:
-      return [TimelineProps.birthDate, TimelineProps.deathDate];
+      return [TimelineProps.start, TimelineProps.end];
   }
 });
 

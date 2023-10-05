@@ -120,7 +120,7 @@ watch(search, async (val) => {
         if (message.revisions[0].slots.main.content.includes('birth_date')) {
           items.value.push({
             title: message.title,
-            value: message.id,
+            value: message.pageid,
             content: message.revisions[0].slots.main.content,
           });
         }

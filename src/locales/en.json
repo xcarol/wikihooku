@@ -70,9 +70,6 @@
   "messages": {
     "oldPassword": "New password and old password cannot be the same"
   },
-  "character": {
-    "noBirthDateFound": "No birth date found!"
-  },
   "fields": {
     "fullname": "Full name",
     "email": "Email",
@@ -87,11 +84,12 @@
     "birthmonth": "month of birth",
     "birthyear": "year of birth"
   },
-  "persona": {
+  "person": {
     "title": "Person",
     "fullname": "Name",
     "birthdate": "Birth date",
-    "deathdate": "Decease date"
+    "deathdate": "Decease date",
+    "noBirthDateFound": "No birth date found!"
   },
   "account": {
     "title": "Account settings",

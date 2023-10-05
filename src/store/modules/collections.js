@@ -42,13 +42,13 @@ const actions = {
       const { collection } = res.data;
       commit('activeCollectionName', collection.name);
       commit('viewTitle', collection.name, { root: true });
-      commit('wiki/entities', collection.items, { root: true });
+      commit('wiki/persons', collection.items, { root: true });
     });
   },
   clearActiveCollection({ commit }) {
     commit('activeCollectionName', '');
     commit('viewTitle', '', { root: true });
-    commit('wiki/entities', [], { root: true });
+    commit('wiki/persons', [], { root: true });
   },
 };
 

@@ -34,9 +34,7 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <main-drawer 
-      @collection-selected="selectCollection"
-    />
+    <main-drawer @collection-selected="selectCollection" />
     <timeline-layout
       :view="viewToggle"
       :visible-item="visibleItem"
@@ -58,13 +56,9 @@
 import { ref, computed, onBeforeMount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useStore } from 'vuex';
-import { uuid } from 'vue-uuid';
 
-import parseInfo from 'infobox-parser';
-import dayjs from 'dayjs';
-
-import { TIMELINE } from '../global/const';
-import { wikiEntity } from '../store/modules/wiki';
+import { TIMELINE } from '../lib/const';
+import WikiPerson from '../lib/wikiPerson';
 
 import MainDrawer from '../components/MainDrawer.vue';
 import MainToolbar from '../components/toolbar/MainToolbar.vue';
@@ -113,35 +107,18 @@ onBeforeMount(() => {
 
 const selected = async (item) => {
   loading.value = true;
-  let startDate;
-  let endDate = new Date();
 
   try {
-    const infoBox = parseInfo(item.content);
+    const person = new WikiPerson();
 
-    if (
-      infoBox.general.birthDate &&
-      infoBox.general.birthDate.date &&
-      dayjs(infoBox.general.birthDate.date).isValid()
-    ) {
-      startDate = new Date(infoBox.general.birthDate.date);
-    } else {
-      throw new Error($t('character.noBirthDateFound'));
+    person.setFromPageInfo(item.value, item.content);
+    const startDate = person.getBirthDate();
+    if (!startDate) {
+      throw new Error($t('person.noBirthDateFound'));
     }
 
-    if (
-      infoBox.general.deathDate &&
-      infoBox.general.birthDate.date &&
-      dayjs(infoBox.general.birthDate.date).isValid()
-    ) {
-      endDate = new Date(infoBox.general.deathDate.date);
-    }
-
-    store.commit(
-      'wiki/addEntity',
-      wikiEntity(item.value, item.title, startDate.getFullYear(), endDate.getFullYear()),
-    );
-    visibleItem.value = item.value.toString();
+    store.commit('wiki/addPerson', person);
+    visibleItem.value = person.id.toString();
   } catch (error) {
     store.commit('snackMessage', error.message);
   }
@@ -157,14 +134,9 @@ const openNewPersonDialog = () => {
 };
 
 const addNewPerson = (person) => {
-  const entityUuid = uuid.v4();
-
-  store.commit(
-    'wiki/addEntity',
-    wikiEntity(entityUuid, person.fullname, person.start.getFullYear(), person.end.getFullYear()),
-  );
+  store.commit('wiki/addPerson', person);
   closeNewPersonDialog();
-  visibleItem.value = entityUuid;
+  visibleItem.value = person.id;
 };
 
 const openSaveCollectionDialog = () => {

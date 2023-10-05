@@ -70,9 +70,6 @@
   "messages": {
     "oldPassword": "La nova contrasenya no pot coincidir amb l'antiga."
   },
-  "character": {
-    "noBirthDateFound": "No s'ha trobat la data de naixement!"
-  },
   "fields": {
     "fullname": "Nom",
     "email": "Email",
@@ -87,11 +84,12 @@
     "birthmonth": "mes del naixement",
     "birthyear": "any del naixement"
   },
-  "persona": {
+  "person": {
     "title": "Persona",
     "fullname": "Nom",
     "birthdate": "Data de naxiement",
-    "deathdate": "Data de defunció"
+    "deathdate": "Data de defunció",
+    "noBirthDateFound": "No s'ha trobat la data de naixement!"
   },
   "account": {
     "title": "Configuració del compte",

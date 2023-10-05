@@ -8,7 +8,7 @@
     >
       <v-list-item
         v-for="(person, index) in persons"
-        :id="person.pageid"
+        :id="person.id"
         :key="index"
       >
         <template #prepend>
@@ -28,8 +28,8 @@
           :name="person.name"
           :min="min"
           :max="max"
-          :start="person.start"
-          :end="person.end"
+          :start="birthYear(person)"
+          :end="deathYear(person)"
         />
       </v-list-item>
     </vue-draggable-next>
@@ -40,8 +40,9 @@
 import { computed, onUpdated } from 'vue';
 import { VueDraggableNext } from 'vue-draggable-next';
 import { useStore } from 'vuex';
-import { TIMELINE, AGE } from '../../global/const';
+import { TIMELINE, AGE } from '../../lib/const';
 import TimelineWidget from '../../components/TimelineWidget.vue';
+import { wikiDate } from '../../lib/wikiPerson';
 
 const props = defineProps({
   view: {
@@ -56,14 +57,11 @@ const props = defineProps({
 
 const { getters, commit } = useStore();
 
-const setEntities = (entities) => commit('wiki/entities', entities);
-const remPerson = (person) => commit('wiki/remEntity', person);
+const remPerson = (person) => commit('wiki/remPerson', person);
 
 const persons = computed({
-  get: () => getters['wiki/entities'],
-  set: (newValue) => {
-    setEntities(newValue);
-  },
+  get: () => getters['wiki/persons'],
+  set: () => {},
 });
 
 const min = computed(() => {
@@ -85,6 +83,10 @@ const max = computed(() => {
       return getters['wiki/end'];
   }
 });
+
+const birthYear = (person) => wikiDate(person.birthDate).getFullYear();
+// const deathYear = (person) => person.deathDate ? wikiDate(person.deathDate).getFullYear() : new Date().getFullYear();
+const deathYear = (person) => wikiDate(person.deathDate).getFullYear();
 
 onUpdated(() => {
   if (props.visibleItem) {

@@ -135,7 +135,7 @@ import { useI18n } from 'vue-i18n';
 import VueRecaptcha from 'vue3-recaptcha2';
 import * as yup from 'yup';
 import { useApi } from '../../plugins/api';
-import { MIN_PASSWORD_LEN, MAX_USER_NAME_LEN } from '../../global/const';
+import { MIN_PASSWORD_LEN, MAX_USER_NAME_LEN } from '../../lib/const';
 
 const emits = defineEmits(['close']);
 const { dispatch } = useStore();

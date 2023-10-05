@@ -81,7 +81,7 @@ import { useI18n } from 'vue-i18n';
 import * as yup from 'yup';
 import VueRecaptcha from 'vue3-recaptcha2';
 import { useApi } from '../plugins/api';
-import { MIN_PASSWORD_LEN } from '../global/const';
+import { MIN_PASSWORD_LEN } from '../lib/const';
 
 const { dispatch } = useStore();
 const { query } = useRoute();

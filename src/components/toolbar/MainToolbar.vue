@@ -76,6 +76,7 @@ const isLoading = ref(false);
 const search = ref(null);
 const errorMessage = ref('');
 const toggleExclusive = ref(0);
+const lastSearch = ref('');
 
 const toggleDrawer = () => commit('toggleDrawer');
 const newPerson = () => emits('newPerson');
@@ -98,8 +99,10 @@ const setTimeline = () => {
   viewToggle(TIMELINE);
 };
 
+const isEqualText = (text1, text2) => text1.toLocaleLowerCase() === text2.toLocaleLowerCase();
+
 const updateItems = (val) => {
-  if (!val || val.length < 5) {
+  if (val.length < 5 || isEqualText(val, lastSearch.value)) {
     errorMessage.value = '';
     return;
   }
@@ -107,30 +110,42 @@ const updateItems = (val) => {
   errorMessage.value = '';
   isLoading.value = true;
 
-  api.searchPerson(val, 0, 50).then((result) => {
-    if (result.status !== 200) {
-      errorMessage.value = result.statusText;
-      return;
-    }
+  api
+    .searchPerson(val, 0, 50)
+    .then((result) => {
+      if (result.status !== 200) {
+        errorMessage.value = result.statusText;
+        return;
+      }
 
-    items.value = [];
-    if (result.data.query) {
-      result.data.query.pages.forEach((message) => {
-        if (message.revisions[0].slots.main.content.includes('birth_date')) {
-          items.value.push({
-            title: message.title,
-            value: message.pageid,
-            content: message.revisions[0].slots.main.content,
-          });
-        }
-      });
-    }
+      items.value = [];
+      if (result.data.query) {
+        result.data.query.pages.forEach((message) => {
+          if (message.revisions[0].slots.main.content.includes('birth_date')) {
+            if (isEqualText(message.title, val)) {
+              items.value.unshift({
+                title: message.title,
+                value: message.pageid,
+                content: message.revisions[0].slots.main.content,
+              });
+            } else {
+              items.value.push({
+                title: message.title,
+                value: message.pageid,
+                content: message.revisions[0].slots.main.content,
+              });
+            }
+          }
+        });
+      }
 
-    isLoading.value = false;
-  }).catch((error) => {
-    errorMessage.value = error.message;
-    isLoading.value = false;
-  });
+      lastSearch.value = val;
+      isLoading.value = false;
+    })
+    .catch((error) => {
+      errorMessage.value = error.message;
+      isLoading.value = false;
+    });
 };
 
 const clearActiveCollection = () => {

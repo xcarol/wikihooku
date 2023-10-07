@@ -4,6 +4,13 @@ import dayjs from 'dayjs';
 const _parseBirthDate = (infoBox) => {
   if (
     infoBox.general.birthDate &&
+    dayjs(infoBox.general.birthDate).isValid()
+  ) {
+    return dayjs(infoBox.general.birthDate).toJSON();
+  }
+
+  if (
+    infoBox.general.birthDate &&
     infoBox.general.birthDate.date &&
     dayjs(infoBox.general.birthDate.date).isValid()
   ) {

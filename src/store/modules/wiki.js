@@ -20,7 +20,7 @@ const getters = {
     return min;
   },
   end: (state) => {
-    const max = state.persons.reduce((year, person) => Math.max(year, dayjs(person.deathDate).year()), state.curYear);
+    const max = state.persons.reduce((year, person) => Math.max(year, dayjs(person.deathDate).year()), 0);
     return max;
   },
 };

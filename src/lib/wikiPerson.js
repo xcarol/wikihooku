@@ -17,7 +17,7 @@ const _parseBirthDate = (infoBox) => {
     return dayjs(infoBox.general.birthDate.date).toJSON();
   }
 
-  const dateLength = infoBox.general.birthDate.length;
+  const dateLength = infoBox.general.birthDate?.length;
   
   if (dateLength) {
     for (let pos = 0; pos < dateLength; pos += 1) {

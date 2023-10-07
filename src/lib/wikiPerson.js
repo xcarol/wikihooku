@@ -10,12 +10,17 @@ const _parseBirthDate = (infoBox) => {
     return dayjs(infoBox.general.birthDate.date).toJSON();
   }
 
-  if (
-    infoBox.general.birthDate.length &&
-    infoBox.general.birthDate[0].date &&
-    dayjs(infoBox.general.birthDate[0].date).isValid()
-  ) {
-    return dayjs(infoBox.general.birthDate[0].date).toJSON();
+  const dateLength = infoBox.general.birthDate.length;
+  
+  if (dateLength) {
+    for (let pos = 0; pos < dateLength; pos += 1) {
+      const date = infoBox.general.birthDate[pos]?.date;
+      const datejs = dayjs(date);
+
+      if (date && datejs.isValid()) {
+        return datejs.toJSON();
+      };
+    }
   }
 
   return undefined;

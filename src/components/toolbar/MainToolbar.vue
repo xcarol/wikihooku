@@ -30,7 +30,7 @@
       return-object
       @update:model-value="input"
       @update:search="updateItems"
-      @click:clear="items = []"
+      @click:clear="reset"
     />
     <v-btn
       variant="tonal"
@@ -57,6 +57,7 @@ import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useApi } from '../../plugins/api';
 import { TIMELINE, AGE } from '../../lib/const';
+import WikiPerson from '../../lib/wikiPerson';
 
 const { getters, commit, dispatch } = useStore();
 const { t: $t } = useI18n();
@@ -91,6 +92,11 @@ const input = (item) => {
   }
 };
 
+const reset = () => {
+  items.value = [];
+  lastSearch.value = '';
+};
+
 const setAge = () => {
   viewToggle(AGE);
 };
@@ -122,18 +128,22 @@ const updateItems = (val) => {
       if (result.data.query) {
         result.data.query.pages.forEach((message) => {
           if (message.revisions[0].slots.main.content.includes('birth_date')) {
-            if (isEqualText(message.title, val)) {
-              items.value.unshift({
-                title: message.title,
-                value: message.pageid,
-                content: message.revisions[0].slots.main.content,
-              });
-            } else {
-              items.value.push({
-                title: message.title,
-                value: message.pageid,
-                content: message.revisions[0].slots.main.content,
-              });
+            const person = new WikiPerson();
+            person.setFromSearch(message.revisions[0].slots.main);
+            if (person.getBirthDate()) {
+              if (isEqualText(message.title, val)) {
+                items.value.unshift({
+                  title: message.title,
+                  value: message.pageid,
+                  content: message.revisions[0].slots.main.content,
+                });
+              } else {
+                items.value.push({
+                  title: message.title,
+                  value: message.pageid,
+                  content: message.revisions[0].slots.main.content,
+                });
+              }
             }
           }
         });

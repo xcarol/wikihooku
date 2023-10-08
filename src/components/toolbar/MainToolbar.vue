@@ -21,7 +21,7 @@
       v-model:search="search"
       :error-messages="errorMessage"
       :items="items"
-      :loading="isLoading"
+      :loading="isLoading()"
       :placeholder="$t('searchHint')"
       class="ma-2"
       clearable
@@ -73,7 +73,7 @@ defineProps({
 const emits = defineEmits(['selected', 'switchView', 'newPerson', 'saveCollection']);
 
 const items = ref([]);
-const isLoading = ref(false);
+const searchesInProgress = ref(0);
 const search = ref(null);
 const errorMessage = ref('');
 const toggleExclusive = ref(0);
@@ -107,20 +107,59 @@ const setTimeline = () => {
 
 const isEqualText = (text1, text2) => text1.toLocaleLowerCase() === text2.toLocaleLowerCase();
 
-const updateItems = (val) => {
-  if (val.length < 5 || isEqualText(val, lastSearch.value)) {
+const isLoading = () => searchesInProgress.value > 1;
+
+const checkErrorStatus = (result) => {
+  if (result.status !== 200) {
+    errorMessage.value = result.statusText;
+    return true;
+  }
+  return false;
+};
+
+const addPersonAtTop = (message) => {
+  items.value.unshift({
+    title: message.title,
+    value: message.pageid,
+    content: message.revisions[0].slots.main.content,
+  });
+};
+
+const addPersonAtBotton = (message) => {
+  items.value.push({
+    title: message.title,
+    value: message.pageid,
+    content: message.revisions[0].slots.main.content,
+  });
+};
+
+const addPerson = (message, val) => {
+  const person = new WikiPerson();
+
+  person.setFromSearch(message.revisions[0].slots.main);
+
+  if (person.getBirthDate()) {
+    if (isEqualText(message.title, val)) {
+      addPersonAtTop(message);
+    } else {
+      addPersonAtBotton(message);
+    }
+  }
+};
+
+const updateItems = (searchName) => {
+  if (searchName.length < 5 || isEqualText(searchName, lastSearch.value)) {
     errorMessage.value = '';
     return;
   }
 
   errorMessage.value = '';
-  isLoading.value = true;
+  searchesInProgress.value += 1;
 
   api
-    .searchPerson(val, 0, 50)
+    .searchPerson(searchName, 0, 50)
     .then((result) => {
-      if (result.status !== 200) {
-        errorMessage.value = result.statusText;
+      if (isLoading() || checkErrorStatus(result)) {
         return;
       }
 
@@ -128,33 +167,18 @@ const updateItems = (val) => {
       if (result.data.query) {
         result.data.query.pages.forEach((message) => {
           if (message.revisions[0].slots.main.content.includes('birth_date')) {
-            const person = new WikiPerson();
-            person.setFromSearch(message.revisions[0].slots.main);
-            if (person.getBirthDate()) {
-              if (isEqualText(message.title, val)) {
-                items.value.unshift({
-                  title: message.title,
-                  value: message.pageid,
-                  content: message.revisions[0].slots.main.content,
-                });
-              } else {
-                items.value.push({
-                  title: message.title,
-                  value: message.pageid,
-                  content: message.revisions[0].slots.main.content,
-                });
-              }
-            }
+            addPerson(message, searchName);
           }
         });
       }
 
-      lastSearch.value = val;
-      isLoading.value = false;
+      lastSearch.value = searchName;
     })
     .catch((error) => {
       errorMessage.value = error.message;
-      isLoading.value = false;
+    })
+    .finally(() => {
+      searchesInProgress.value -= 1;
     });
 };
 

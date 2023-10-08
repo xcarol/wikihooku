@@ -36,6 +36,13 @@ const _parseBirthDate = (infoBox) => {
 const _parseDeathDate = (infoBox) => {
   if (
     infoBox.general.deathDate &&
+    dayjs(infoBox.general.deathDate).isValid()
+  ) {
+    return dayjs(infoBox.general.deathDate).toJSON();
+  }
+
+  if (
+    infoBox.general.deathDate &&
     infoBox.general.deathDate.date &&
     dayjs(infoBox.general.deathDate.date).isValid()
   ) {

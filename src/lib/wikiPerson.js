@@ -1,53 +1,71 @@
 import parseInfo from 'infobox-parser';
 import dayjs from 'dayjs';
 
-export default class WikiPerson {
-  _parseBirthDate() {
-    if (
-      this.infoBox.general.birthDate &&
-      this.infoBox.general.birthDate.date &&
-      dayjs(this.infoBox.general.birthDate.date).isValid()
-    ) {
-      return dayjs(this.infoBox.general.birthDate.date).toJSON();
-    }
-
-    if (
-      this.infoBox.general.birthDate.length &&
-      this.infoBox.general.birthDate[0].date &&
-      dayjs(this.infoBox.general.birthDate[0].date).isValid()
-    ) {
-      return dayjs(this.infoBox.general.birthDate[0].date).toJSON();
-    }
-
-    return undefined;
-  };
-
-  _parseDeathDate() {
-    if (
-      this.infoBox.general.deathDate &&
-      this.infoBox.general.deathDate.date &&
-      dayjs(this.infoBox.general.deathDate.date).isValid()
-    ) {
-      return dayjs(this.infoBox.general.deathDate.date).toJSON();
-    }
-
-    return undefined;
+const _parseBirthDate = (infoBox) => {
+  if (
+    infoBox.general.birthDate &&
+    dayjs(infoBox.general.birthDate).isValid()
+  ) {
+    return dayjs(infoBox.general.birthDate).toJSON();
   }
 
+  if (
+    infoBox.general.birthDate &&
+    infoBox.general.birthDate.date &&
+    dayjs(infoBox.general.birthDate.date).isValid()
+  ) {
+    return dayjs(infoBox.general.birthDate.date).toJSON();
+  }
+
+  const dateLength = infoBox.general.birthDate?.length;
+  
+  if (dateLength) {
+    for (let pos = 0; pos < dateLength; pos += 1) {
+      const date = infoBox.general.birthDate[pos]?.date;
+      const datejs = dayjs(date);
+
+      if (date && datejs.isValid()) {
+        return datejs.toJSON();
+      };
+    }
+  }
+
+  return undefined;
+};
+
+const _parseDeathDate = (infoBox) => {
+  if (
+    infoBox.general.deathDate &&
+    dayjs(infoBox.general.deathDate).isValid()
+  ) {
+    return dayjs(infoBox.general.deathDate).toJSON();
+  }
+
+  if (
+    infoBox.general.deathDate &&
+    infoBox.general.deathDate.date &&
+    dayjs(infoBox.general.deathDate.date).isValid()
+  ) {
+    return dayjs(infoBox.general.deathDate.date).toJSON();
+  }
+
+  return undefined;
+};
+
+export default class WikiPerson {
   setPerson(id, name, birthDate, deathDate) {
-    this.infoBox = undefined;
     this.id = id;
     this.name = name;
     this.birthDate = birthDate;
     this.deathDate = deathDate;
   }
 
-  setFromPageInfo(pageId, pageInfo) {
-    this.infoBox = parseInfo(pageInfo);
-    this.id = pageId;
-    this.name = this.infoBox.general.name;
-    this.birthDate = this._parseBirthDate();
-    this.deathDate = this._parseDeathDate();
+  setFromSearch(item) {
+    const infoBox = parseInfo(item.content);
+    this.id = item.value;
+    this.name = infoBox.general.name || item.title;
+    this.birthDate = _parseBirthDate(infoBox);
+    this.deathDate = _parseDeathDate(infoBox);
   };
 
   getBirthDate() {

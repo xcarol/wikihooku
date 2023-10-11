@@ -1,6 +1,5 @@
 <template>
-  <v-app-bar
-  >
+  <v-app-bar>
     <v-app-bar-nav-icon @click.stop="toggleDrawer()" />
     <v-btn-toggle
       v-model="toggleExclusive"
@@ -22,7 +21,7 @@
       v-model:search="search"
       :error-messages="errorMessage"
       :items="items"
-      :loading="isLoading"
+      :loading="isLoading()"
       :placeholder="$t('searchHint')"
       class="ma-2"
       clearable
@@ -30,6 +29,8 @@
       no-filter
       return-object
       @update:model-value="input"
+      @update:search="updateItems"
+      @click:clear="reset"
     />
     <v-btn
       variant="tonal"
@@ -51,11 +52,12 @@
 </template>
 
 <script setup>
-import { ref, watch,computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useApi } from '../../plugins/api';
 import { TIMELINE, AGE } from '../../lib/const';
+import WikiPerson from '../../lib/wikiPerson';
 
 const { getters, commit, dispatch } = useStore();
 const { t: $t } = useI18n();
@@ -71,10 +73,11 @@ defineProps({
 const emits = defineEmits(['selected', 'switchView', 'newPerson', 'saveCollection']);
 
 const items = ref([]);
-const isLoading = ref(false);
+const searchesInProgress = ref(0);
 const search = ref(null);
 const errorMessage = ref('');
 const toggleExclusive = ref(0);
+const lastSearch = ref('');
 
 const toggleDrawer = () => commit('toggleDrawer');
 const newPerson = () => emits('newPerson');
@@ -89,6 +92,11 @@ const input = (item) => {
   }
 };
 
+const reset = () => {
+  items.value = [];
+  lastSearch.value = '';
+};
+
 const setAge = () => {
   viewToggle(AGE);
 };
@@ -97,41 +105,82 @@ const setTimeline = () => {
   viewToggle(TIMELINE);
 };
 
-watch(search, async (val) => {
-  items.value = [];
+const isEqualText = (text1, text2) => text1.toLocaleLowerCase() === text2.toLocaleLowerCase();
 
-  if (!val || val.length < 5) {
+const isLoading = () => searchesInProgress.value > 1;
+
+const checkErrorStatus = (result) => {
+  if (result.status !== 200) {
+    errorMessage.value = result.statusText;
+    return true;
+  }
+  return false;
+};
+
+const addPersonAtTop = (message) => {
+  items.value.unshift({
+    title: message.title,
+    value: message.pageid,
+    content: message.revisions[0].slots.main.content,
+  });
+};
+
+const addPersonAtBotton = (message) => {
+  items.value.push({
+    title: message.title,
+    value: message.pageid,
+    content: message.revisions[0].slots.main.content,
+  });
+};
+
+const addPerson = (message, val) => {
+  const person = new WikiPerson();
+
+  person.setFromSearch(message.revisions[0].slots.main);
+
+  if (person.getBirthDate()) {
+    if (isEqualText(message.title, val)) {
+      addPersonAtTop(message);
+    } else {
+      addPersonAtBotton(message);
+    }
+  }
+};
+
+const updateItems = (searchName) => {
+  if (searchName.length < 5 || isEqualText(searchName, lastSearch.value)) {
     errorMessage.value = '';
     return;
   }
 
   errorMessage.value = '';
-  isLoading.value = true;
+  searchesInProgress.value += 1;
 
-  try {
-    const result = await api.searchPerson(val, 0, 50);
+  api
+    .searchPerson(searchName, 0, 50)
+    .then((result) => {
+      if (isLoading() || checkErrorStatus(result)) {
+        return;
+      }
 
-    if (result.status !== 200) {
-      throw new Error(result.statusText);
-    }
+      items.value = [];
+      if (result.data.query) {
+        result.data.query.pages.forEach((message) => {
+          if (message.revisions[0].slots.main.content.includes('birth_date')) {
+            addPerson(message, searchName);
+          }
+        });
+      }
 
-    if (result.data.query) {
-      result.data.query.pages.forEach((message) => {
-        if (message.revisions[0].slots.main.content.includes('birth_date')) {
-          items.value.push({
-            title: message.title,
-            value: message.pageid,
-            content: message.revisions[0].slots.main.content,
-          });
-        }
-      });
-    }
-  } catch (error) {
-    errorMessage.value = error.message;
-  }
-
-  isLoading.value = false;
-});
+      lastSearch.value = searchName;
+    })
+    .catch((error) => {
+      errorMessage.value = error.message;
+    })
+    .finally(() => {
+      searchesInProgress.value -= 1;
+    });
+};
 
 const clearActiveCollection = () => {
   dispatch('collections/clearActiveCollection', {});

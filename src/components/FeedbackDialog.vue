@@ -152,7 +152,7 @@ const { value: email, meta: emailMeta } = useField('email', emailRules);
 const { value: feedback, meta: feedbackMeta } = useField('feedback', feedbackRules);
 
 const canSendFeedback = computed(() => {
-  if (anonymousUser.value) {
+  if (anonymousUser) {
     return (
       emailMeta.valid &&
       email.value?.length > 0 &&

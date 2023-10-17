@@ -24,10 +24,6 @@
     "es": "Castellano",
     "en": "English"
   },
-  "footer": {
-    "notice": "Terminos de servicio",
-    "made": "Hecho con ❤️ y "
-  },
   "global": {
     "feedback": "feedback",
     "edit": "editar",
@@ -36,7 +32,9 @@
     "ok": "ok",
     "day": "dia",
     "month": "mes",
-    "year": "año"
+    "year": "año",
+    "terms": "Terminos de servicio",
+    "madewith": "Hecho con ❤️ y "
   },
   "login": {
     "title": "Inicio",

@@ -24,10 +24,6 @@
     "es": "Castellano",
     "en": "English"
   },
-  "footer": {
-    "notice": "Termes de Servei",
-    "made": "Fet amb ❤️ i "
-  },
   "global": {
     "feedback": "feedback",
     "edit": "edita",
@@ -36,7 +32,9 @@
     "ok": "ok",
     "day": "dia",
     "month": "mes",
-    "year": "any"
+    "year": "any",
+    "terms": "Termes de Servei",
+    "madewith": "Fet amb ❤️ i "
   },
   "login": {
     "title": "Inici",

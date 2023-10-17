@@ -10,7 +10,7 @@
         sm="auto"
       >
         <span>
-          {{ $t('footer.made') }}
+          {{ $t('footer.madewith') }}
           <v-icon size="small">
             <v-img
               :src="logoImg"
@@ -28,8 +28,8 @@
         cols="12"
         sm="auto"
       >
-        <router-link to="/legal-notice">
-          {{ $t('footer.notice') }}
+        <router-link to="/terms-of-service">
+          {{ $t('footer.terms') }}
         </router-link>
       </v-col>
       <v-col

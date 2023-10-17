@@ -24,6 +24,11 @@ const routes = [
     component: () => import('./views/ResetPassword.vue'),
   },
   {
+    path: '/terms-of-service',
+    name: 'terms',
+    component: () => import('./views/TermsOfServiceView.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/',
   },

@@ -19,6 +19,15 @@
   "en": "English",
   "en-US": "fallback:en",
   "searchHint": "Search a character at Wikipedia",
+  "languages": {
+    "ca": "Català",
+    "es": "Castellano",
+    "en": "English"
+  },
+  "footer": {
+    "notice": "Terms of Service",
+    "made": "Made with ❤️ and "
+  },
   "global": {
     "feedback": "feedback",
     "edit": "edit",
@@ -117,6 +126,7 @@
     "sendsuccesfully": "Your feedback has been registered succesfully. Thanks for contributing!"
   },
   "collection": {
+    "unnamed": "unnamed collection",
     "title": "Collection name",
     "button": "Save"
   }

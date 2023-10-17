@@ -19,6 +19,15 @@
   "en-US": "fallback:en",
   "es": "Castellà",
   "searchHint": "Cerca un personatge a la Vikipedia",
+  "languages": {
+    "ca": "Català",
+    "es": "Castellano",
+    "en": "English"
+  },
+  "footer": {
+    "notice": "Termes de Servei",
+    "made": "Fet amb ❤️ i "
+  },
   "global": {
     "feedback": "feedback",
     "edit": "edita",
@@ -117,6 +126,7 @@
     "sendsuccesfully": "El teu feedback s'ha registrat amb èxit. Gràcies per contribuir!"
   },
   "collection": {
+    "unnamed": "col·lecció sense nom",
     "title": "Nom de la col·lecció",
     "button": "Guardar"
   }

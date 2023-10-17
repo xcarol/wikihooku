@@ -22,6 +22,7 @@
       v-if="showRegisterDialog"
       @close="closeRegisterDialog"
     />
+    <app-footer />
   </v-app>
 </template>
 
@@ -35,6 +36,7 @@ const AppToolbar = defineAsyncComponent(() => import('./components/toolbar/AppTo
 const FeedbackDialog = defineAsyncComponent(() => import('./components/FeedbackDialog.vue'));
 const RegisterDialog = defineAsyncComponent(() => import('./components/auth/RegisterDialog.vue'));
 const LoginDialog = defineAsyncComponent(() => import('./components/auth/LoginDialog.vue'));
+const AppFooter = defineAsyncComponent(() => import('./components/AppFooter.vue'));
 
 const theme = useTheme();
 const store = useStore();

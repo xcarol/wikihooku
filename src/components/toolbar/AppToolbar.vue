@@ -18,6 +18,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import { useI18n } from 'vue-i18n';
 
 import HomeButton from './HomeButton.vue';
 import FeedbackButton from './FeedbackButton.vue';
@@ -31,6 +32,7 @@ const logout = () => emits('logout');
 const register = () => emits('register');
 
 const store = useStore();
+const { t: $t } = useI18n();
 
-const title = computed(() => store.getters.viewTitle);
+const title = computed(() => store.getters.viewTitle || $t('collection.unnamed'));
 </script>

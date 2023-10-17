@@ -87,8 +87,8 @@ import * as yup from 'yup';
 import { useApi } from '../../plugins/api';
 
 const emits = defineEmits(['close']);
-const { commit, dispatch } = useStore();
-const { t: $t } = useI18n();
+const { commit, dispatch, getters } = useStore();
+const { locale: i18nlocale, t: $t } = useI18n();
 const api = useApi();
 
 const showDialog = ref(true);
@@ -153,6 +153,10 @@ const loginUser = async () => {
       username: username.value,
       password: password.value,
     });
+    const { locale } = getters['session/user'];
+    if (locale) {
+      i18nlocale.value = getters['session/user'].locale;
+    }
     close();
   } catch (error) {
     loading = false;

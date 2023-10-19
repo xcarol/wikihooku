@@ -10,7 +10,7 @@
         sm="auto"
       >
         <span>
-          {{ $t('footer.madewith') }}
+          {{ $t('global.madewith') }}
           <v-icon size="small">
             <v-img
               :src="logoImg"
@@ -29,7 +29,7 @@
         sm="auto"
       >
         <router-link to="/terms-of-service">
-          {{ $t('footer.terms') }}
+          {{ $t('global.terms') }}
         </router-link>
       </v-col>
       <v-col

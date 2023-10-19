@@ -25,7 +25,7 @@ const { locale, t: $t } = useI18n();
 const store = useStore();
 
 const curLocale = computed(() => {
-  store.commit('viewTitle', $t('footer.terms'));
-  return locale;
+  store.commit('viewTitle', $t('global.terms'));
+  return locale.value;
 });
 </script>

@@ -3,15 +3,14 @@
     <v-card-title>Avís Legal - WikiHooku</v-card-title>
 
     <v-card-text>
-      Aquest avís legal estableix les condicions d'ús per a la web WikiHooku (en endavant, "la web")
-      operada per WikiHooku Team (en endavant, "nosaltres", "el nostre" o "l'entitat"). En accedir i
-      utilitzar aquesta web, acceptes les condicions que es detallen a continuació. Si no hi estàs
+      Aquest avís legal estableix les condicions d'ús per al lloc web WikiHooku. En accedir i
+      utilitzar aquesta web, acceptes les condicions que es detallen a continuació. Si no estàs
       d'acord amb aquestes condicions, si us plau, no facis ús de la web.
     </v-card-text>
 
     <v-card-text>
-      WikiHooku és un projecte personal en continu desenvolupament. És per aquesta raó que no es
-      demana cap aportació econòmica, com tampoc hi ha anuncis. En el mateix sentit, els serveis
+      WikiHooku és un projecte personal en continu desenvolupament. És per aquesta raó, que no es
+      demana cap aportació econòmica i tampoc hi ha anuncis. En el mateix sentit, els serveis
       externs usats per al funcionament de WikiHooku, tot i ser professionals, s'utilitzen amb
       comptes de desenvolupament, la qual cosa implica un ús límitat de recursos, així com la
       excempció de responsabilitat, tant per part de WikiHooku com dels serveis externs, en cas de
@@ -76,8 +75,8 @@
     <v-card-title>2. Cookies</v-card-title>
 
     <v-card-text>
-      Utilitzem cookies per a recopilar informació anònima i estadístiques sobre l'ús de la web,
-      així com les dades de la sessió actual de l'usuari. Les cookies són petits arxius que es
+      WikiHooku utilitza cookies per a recopilar informació anònima i estadístiques sobre l'ús de la
+      web, així com les dades de la sessió actual de l'usuari. Les cookies són petits arxius que es
       guarden al teu dispositiu i ens ajuden a millorar la teva experiència de navegació. En
       utilitzar aquesta web, acceptes l'ús de cookies. Pots gestionar les teves preferències de
       cookies mitjançant la configuració del teu navegador.
@@ -86,9 +85,10 @@
     <v-card-title>3. Responsabilitat</v-card-title>
 
     <v-card-text>
-      No assumim cap responsabilitat per la pèrdua de dades emmagatzemades en serveis esmentats o
-      qualsevol inconvenient o problema relacionat amb aquest emmagatzematge. Els usuaris són
-      responsables de conservar les seves pròpies còpies de seguretat de les dades importants.
+      WikiHooku no assumeix cap responsabilitat per la pèrdua de dades emmagatzemades en els serveis
+      esmentats o qualsevol inconvenient o problema relacionat amb aquest emmagatzematge. Els
+      usuaris són responsables de conservar les seves pròpies còpies de seguretat de les dades
+      importants.
     </v-card-text>
 
     <v-card-title>4. Llei Aplicable</v-card-title>
@@ -102,10 +102,10 @@
     <v-card-title>5. Canvis a aquest Avís Legal</v-card-title>
 
     <v-card-text>
-      Reservem el dret de modificar aquest avís legal en qualsevol moment. Les modificacions es
-      faran efectives en el moment de la seva publicació a la web. És responsabilitat de l'usuari
-      revisar aquest avís legal periòdicament per aconseguir informació actualitzada sobre les
-      condicions d'ús.
+      WikiHooku es reserva el dret de modificar aquest avís legal en qualsevol moment. Les
+      modificacions es faran efectives en el moment de la seva publicació a la web. És
+      responsabilitat de l'usuari revisar aquest avís legal periòdicament per aconseguir informació
+      actualitzada sobre les condicions d'ús.
     </v-card-text>
 
     <v-card-title>6. Contacte</v-card-title>

@@ -3,18 +3,18 @@
     <v-card-title>Legal Notice - WikiHooku</v-card-title>
 
     <v-card-text>
-      This legal notice sets out the terms of use for the WikiHooku website (hereinafter "the
-      website") operated by WikiHooku Team (hereinafter "we", "our" or "the entity"). By accessing
-      and use this website, you accept the conditions detailed below. If you are not there in
-      accordance with these conditions, please do not use the website.
+      This legal notice sets out the terms of use for the WikiHooku website. By accessing and use
+      this website, you accept the conditions detailed below. If you are not in accordance with
+      these conditions, please do not use the website.
     </v-card-text>
 
     <v-card-text>
-      WikiHooku is a personal project in continuous development. This is the reason for no economic
-      contribution request, and there are no ads either. In the same sense, the external services
-      used for the operation of WikiHooku, despite being professional, are used with development
-      accounts, which implies a limited use of resources, as well as the disclaimer of liability,
-      both on the part of WikiHooku and the external services, in case of data loss or malfunction.
+      WikiHooku is a personal project in continuous development. It is for this reason that no
+      financial contribution is requested and there are no ads either. In the same sense, the
+      services externals used for the operation of WikiHooku, despite being professional, are used
+      with development accounts, which implies a limited use of resources, as well as the disclaimer
+      of liability, both on the part of WikiHooku and the external services, in case of data loss or
+      malfunction.
     </v-card-text>
 
     <v-card-title>0. Services used</v-card-title>
@@ -74,18 +74,19 @@
     <v-card-title>2. Cookies</v-card-title>
 
     <v-card-text>
-      We use cookies to collect anonymous information and statistics about the use of the website,
-      as well as data from the user's current session. Cookies are small files that are saved on
-      your device and help us improve your browsing experience. When using This website, you accept
-      the use of cookies. You can manage your cookie preferences by your browser settings.
+      WikiHooku uses cookies to collect anonymous information and statistics about the use of the
+      web, as well as the data of the user's current session. Cookies are small files that are saved
+      on your device and help us improve your browsing experience. When using this website, you accept
+      the use of cookies. You can manage your preferences from cookies through your browser
+      settings.
     </v-card-text>
 
     <v-card-title>3. Liability</v-card-title>
 
     <v-card-text>
-      We do not assume any responsibility for the loss of data stored in the aforementioned services
-      or any inconvenience or problem related to this storage. Users are responsible for keeping
-      their own backup copies of important data.
+      WikiHooku assumes no responsibility for the loss of data stored in the services mentioned or
+      any inconvenience or problem related to this storage. The users are responsible for keeping
+      their own backups of important data.
     </v-card-text>
 
     <v-card-title>4. Applicable Law</v-card-title>
@@ -99,10 +100,10 @@
     <v-card-title>5. Changes to this Legal Notice</v-card-title>
 
     <v-card-text>
-      We reserve the right to modify this legal notice at any time. The modifications will be
-      effective at the time of their publication on the web. It is the responsibility of the user
-      review this legal notice periodically to obtain updated information about the conditions of
-      use.
+      WikiHooku reserves the right to modify this legal notice at any time. the modifications will
+      become effective at the time of their publication on the web. Is it is the user's
+      responsibility to review this legal notice periodically for information updated on the terms
+      of use.
     </v-card-text>
 
     <v-card-title>6. Contact</v-card-title>

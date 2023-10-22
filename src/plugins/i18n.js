@@ -1,15 +1,16 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+import VueCookies from 'vue-cookies';
 import { createI18n } from 'vue-i18n';
-import store from './store/config';
-import ca from './locales/ca.json';
-import en from './locales/en.json';
-import es from './locales/es.json';
+import store from '../store/config';
+import ca from '../locales/ca.json';
+import en from '../locales/en.json';
+import es from '../locales/es.json';
 
 const messages = { ca, en, es };
 const fallbackLocale = import.meta.env.VITE_I18N_FALLBACK_LOCALE || 'en';
 
 function getUserLanguage() {
-  return store.getters['session/user'].locale;
+  return store.getters['session/user'].locale || VueCookies.get('locale');
 }
 
 export function localeFallback() { return localeFallback; }

@@ -19,6 +19,11 @@
   "en": "English",
   "en-US": "fallback:en",
   "searchHint": "Search a character at Wikipedia",
+  "languages": {
+    "ca": "Català",
+    "es": "Castellano",
+    "en": "English"
+  },
   "global": {
     "feedback": "feedback",
     "edit": "edit",
@@ -27,7 +32,9 @@
     "ok": "ok",
     "day": "day",
     "month": "month",
-    "year": "year"
+    "year": "year",
+    "terms": "Terms of Service",
+    "madewith": "Made with ❤️ and "
   },
   "login": {
     "title": "Login",
@@ -117,6 +124,7 @@
     "sendsuccesfully": "Your feedback has been registered succesfully. Thanks for contributing!"
   },
   "collection": {
+    "unnamed": "unnamed collection",
     "title": "Collection name",
     "button": "Save"
   }

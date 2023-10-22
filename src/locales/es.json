@@ -19,6 +19,11 @@
   "ca-ES": "fallback:ca",
   "es": "Español",
   "searchHint": "Busca un personaje en la Wikipedia",
+  "languages": {
+    "ca": "Català",
+    "es": "Castellano",
+    "en": "English"
+  },
   "global": {
     "feedback": "feedback",
     "edit": "editar",
@@ -27,7 +32,9 @@
     "ok": "ok",
     "day": "dia",
     "month": "mes",
-    "year": "año"
+    "year": "año",
+    "terms": "Terminos de servicio",
+    "madewith": "Hecho con ❤️ y "
   },
   "login": {
     "title": "Inicio",
@@ -117,6 +124,7 @@
     "sendsuccesfully": "Tu feedback se ha registrado con éxito. Gracias por contribuir!"
   },
   "collection": {
+    "unnamed": "colección sin nombre",
     "title": "Nombre de la colección",
     "button": "Guardar"
   }

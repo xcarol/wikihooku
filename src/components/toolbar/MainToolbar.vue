@@ -33,18 +33,15 @@
       @click:clear="reset"
     />
     <v-btn
-      variant="tonal"
       :icon="'$save'"
       :disabled="anonymousUser || noPerson"
       @click.stop="saveCollection"
     />
     <v-btn
-      variant="tonal"
       :icon="'$deleteForever'"
       @click.stop="clearActiveCollection"
     />
     <v-btn
-      variant="tonal"
       :icon="'$add'"
       @click.stop="newPerson"
     />

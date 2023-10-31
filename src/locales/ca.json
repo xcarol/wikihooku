@@ -15,9 +15,9 @@
   "collection already exists": "Ja hi ha una col·lecció amb aquest nom",
   "ca": "Català",
   "ca-ES": "fallback:ca",
-  "en": "Anglès",
+  "en": "English",
   "en-US": "fallback:en",
-  "es": "Castellà",
+  "es": "Español",
   "searchHint": "Cerca un personatge a la Vikipedia",
   "languages": {
     "ca": "Català",

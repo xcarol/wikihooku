@@ -13,7 +13,7 @@
             :key="index"
             :value="index"
           >
-            <v-list-item-title @click="changeLanguage(language)">{{ $t(`languages.${language}`) }}</v-list-item-title>
+            <v-list-item-title @click="changeLanguage(language)">{{ $t(`${language}`) }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -22,12 +22,12 @@
 </template>
 
 <script setup>
-import { inject, onBeforeMount,computed } from 'vue';
+import { inject, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { locale: i18nlocale, t: $t } = useI18n();
 const $cookies = inject('$cookies');
-const curLanguage = computed(() => $t(`languages.${i18nlocale.value}`));
+const curLanguage = computed(() => $t(`${i18nlocale.value}`));
 
 const languages = ['ca', 'es', 'en'];
 
@@ -37,10 +37,5 @@ const changeLanguage = (newLanguage) => {
   }
   i18nlocale.value = newLanguage;
   $cookies.set('locale', i18nlocale.value);
-  // setLanguageLabel();
 };
-
-onBeforeMount(() => {
-  // setLanguageLabel();
-});
 </script>

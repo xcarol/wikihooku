@@ -19,6 +19,11 @@
   "ca-ES": "fallback:ca",
   "es": "Español",
   "searchHint": "Busca un personaje en la Wikipedia",
+  "languages": {
+    "ca": "Català",
+    "es": "Castellano",
+    "en": "English"
+  },
   "global": {
     "feedback": "feedback",
     "edit": "editar",

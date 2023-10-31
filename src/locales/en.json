@@ -19,6 +19,11 @@
   "en": "English",
   "en-US": "fallback:en",
   "searchHint": "Search a character at Wikipedia",
+  "languages": {
+    "ca": "Català",
+    "es": "Castellano",
+    "en": "English"
+  },
   "global": {
     "feedback": "feedback",
     "edit": "edit",

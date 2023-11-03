@@ -1,4 +1,4 @@
-import parseInfo from 'infobox-parser';
+import parseInfo from 'infobox-parser-xcarol';
 import dayjs from 'dayjs';
 
 const _parseBirthDate = (infoBox) => {

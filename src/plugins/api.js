@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import parseInfo from 'infobox-parser';
+import parseInfo from 'infobox-parser-xcarol';
 
 class Api {
   endpoints = {

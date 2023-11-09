@@ -25,12 +25,6 @@ const actions = {
         commit('viewTitle', collection.name, { root: true });
       });
   },
-  getAllCollectionNames({ commit }) {
-    return api.getAllCollectionNames().then((res) => {
-      const { collectionNames } = res.data;
-      commit('collectionNames', collectionNames);
-    });
-  },
   getUserCollectionNames({ commit }, userId) {
     return api.getUserCollectionNames(userId).then((res) => {
       const { collectionNames } = res.data;

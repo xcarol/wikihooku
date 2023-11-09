@@ -40,7 +40,7 @@ const collectionNames = computed(() => store.getters['collections/collectionName
 const user = computed(() => store.getters['session/user']);
 
 onBeforeUpdate(async () => {
-  if (drawerVisible.value === true && user.value._id) {
+  if (drawerVisible.value === true) {
     await store.dispatch('collections/getUserCollectionNames', user.value._id);
   } else {
     store.commit('collections/collectionNames', []);

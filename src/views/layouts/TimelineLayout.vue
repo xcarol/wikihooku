@@ -1,7 +1,7 @@
 <template>
   <v-list class="timeline-list">
     <vue-draggable-next
-      v-model="persons"
+      :value="persons"
       handle=".draggable-time-line"
       @start="drag = true"
       @end="drag = false"

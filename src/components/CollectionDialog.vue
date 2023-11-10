@@ -108,9 +108,15 @@ const {
   resetField: collectionNameReset,
 } = useField('collectionName', collectionNameRules);
 
-collectionNameReset({
-  value: props.currentName,
-});
+watch(
+  () => props.currentName,
+  () => {
+    const { currentName } = props;
+    collectionNameReset({
+      value: currentName,
+    });
+  },
+);
 
 const cansaveCollection = computed(
   () => collectionNameMeta.valid && collectionName.value?.length > 0,

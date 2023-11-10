@@ -1,30 +1,17 @@
-import parseInfo from 'infobox-parser';
+import parseInfo from 'infobox-parser-xcarol';
 import dayjs from 'dayjs';
 
-const _parseBirthDate = (infoBox) => {
-  if (
-    infoBox.general.birthDate &&
-    dayjs(infoBox.general.birthDate).isValid()
-  ) {
-    return dayjs(infoBox.general.birthDate).toJSON();
-  }
+const _isSimpleDate = (date) => date && dayjs(date).isValid();
+const _isDateDate = (date) => date && date.date && dayjs(date.date).isValid();
+const _objectDate = (date) => {
+  const length = date?.length;
 
-  if (
-    infoBox.general.birthDate &&
-    infoBox.general.birthDate.date &&
-    dayjs(infoBox.general.birthDate.date).isValid()
-  ) {
-    return dayjs(infoBox.general.birthDate.date).toJSON();
-  }
+  if (length) {
+    for (let pos = 0; pos < length; pos += 1) {
+      const obDate = date[pos]?.date;
+      const datejs = dayjs(obDate);
 
-  const dateLength = infoBox.general.birthDate?.length;
-  
-  if (dateLength) {
-    for (let pos = 0; pos < dateLength; pos += 1) {
-      const date = infoBox.general.birthDate[pos]?.date;
-      const datejs = dayjs(date);
-
-      if (date && datejs.isValid()) {
+      if (obDate && datejs.isValid()) {
         return datejs.toJSON();
       };
     }
@@ -32,24 +19,53 @@ const _parseBirthDate = (infoBox) => {
 
   return undefined;
 };
+const _stringDate = (date) => {
 
-const _parseDeathDate = (infoBox) => {
-  if (
-    infoBox.general.deathDate &&
-    dayjs(infoBox.general.deathDate).isValid()
-  ) {
-    return dayjs(infoBox.general.deathDate).toJSON();
-  }
+  if (date && typeof(date) === 'string') {
+    const lowercaseDate = date?.toLowerCase();
+    
+    if (lowercaseDate.includes('or')) {
+      const dates = lowercaseDate.split('or');
 
-  if (
-    infoBox.general.deathDate &&
-    infoBox.general.deathDate.date &&
-    dayjs(infoBox.general.deathDate.date).isValid()
-  ) {
-    return dayjs(infoBox.general.deathDate.date).toJSON();
+      for (let pos = 0; pos < dates.length; pos += 1) {
+        const datejs = dayjs(dates[pos]);
+
+        if (datejs.isValid()) {
+          return datejs.toJSON();
+        };
+      }
+    }
   }
 
   return undefined;
+};
+
+const _parseBirthDate = (infoBox) => {
+  const { birthDate } = infoBox.general;
+
+  if (_isSimpleDate(birthDate)) {
+    return dayjs(birthDate).toJSON();
+  }
+
+  if (_isDateDate(birthDate)) {
+    return dayjs(birthDate.date).toJSON();
+  }
+
+  return _objectDate(birthDate) || _stringDate(birthDate);
+};
+
+const _parseDeathDate = (infoBox) => {
+  const { deathDate } = infoBox.general;
+
+  if (_isSimpleDate(deathDate)) {
+    return dayjs(deathDate).toJSON();
+  }
+
+  if (_isDateDate(deathDate)) {
+    return dayjs(deathDate.date).toJSON();
+  }
+
+  return _objectDate(deathDate);
 };
 
 export default class WikiPerson {

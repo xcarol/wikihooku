@@ -27,7 +27,7 @@ Stored in `.env` or `.env.test.local` file for development and test respectively
 **VITE_API_URL** - Wikihooku API url  
 
 - development: *<http://localhost:3000/api/>*
-- production: *<https://wikihooku-api.herokuapp.com/api/>*  
+- production: *<https://wikihooku-api.onrender.com/api/>*  
 
 **VITE_RECAPTCHA_KEY** - Recaptcha key create at *<https://www.google.com/recaptcha/admin/site/349368012>* use the *WEB SITE* key  
 

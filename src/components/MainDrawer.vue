@@ -4,6 +4,18 @@
     :fixed="$vuetify.display.mdAndDown"
     :bottom="$vuetify.display.xs"
   >
+    <v-overlay
+      v-model="loading"
+      contained
+      class="align-center justify-center"
+    >
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="primary"
+        indeterminate
+      />
+    </v-overlay>
     <v-list v-model="collectionNames">
       <v-list-item
         v-for="(collectionName, index) in collectionNames"
@@ -22,12 +34,13 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUpdate } from 'vue';
+import { ref, computed, onBeforeUpdate } from 'vue';
 import { useStore } from 'vuex';
 
 const emits = defineEmits(['collectionSelected']);
 const store = useStore();
 
+const loading = ref(false);
 const drawerVisible = computed({
   get() {
     return store.state.drawerVisible;
@@ -41,7 +54,9 @@ const user = computed(() => store.getters['session/user']);
 
 onBeforeUpdate(async () => {
   if (drawerVisible.value === true) {
+    loading.value = true;
     await store.dispatch('collections/getUserCollectionNames', user.value._id);
+    loading.value = false;
   } else {
     store.commit('collections/collectionNames', []);
   }

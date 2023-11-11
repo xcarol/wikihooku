@@ -7,18 +7,6 @@
       @new-person="openNewPersonDialog"
       @save-collection="openSaveCollectionDialog"
     />
-    <v-overlay
-      v-model="loading"
-      contained
-      class="align-center justify-center"
-    >
-      <v-progress-circular
-        :size="70"
-        :width="7"
-        color="primary"
-        indeterminate
-      />
-    </v-overlay>
     <v-snackbar
       color="primary"
       :model-value="errorMessage !== ''"
@@ -68,7 +56,6 @@ import CollectionDialog from '../components/CollectionDialog.vue';
 
 const nowTimeout = 0;
 const snackTimeout = 6000;
-const loading = ref(false);
 const view = ref(TIMELINE);
 
 const { t: $t } = useI18n();
@@ -106,8 +93,6 @@ onBeforeMount(() => {
 });
 
 const selected = async (item) => {
-  loading.value = true;
-
   try {
     const person = new WikiPerson();
 
@@ -122,7 +107,6 @@ const selected = async (item) => {
   } catch (error) {
     store.commit('snackMessage', error.message);
   }
-  loading.value = false;
 };
 
 const closeNewPersonDialog = () => {

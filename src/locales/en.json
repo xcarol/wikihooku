@@ -25,6 +25,7 @@
     "en": "English"
   },
   "global": {
+    "help": "help",
     "feedback": "feedback",
     "edit": "edit",
     "save": "save",

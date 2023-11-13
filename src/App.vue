@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <app-toolbar
+      @help="help"
       @home="home"
       @register="openRegisterDialog"
       @login="openLoginDialog"
@@ -74,6 +75,10 @@ const openRegisterDialog = () => {
 
 const closeRegisterDialog = () => {
   showRegisterDialog.value = false;
+};
+
+const help = () => {
+  router.push({ path: '/help' });
 };
 
 const home = () => {

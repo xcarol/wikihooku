@@ -13,6 +13,7 @@ import es from 'vuetify/lib/locale/es.mjs';
 import colors from 'vuetify/lib/util/colors.mjs';
 import {
   mdiHome,
+  mdiMenu,
   mdiPlus,
   mdiCloseCircleOutline,
   mdiCloseCircle,
@@ -41,6 +42,7 @@ const vuetify = createVuetify({
     aliases: {
       ...aliases,
       home: mdiHome,
+      menu: mdiMenu,
       add: mdiPlus,
       del: mdiCloseCircleOutline,
       close: mdiCloseCircle,

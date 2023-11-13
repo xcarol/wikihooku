@@ -46,7 +46,7 @@ const vuetify = createVuetify({
       close: mdiCloseCircle,
       age: mdiAlignHorizontalLeft,
       timeline: mdiDistributeVerticalCenter,
-      messageAlert: mdiMessageAlert,
+      feedback: mdiMessageAlert,
       settings: mdiAccountDetails,
       accountIn: mdiAccountCircle,
       accountOut: mdiAccountCircleOutline,

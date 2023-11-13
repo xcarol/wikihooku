@@ -10,7 +10,7 @@
     <v-btn
       v-else
       text
-      :icon="'$messageAlert'"
+      :icon="'$feedback'"
       @click.stop="feedback()"
     />
 </template>

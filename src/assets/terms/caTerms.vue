@@ -1,5 +1,5 @@
 <template>
-  <v-card-text>
+  <v-card>
     <v-card-title>Avís Legal - WikiHooku</v-card-title>
 
     <v-card-text>
@@ -115,5 +115,5 @@
       en contacte amb nosaltres a través de
       <a href="mailto:admin@wikihooku.com">admin@wikihooku.com</a>.
     </v-card-text>
-  </v-card-text>
+  </v-card>
 </template>

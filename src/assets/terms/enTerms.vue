@@ -1,5 +1,5 @@
 <template>
-  <v-card-text>
+  <v-card>
     <v-card-title>Legal Notice - WikiHooku</v-card-title>
 
     <v-card-text>
@@ -112,5 +112,5 @@
       If you have any questions or concerns related to this legal notice, please contact us through
       <a href="mailto:admin@wikihooku.com">admin@wikihooku.com</a>.
     </v-card-text>
-  </v-card-text>
+  </v-card>
 </template>

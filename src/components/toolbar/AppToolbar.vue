@@ -34,5 +34,15 @@ const register = () => emits('register');
 const store = useStore();
 const { t: $t } = useI18n();
 
-const title = computed(() => store.getters.viewTitle || $t('collection.unnamed'));
+const title = computed(() => {
+  if (store.getters.viewTitle) {
+    return store.getters.viewTitle;
+  }
+  
+  if (store.getters['wiki/persons'].length) {
+    return $t('collection.unnamed');
+  }
+
+  return '';
+});
 </script>

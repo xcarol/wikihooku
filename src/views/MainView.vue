@@ -81,7 +81,7 @@ const errorMessage = computed(() => {
 });
 
 const setViewTitle = () => {
-  store.commit('viewTitle', collectionName.value);
+  store.commit('viewTitle', collectionName.value || (store.getters['wiki/persons'].length ? $t('collection.unnamed') : ''));
 };
 
 const clearErrorMessage = () => {
@@ -107,6 +107,7 @@ const selected = async (item) => {
   } catch (error) {
     store.commit('snackMessage', error.message);
   }
+  setViewTitle();
 };
 
 const closeNewPersonDialog = () => {

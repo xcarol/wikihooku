@@ -15,7 +15,7 @@
   "collection already exists": "Ya hay una colección con este nombre",
   "en": "English",
   "en-US": "fallback:en",
-  "ca": "Catalá",
+  "ca": "Català",
   "ca-ES": "fallback:ca",
   "es": "Español",
   "searchHint": "Busca un personaje en la Wikipedia",
@@ -127,6 +127,9 @@
   "collection": {
     "unnamed": "colección sin nombre",
     "title": "Nombre de la colección",
-    "button": "Guardar"
+    "button": "Guardar",
+    "drawerEmptyTitle": "UPSSS",
+    "drawerEmptyTextA": "Parece que algo ha ido mal. Clica dos veces el botón ",
+    "drawerEmptyTextB": " para cerrar la lista de colecciones i volverla a abrir."
   }
 }

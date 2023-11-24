@@ -127,6 +127,9 @@
   "collection": {
     "unnamed": "unnamed collection",
     "title": "Collection name",
-    "button": "Save"
+    "button": "Save",
+    "drawerEmptyTitle": "UPSSS",
+    "drawerEmptyTextA": "It seems that something went wrong. Click two times the ",
+    "drawerEmptyTextB": " button to close the collections list and open it back again."
   }
 }

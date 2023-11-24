@@ -127,6 +127,9 @@
   "collection": {
     "unnamed": "col·lecció sense nom",
     "title": "Nom de la col·lecció",
-    "button": "Guardar"
+    "button": "Guardar",
+    "drawerEmptyTitle": "UPSSS",
+    "drawerEmptyTextA": "Sembla que alguna cosa ha anat malament. Clica dues vegades el botó ",
+    "drawerEmptyTextB": " per tancar la llista de col·leccions i torna-la a obrir."
   }
 }

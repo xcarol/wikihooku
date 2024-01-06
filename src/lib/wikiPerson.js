@@ -1,4 +1,4 @@
-import parseInfo from 'infobox-parser-xcarol';
+import parseInfo from 'infobox-parser';
 import dayjs from 'dayjs';
 
 const _isSimpleDate = (date) => date && dayjs(date).isValid();
